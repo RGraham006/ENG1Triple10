@@ -115,3 +115,31 @@ north4
   orig: 32, 48
   offset: 0, 0
   index: -1
+none1
+    rotate: false
+    xy: 0, 0
+    size: 32, 48
+    orig: 32, 48
+    offset: 0, 0
+    index: -1
+none2
+  rotate: false
+  xy: 0, 0
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+none3
+  rotate: false
+  xy: 0, 0
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+none4
+  rotate: false
+  xy: 0, 0
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1

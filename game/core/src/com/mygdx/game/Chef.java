@@ -36,6 +36,7 @@ public class Chef extends Sprite implements Person {
         else {
             if(stateTime > 0.06666) {
                 currentSpriteAnimation ++;
+                System.out.println(spriteState);
                 if(currentSpriteAnimation > MAX_ANIMATION) {
                     currentSpriteAnimation = 1;
                 }
@@ -57,7 +58,8 @@ public class Chef extends Sprite implements Person {
         }
     }
     @Override
-    public void setTexture(String spriteState) {
+    public void setTexture(String texture) {
+        sprite.setRegion(textureAtlas.findRegion(texture));
     }
 
     public float getX() {
