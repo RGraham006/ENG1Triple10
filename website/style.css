@@ -217,8 +217,8 @@ body{
     border-radius: 20px;
     border-style: groove;
     margin-left: 35%;
-    width: auto;
-    height: auto;
+    width: 700px;
+    height: 500px;
 }
 
 .teamInfo{
