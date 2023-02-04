@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="44" nextobjectid="74">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="35" nextobjectid="49">
  <tileset firstgid="1" source="Room_Builder_32x32.tsx"/>
  <tileset firstgid="8285" source="12_Kitchen_32x32.tsx"/>
  <tileset firstgid="9069" source="16_Grocery_store_32x32.tsx"/>
@@ -70,18 +70,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="35" name="walls">
-  <object id="50" x="482" y="158.667">
-   <polygon points="-2,2 318,0.666667 317.333,40 380.667,35.3333 381.334,85.0003 431.666,85.0003 431.333,190.667 430.667,192.667 400.667,192.667 401.333,223.333 -78.6667,226.5 -79.6667,30.1667 -2,30.8333"/>
-  </object>
- </objectgroup>
- <objectgroup id="43" name="Copy of walls">
-  <object id="65" x="428.667" y="133.333" width="50.6667" height="56.6667"/>
-  <object id="66" x="915.333" y="306.667" width="23.3333" height="107.333"/>
-  <object id="67" x="883.333" y="353.333" width="31.3333" height="61.3333"/>
-  <object id="70" x="863.333" y="383.333" width="20" height="32"/>
-  <object id="71" x="429.333" y="384" width="434" height="58.6667"/>
-  <object id="73" x="801" y="163" width="65.5" height="32"/>
+ <objectgroup id="33" name="walls">
+  <object id="28" x="480" y="96" width="320" height="64"/>
+  <object id="29" x="800" y="96" width="64" height="128"/>
+  <object id="31" x="864" y="160" width="64" height="128"/>
+  <object id="36" x="896" y="224" width="32" height="192"/>
+  <object id="38" x="416" y="384" width="480" height="64"/>
+  <object id="39" x="402.167" y="159" width="28.6667" height="224"/>
  </objectgroup>
  <layer id="5" name="counters + wall decor" width="32" height="18">
   <data encoding="csv">
@@ -96,7 +91,7 @@
 0,0,0,10425,10426,0,0,0,0,0,0,0,8528,8530,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,8528,8530,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,10467,0,0,0,0,0,0,0,0,8528,8530,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,10483,0,0,0,0,0,0,0,0,8528,8530,0,0,0,0,0,0,0,8301,8306,8306,8306,8306,8302,0,0,0,0,0,
+0,0,0,10483,0,0,0,0,0,0,0,0,8528,8530,0,0,0,0,0,0,8301,8306,8306,8306,8306,8306,8302,0,0,0,0,0,
 0,0,0,10467,0,0,0,0,0,0,0,0,8560,9485,9486,0,10439,10439,10439,0,0,0,10439,10439,10439,0,0,0,0,0,0,0,
 0,0,0,10483,10439,0,10331,0,0,0,0,10439,0,8570,8571,8572,1073752263,1073752263,1073752263,10116,10117,10118,1073752263,1073752263,1073752263,10109,10109,10109,0,0,0,0,
 0,0,0,0,1073752263,0,10347,0,0,0,0,1073752263,0,8586,8587,8588,0,0,0,10132,10133,10134,0,0,0,10125,10125,10125,0,0,0,0,
@@ -105,10 +100,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="34" name="counters" offsetx="0.833333" offsety="0.333333">
+ <objectgroup id="34" name="counters">
+  <object id="43" x="641" y="364.5" width="222" height="21"/>
   <object id="44" x="672" y="139.5" width="64" height="37.5"/>
   <object id="45" x="768" y="140.5" width="31" height="37"/>
-  <object id="72" x="833.167" y="364.333" width="28" height="16.6667"/>
+  <object id="48" x="832" y="198" width="30" height="45"/>
  </objectgroup>
  <layer id="6" name="pantry+objects" width="32" height="18">
   <data encoding="csv">
@@ -155,7 +151,7 @@
 </data>
  </layer>
  <objectgroup id="32" name="frying">
-  <object id="23" x="780.5" y="198" width="83.5" height="45"/>
+  <object id="23" x="780.5" y="198" width="51" height="45"/>
  </objectgroup>
  <layer id="29" name="chopping board" width="32" height="18">
   <data encoding="csv">
@@ -351,26 +347,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="22" name="toaster" opacity="0.94">
+ <objectgroup id="22" name="toaster">
   <object id="9" x="865.5" y="244.5" width="52.5" height="61.5"/>
- </objectgroup>
- <objectgroup id="37" name="assembly1">
-  <object id="52" x="672.5" y="364.5" width="29.5" height="19"/>
- </objectgroup>
- <objectgroup id="38" name="assembly2">
-  <object id="53" x="702.5" y="364.5" width="33.5" height="18.5"/>
- </objectgroup>
- <objectgroup id="39" name="assembly3">
-  <object id="55" x="736" y="363.5" width="32" height="20"/>
- </objectgroup>
- <objectgroup id="40" name="assembly4">
-  <object id="56" x="768.5" y="364" width="31" height="18.5"/>
- </objectgroup>
- <objectgroup id="41" name="assembly5">
-  <object id="57" x="800.5" y="364.5" width="32" height="18.5"/>
- </objectgroup>
- <objectgroup id="42" name="customerCounter">
-  <object id="60" x="402.5" y="190" width="27" height="195"/>
  </objectgroup>
  <layer id="9" name="pantry shelves" width="32" height="18">
   <data encoding="csv">
@@ -453,11 +431,11 @@
 0,0,0,177,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,175,0,0,0,
 0,0,0,177,0,0,0,0,0,0,0,0,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,99,95,0,0,0,
 0,0,0,177,0,0,0,0,0,0,0,0,99,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,0,0,0,0,
-0,0,0,100,100,100,100,0,0,100,100,100,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,100,100,100,100,325,326,100,100,100,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,401,402,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-98,97,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,98,97,
-1073741922,1073741921,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1073741922,1073741921
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
 </map>
