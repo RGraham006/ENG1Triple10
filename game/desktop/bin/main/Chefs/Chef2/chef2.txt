@@ -1,0 +1,145 @@
+chef2.png
+size: 48, 1548
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+east1
+  rotate: false
+  xy: 0, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+east2
+  rotate: false
+  xy: 0, 97
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+east3
+  rotate: false
+  xy: 0, 194
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+east4
+  rotate: false
+  xy: 0, 291
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+idleeast
+  rotate: false
+  xy: 0, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+north1
+  rotate: false
+  xy: 0, 388
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north2
+  rotate: false
+  xy: 0, 484
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north3
+  rotate: false
+  xy: 0, 580
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north4
+  rotate: false
+  xy: 0, 676
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+idlenorth
+  rotate: false
+  xy: 0, 388
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+south1
+  rotate: false
+  xy: 0, 772
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+south2
+  rotate: false
+  xy: 0, 869
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+south3
+  rotate: false
+  xy: 0, 966
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+south4
+  rotate: false
+  xy: 0, 1063
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+idlesouth
+  rotate: false
+  xy: 0, 772
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west1
+  rotate: false
+  xy: 0, 1160
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west2
+  rotate: false
+  xy: 0, 1257
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west3
+  rotate: false
+  xy: 0, 1354
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west4
+  rotate: false
+  xy: 0, 1451
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+idlewest
+  rotate: false
+  xy: 0, 1160
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1

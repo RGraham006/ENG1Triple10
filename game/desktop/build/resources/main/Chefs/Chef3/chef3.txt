@@ -1,0 +1,145 @@
+chef3.png
+size: 764, 97
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+east1
+  rotate: false
+  xy: 0, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+east2
+  rotate: false
+  xy: 48, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+east3
+  rotate: false
+  xy: 96, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+east4
+  rotate: false
+  xy: 144, 0
+  size: 47, 97
+  orig: 47, 97
+  offset: 0, 0
+  index: -1
+idleeast
+  rotate: false
+  xy: 0, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+north1
+  rotate: false
+  xy: 191, 0
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north2
+  rotate: false
+  xy: 239, 0
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north3
+  rotate: false
+  xy: 287, 0
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north4
+  rotate: false
+  xy: 335, 0
+  size: 47, 96
+  orig: 47, 96
+  offset: 0, 0
+  index: -1
+idlenorth
+  rotate: false
+  xy: 191, 0
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+south1
+  rotate: false
+  xy: 382, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+south2
+  rotate: false
+  xy: 430, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+south3
+  rotate: false
+  xy: 478, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+south4
+  rotate: false
+  xy: 526, 0
+  size: 47, 97
+  orig: 47, 97
+  offset: 0, 0
+  index: -1
+idlesouth
+  rotate: false
+  xy: 382, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west1
+  rotate: false
+  xy: 573, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west2
+  rotate: false
+  xy: 621, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west3
+  rotate: false
+  xy: 669, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1
+west4
+  rotate: false
+  xy: 717, 0
+  size: 47, 97
+  orig: 47, 97
+  offset: 0, 0
+  index: -1
+idlewest
+  rotate: false
+  xy: 573, 0
+  size: 48, 97
+  orig: 48, 97
+  offset: 0, 0
+  index: -1

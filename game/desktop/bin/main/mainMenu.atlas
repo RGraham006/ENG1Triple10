@@ -1,0 +1,54 @@
+mainMenu.png
+size: 1280, 860
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+exitButton
+  rotate: false
+  xy: 0, 0
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+exitButtonDown
+  rotate: false
+  xy: 400, 0
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+menuPP
+  rotate: false
+  xy: 0, 140
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+playButton
+  rotate: false
+  xy: 800, 0
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+playButtonDown
+  rotate: false
+  xy: 0, 70
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+scenarioButton
+  rotate: false
+  xy: 400, 70
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+scenarioButtonDown
+  rotate: false
+  xy: 800, 70
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
