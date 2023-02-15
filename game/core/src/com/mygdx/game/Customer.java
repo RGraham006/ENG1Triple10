@@ -1,27 +1,26 @@
 package com.mygdx.game;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.badlogic.gdx.math.MathUtils.random;
 /**
  * Assigns all attributes and animation and interactions that
  * the customer will go through in the game including which 
- * dish they will pick
- * 
- *  @author Robin Graham
+ * dish they will pick.
+ *
+ * @author Robin Graham
  * 
  */
-public class Customer extends Sprite implements Person{
-
+public class Customer extends Sprite implements Person {
     Sprite sprite;
     private float waitHeight, waitWidth;
     private int currentSpriteAnimation;
@@ -65,7 +64,7 @@ public class Customer extends Sprite implements Person{
             spawnWait = 1;
         }
         else{
-            spawnWait = rand.nextInt(3000, 9000);
+            spawnWait = rand.nextInt(6000)+3000;
         }
         this.dish = pickDish();
         System.out.println("customer " + customerNumber + ": " + dish);
