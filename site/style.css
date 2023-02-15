@@ -1,0 +1,237 @@
+.navbar{
+    overflow: hidden;
+    background-color: lightslategrey;
+    font-family: Arial, Helvetica, sans-serif;
+    position: inherit;
+}
+
+.navbar a{
+    float: left;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover{
+    background-color: rgb(175, 245, 221);
+    color: black;
+}
+
+.navbar img{
+    border: none;
+    height: 50px;
+    width: auto;
+    float:right;
+    margin-right: 0px;
+}
+
+body{
+    background-color: azure;
+}
+
+.gameInfo{
+    background-color: rgb(82, 80, 80);
+    width: auto;
+    float: left;
+    font-size: 16px;
+    padding: 50px 50px;
+    margin: 0.1%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    overflow: hidden;
+    border-radius: 20px;
+    margin-bottom: 1%;
+}
+
+.gameInfo p{
+    margin-left: 0px;
+    margin-right: auto;
+    text-align: center;
+    width: 100%;
+    font-size: 22px;
+}
+
+.gameInfo h1{
+    text-align: center;
+    position: top;
+	color: white;
+}
+
+.gameInfo img{
+    float: center;
+    margin-right: 5%;
+    margin-top: -3%;
+    position: inherit;
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+    border-width: 12px;
+    border-style: groove;
+}
+
+.gameInfo button{
+	float: center;
+    margin-right: 30%;
+    margin-left: 38%;
+    position: static;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border-radius: 10px;
+    color: darkslategrey;
+    background-color: lightblue;
+    border: none;
+    padding: 1% 2.5%
+}
+
+.gameInfo button:hover{
+    color: black;
+    background-color: darkturquoise;
+}
+
+.updates{
+    background-color: rgb(82, 80, 80);
+    width: auto;
+    font-size: 16px;
+    padding: 50px 50px;
+    margin: 0.1%;
+    margin-top: 2%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.updates button:hover{
+    color: black;
+    background-color: darkturquoise;
+}
+
+.updates p{
+    margin-left: 0px;
+    margin-right: auto;
+    text-align: center;
+    width: 100%;
+    font-size: 22px;
+}
+
+.updates img{
+    float: center;
+    margin-right: 5%;
+    margin-top: -3%;
+    position: inherit;
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+    border-width: 12px;
+    border-style: groove;
+}
+
+.updates button{
+    margin-right: 30%;
+    margin-left: 34%;
+    margin-top: 4%;
+    position: static;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border-radius: 10px;
+    color: darkslategrey;
+    background-color: lightblue;
+    border: none;
+    padding: 1% 2.5%
+}
+
+.updates h1{
+    text-align: center;
+    position: top;
+	color: white;
+}
+
+.gameDownload{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+.gameDownload h1{
+    color: rgb(205, 224, 243);
+    background-color: rgb(8, 81, 81);
+    padding: 2%;
+    float: center;
+    border-radius: 50px;
+    position: inherit;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: center;
+}
+
+.gameDownload p{
+    color: rgb(205, 224, 243);
+    background-color: rgb(8, 81, 81);
+    margin-top: -2%;
+    padding:2%;
+    padding-bottom: 5%;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.gameDownload a{
+    position: fixed;
+    padding: 1%;
+    margin-right: auto;
+    margin-left: 46%;
+    margin-top: -5%;
+    background-color: rgb(205, 224, 243);
+    font-style: normal;
+    font-weight: bold;
+    border-radius: 10px;
+    color: rgb(8, 81, 81);
+    text-align: center;
+}
+
+.gameDownload a:hover{
+    background-color: rgb(5, 43, 43);
+    color: white;
+}
+
+.updatesTable table{
+    background-color: rgb(138, 149, 161);
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+.updatesTable th, .updatesTable td{
+    border: 1px solid black;
+    padding: 1%;
+}
+
+.teamImage img{
+    float: center;
+    border-radius: 20px;
+    border-style: groove;
+    margin-left: 32%; 
+    width: auto;
+    height: auto;
+}
+
+.teamInfo{
+    background-color: lightslategray;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    padding: 1%;
+}

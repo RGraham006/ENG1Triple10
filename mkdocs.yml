@@ -1,0 +1,39 @@
+site_name: Piazza Panic
+theme:
+    name: material
+    palette:
+        scheme: azure
+        primary: blue grey
+    features:
+        - navigation.tabs
+    logo: https://i.imgur.com/Db2CzKH.png
+extra_css:
+    - style.css
+nav:
+    - Home: index.md
+    - Files: files.md
+    - Game: game.md
+    - Weekly Updates: weeklyUpdates.md
+    - Meet the Teams: meetTheTeam.md
+markdown_extensions:
+    - def_list
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - attr_list
+    - md_in_html
+plugins:
+    - glightbox:
+        touchNavigation: false
+        loop: false
+        effect: zoom
+        slide_effect: slide
+        width: 80%
+        height: auto
+        zoomable: true
+        draggable: false
+        skip_classes:
+          - custom-skip-class-name
+        auto_caption: false
+        caption_position: bottom
+    - search
+    

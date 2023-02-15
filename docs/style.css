@@ -49,21 +49,22 @@ body{
     margin-left: 0px;
     margin-right: auto;
     text-align: center;
-    width: 50%;
+    width: 100%;
     font-size: 22px;
 }
 
 .gameInfo h1{
     text-align: center;
     position: top;
+	color: white;
 }
 
 .gameInfo img{
-    float: right;
+    float: center;
     margin-right: 5%;
     margin-top: -3%;
     position: inherit;
-    width: 30%;
+    width: 100%;
     height: auto;
     border-radius: 5%;
     border-width: 12px;
@@ -71,8 +72,9 @@ body{
 }
 
 .gameInfo button{
-    margin-left: 20.5%;
-    margin-top: 4%;
+	float: center;
+    margin-right: 30%;
+    margin-left: 38%;
     position: static;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
@@ -108,19 +110,19 @@ body{
 }
 
 .updates p{
-    margin-right: 0px;
-    margin-left: auto;
+    margin-left: 0px;
+    margin-right: auto;
     text-align: center;
-    width: 50%;
+    width: 100%;
     font-size: 22px;
 }
 
 .updates img{
-    float: left;
-    margin-top: -10%;
-    margin-left: 5%;
+    float: center;
+    margin-right: 5%;
+    margin-top: -3%;
     position: inherit;
-    width: 30%;
+    width: 100%;
     height: auto;
     border-radius: 5%;
     border-width: 12px;
@@ -128,8 +130,8 @@ body{
 }
 
 .updates button{
-    margin-right: 20.5%;
-    margin-left: 70.95%;
+    margin-right: 30%;
+    margin-left: 34%;
     margin-top: 4%;
     position: static;
     font-size: 16px;
@@ -145,6 +147,7 @@ body{
 .updates h1{
     text-align: center;
     position: top;
+	color: white;
 }
 
 .gameDownload{
@@ -163,7 +166,7 @@ body{
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0px;
-    width: 10%;
+    width: 100%;
     text-align: center;
 }
 
