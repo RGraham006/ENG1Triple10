@@ -33,7 +33,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#files">
+<a class="md-skip" href="#welcome">
           Skip to content
         </a>
 </div>
@@ -156,8 +156,32 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#welcome">
+    Welcome
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#files">
     Files
+  </a>
+<nav aria-label="Files" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#assessment-1">
+    Assessment 1
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#assessment-2">
+    Assessment 2
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#website-changes">
+    Website Changes
   </a>
 </li>
 </ul>
@@ -198,8 +222,32 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#welcome">
+    Welcome
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#files">
     Files
+  </a>
+<nav aria-label="Files" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#assessment-1">
+    Assessment 1
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#assessment-2">
+    Assessment 2
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#website-changes">
+    Website Changes
   </a>
 </li>
 </ul>
@@ -211,8 +259,9 @@
 <article class="md-content__inner md-typeset">
 <!DOCTYPE html>
 
-<p><title>Home</title>
-<html>
+<p><title>Home</title></p>
+<h2 id="welcome">Welcome</h2>
+<p><html>
 <link href="style.css" rel="stylesheet">
 <body>
 <br/>
@@ -224,7 +273,7 @@
                 watch friends and family struggle to beat your highscore. Click on the link below to give it a try!
             </p>
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-width="80%" href="https://i.imgur.com/XOfPV1g.jpg"><img align="right" alt="Test2" src="https://i.imgur.com/XOfPV1g.jpg"/></a>
-<button onclick="window.location.href='game.html'">Try our Game!</button>
+<button onclick="window.location.href='game'">Try our Game!</button>
 </div>
 </body></link></html>
 <html>
@@ -237,11 +286,12 @@
                 you might be curious about.
             </p>
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-width="80%" href="https://i.imgur.com/q6ppjlC.png"><img src="https://i.imgur.com/q6ppjlC.png"/></a>
-<button onclick="window.location.href='weeklyUpdates.html'">Follow development!</button>
+<button onclick="window.location.href='weeklyUpdates'">Follow development!</button>
 </div>
 </html></p>
 <hr/>
 <h2 id="files">Files</h2>
+<h3 id="assessment-1">Assessment 1</h3>
 <table>
 <thead>
 <tr>
@@ -275,11 +325,31 @@
 <td style="text-align: left;"><a href="Impl1.pdf">Impl1</a></td>
 </tr>
 <tr>
-<td style="text-align: left;">GitHub Repository</td>
+<td style="text-align: left;">GitHub Repository (Assessment 1)</td>
+<td style="text-align: left;"><a href="https://github.com/RGraham006/ENG1Triple10">Repo</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="assessment-2">Assessment 2</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type of File</th>
+<th style="text-align: left;">Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GitHub Repository (Assessment 2)</td>
 <td style="text-align: left;"><a href="https://github.com/JV1ck3rs/Triple10-X-BlackCatStudios">Repo</a></td>
 </tr>
 </tbody>
 </table>
+<h2 id="website-changes">Website Changes</h2>
+<p>Team 27 (BlackCatStudios) has taken over Team 30's (Triple10) website and game.
+The website was previously made up of html documents. Team 27 decided to convert the documents to markdown and use material for mkdocs to build the page. 
+This has been done because the team already had experience with mkdocs as we used it for our website for assessment 1 and because html can be used directly in markdown.
+Mkdocs provides useful functionality which make the website easier to create and use.</p>
 </article>
 </div>
 </div>
