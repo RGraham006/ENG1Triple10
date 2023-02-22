@@ -36,5 +36,5 @@ jobs: # what to do
         uses: actions/upload-artifact@v3.1.2
         with:
             name: lib-${{ matrix.os }}.jar
-            path: game\core\build\libs\core-1.0.jar
+            path: game/core/build/libs/core-1.0.jar
           
