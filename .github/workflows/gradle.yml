@@ -40,8 +40,9 @@ jobs: # what to do
           build-root-directory: game
       - name: Upload JAR
         uses: actions/upload-artifact@v3.1.2
+        if: startsWith(matrix.os, 'ubuntu')
         with:
-            name: lib-${{ matrix.os }}.jar
+            name: PiazzaPanic.jar
             path: game/desktop/build/libs/desktop-1.0.jar
       - name: Upload Checkstyle report
         uses: actions/upload-artifact@v3.1.1
