@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -9,14 +9,18 @@ buildscript {
         google()
     }
     dependencies {
-        
+
 
     }
 }
 
+plugins {
+    id 'checkstyle'
+}
+
 allprojects {
     apply plugin: "eclipse"
-
+    apply plugin: "checkstyle"
     version = '1.0'
     ext {
         appName = "PiazzaPanic"
@@ -37,6 +41,23 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://jitpack.io" }
     }
+
+    def checkstyleVersion = '10.4'
+
+    configurations {
+        checkstyleRules
+    }
+
+    dependencies {
+        checkstyleRules("com.puppycrawl.tools:checkstyle:${checkstyleVersion}") {
+            transitive = false
+        }
+    }
+
+    checkstyle {
+        toolVersion = "${checkstyleVersion}"
+        config = resources.text.fromArchiveEntry(configurations.checkstyleRules, 'google_checks.xml')
+    }
 }
 
 project(":desktop") {
@@ -44,12 +65,12 @@ project(":desktop") {
 
 
     dependencies {
-        
+
         implementation project(":core")
         implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
+
     }
 }
 
@@ -60,6 +81,7 @@ project(":core") {
     dependencies {
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        
+
     }
 }
+

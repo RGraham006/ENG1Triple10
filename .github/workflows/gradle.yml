@@ -1,0 +1,68 @@
+name: Java CI with Gradle
+
+on: #when to run the workflow
+  push: #when pushing to main branch
+    branches: [ "main" ]
+    tags: [ "v[0-9]+.[0-9]+.[0-9]+" ]
+  pull_request: # when pushing to a main PR
+    branches: [ "main" ]
+    
+    
+jobs: # what to do
+    build:
+      strategy:
+        matrix:
+          os: [ubuntu-22.04, windows-2022, macos-12]
+      runs-on: ${{ matrix.os }}
+      
+      
+      permissions:
+        contents: read
+        
+      steps: 
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Run chmod to make gradlew executable
+        run: chmod +x ./game/gradlew
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        with:
+          arguments: build
+          build-root-directory: game
+      - name: Create executable JAR
+        uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        with:
+          arguments: desktop:dist
+          build-root-directory: game
+      - name: Upload JAR
+        uses: actions/upload-artifact@v3.1.2
+        if: startsWith(matrix.os, 'ubuntu')
+        with:
+            name: PiazzaPanic.jar
+            path: game/desktop/build/libs/desktop-1.0.jar
+      - name: Upload Checkstyle report
+        uses: actions/upload-artifact@v3.1.1
+        if: startsWith(matrix.os, 'ubuntu')
+        with:
+          name: checkstyle-report
+          path: game/core/build/reports/checkstyle
+    release:
+      runs-on: ubuntu-22.04
+      needs: [ "build" ]
+      if: startsWith(github.ref, 'refs/tags/')
+      permissions:
+        contents: write
+      steps:
+      - name: Download executable JAR
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: desktop-1.0.jar
+      - name: Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        with:
+          files: PiazzaPanic.jar
+        
