@@ -39,13 +39,13 @@ jobs: # what to do
           arguments: desktop:dist
           build-root-directory: game
       - name: Change name of JAR
-        run: mv  desktop-1.0.jar PiazzaPanic.jar
+        run: mv game/desktop/build/libs/desktop-1.0.jar game/desktop/build/libs/PiazzaPanic.jar
       - name: Upload JAR
         uses: actions/upload-artifact@v3.1.2
         if: startsWith(matrix.os, 'ubuntu')
         with:
             name: PiazzaPanic.jar
-            path: game/desktop/build/libs/desktop-1.0.jar
+            path: game/desktop/build/libs/PiazzaPanic.jar
       - name: Upload Checkstyle report
         uses: actions/upload-artifact@v3.1.1
         if: startsWith(matrix.os, 'ubuntu')
