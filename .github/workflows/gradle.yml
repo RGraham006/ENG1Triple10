@@ -3,6 +3,7 @@ name: Java CI with Gradle
 on: #when to run the workflow
   push: #when pushing to main branch
     branches: [ "main" ]
+    tags: [ "v[0-9]+.[0-9]+.[0-9]+" ]
   pull_request: # when pushing to a main PR
     branches: [ "main" ]
     
@@ -42,4 +43,25 @@ jobs: # what to do
         with:
             name: lib-${{ matrix.os }}.jar
             path: game/desktop/build/libs/desktop-1.0.jar
-          
+      - name: Upload Checkstyle report
+        uses: actions/upload-artifact@v3.1.1
+        if: startsWith(matrix.os, 'ubuntu')
+        with:
+          name: checkstyle-report
+          path: game/core/build/reports/checkstyle
+    release:
+      runs-on: ubuntu-22.04
+      needs: [ "build" ]
+      if: startsWith(github.ref, 'refs/tags/')
+      permissions:
+        contents: write
+      steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: PiazzaPanic.jar
+      - name: Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        with:
+          files: PiazzaPanic.jar
+        
