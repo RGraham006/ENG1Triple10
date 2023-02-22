@@ -29,14 +29,14 @@ public class MenuScreen implements Screen {
   TextureAtlas mainMenuAtlas;
   final MyGdxGame root;
 
-  private TextureRegion playbtn;
-  private TextureRegion playbtnDown;
-  private TextureRegion scenariobtn;
-  private TextureRegion scenariobtnDown;
-  private TextureRegion exitbtn;
-  private TextureRegion exitbtnDown;
-  private Stage stage;
-  private Table table;
+  private final TextureRegion playbtn;
+  private final TextureRegion playbtnDown;
+  private final TextureRegion scenariobtn;
+  private final TextureRegion scenariobtnDown;
+  private final TextureRegion exitbtn;
+  private final TextureRegion exitbtnDown;
+  private final Stage stage;
+  private final Table table;
 
   /**
    * constructs the screen including the position of the buttons and their hitboxes;

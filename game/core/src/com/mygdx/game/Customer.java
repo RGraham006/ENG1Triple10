@@ -22,21 +22,22 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Customer extends Scriptable implements Person {
 
-  private float waitHeight, waitWidth;
+  private final float waitHeight;
+  private final float waitWidth;
   private int currentSpriteAnimation;
-  private int MAX_ANIMATION = 4;
+  private final int MAX_ANIMATION = 4;
   private TextureAtlas customerAtlas;
   private float stateTime = 0;
 
   private int size;
   private String spriteOrientation, spriteState;
-  private String lastOrientation;
-  private int customerNumber;
+  private final String lastOrientation;
+  private final int customerNumber;
   private boolean idle;   // customer will be invisible during idle because out of map
   private boolean waitingAtCounter;   // customer will be waiting at the counter for their dish
   private boolean eaten;
   private int spawnWait;
-  private String dish;
+  private final String dish;
 
   Random rand = new Random();
 
@@ -49,7 +50,7 @@ public class Customer extends Scriptable implements Person {
   public Customer(int customerNumber) {
     currentSpriteAnimation = 1;
     spriteOrientation = "north";
-   // sprite.setPosition(posX, posY);
+    // sprite.setPosition(posX, posY);
     this.idle = true;
     this.waitingAtCounter = false;
     this.customerNumber = customerNumber;
@@ -67,13 +68,14 @@ public class Customer extends Scriptable implements Person {
   }
 
   @Override
-  public void Start(){
+  public void Start() {
     customerAtlas = getCustomerAtlas(GameScreen.getCustomerAtlasArray());
-    gameObject.getSprite().setSprite(customerAtlas.createSprite("north1"));;
+    gameObject.getSprite().setSprite(customerAtlas.createSprite("north1"));
     gameObject.position.x = 148;
     gameObject.position.y = 66;
 
   }
+
   /**
    * Updates the sprite to follow the correct animation
    */
@@ -96,7 +98,7 @@ public class Customer extends Scriptable implements Person {
           stateTime += 0.01;
         }
       }
-      spriteState = newOrientation + Integer.toString(currentSpriteAnimation);
+      spriteState = newOrientation + currentSpriteAnimation;
     }
     setTexture(spriteState);
     spriteOrientation = newOrientation;

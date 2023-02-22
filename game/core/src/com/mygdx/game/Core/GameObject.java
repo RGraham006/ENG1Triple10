@@ -26,7 +26,7 @@ public class GameObject {
 
   public void attachScript(Scriptable script) {
     Scripts.add(script);
-    script  .setGameObject(this);
+    script.setGameObject(this);
     script.Start();
   }
 
@@ -42,36 +42,37 @@ public class GameObject {
     UID = ID;
   }
 
-  public void doUpdate(float dt){
-    for (Scriptable script: Scripts
+  public void doUpdate(float dt) {
+    for (Scriptable script : Scripts
     ) {
       script.Update(dt);
     }
   }
-  public void doFixedUpdate(float dt){
-    for (Scriptable script: Scripts
+
+  public void doFixedUpdate(float dt) {
+    for (Scriptable script : Scripts
     ) {
       script.FixedUpdate(dt);
     }
   }
 
 
-  public void render(SpriteBatch batch){
+  public void render(SpriteBatch batch) {
 
-    image.Render(batch,position.x,position.y);
+    image.Render(batch, position.x, position.y);
 
   }
 
 
-  public BlackSprite getSprite(){
-    return ((BlackSprite) image) ;
+  public BlackSprite getSprite() {
+    return ((BlackSprite) image);
   }
 
-  public BlackTexture getBlackTexture(){
+  public BlackTexture getBlackTexture() {
     return (BlackTexture) image;
   }
 
-  public void setPosition(float x, float y){
-    position.set(x,y);
+  public void setPosition(float x, float y) {
+    position.set(x, y);
   }
 }

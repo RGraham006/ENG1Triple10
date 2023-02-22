@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class AssemblyStation {
 
-  private String name;
+  private final String name;
   private ArrayList<Ingredient> ingredients;
 
   private boolean assembled;
@@ -79,9 +79,7 @@ public class AssemblyStation {
       }
     }
     if (currentIngredients.contains("bun") || currentIngredients.contains("patty")) {
-      if (name == "lettuce") {
-        return false;
-      }
+      return name != "lettuce";
     }
     return true;
   }

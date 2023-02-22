@@ -10,10 +10,11 @@ public class GameObjectManager {
   public Hashtable<Integer, GameObject> GameObjects = new Hashtable<>();
   public static GameObjectManager objManager;
   Random rand;
-  public GameObjectManager()
-  {
-    if(objManager != null)
+
+  public GameObjectManager() {
+    if (objManager != null) {
       throw new IllegalArgumentException("This cannot be created more than once");
+    }
 
     objManager = this;
     rand = new Random();
@@ -22,28 +23,26 @@ public class GameObjectManager {
   }
 
 
-  public void SubmitGameObject(GameObject obj)
-  {
+  public void SubmitGameObject(GameObject obj) {
 
     int UID = CreateUID();
 
-    GameObjects.put(UID,obj);
+    GameObjects.put(UID, obj);
 
     obj.setUID(UID);
 
   }
 
 
-  public void doUpdate(float dt){
-    for (GameObject obj: GameObjects.values()
+  public void doUpdate(float dt) {
+    for (GameObject obj : GameObjects.values()
     ) {
       obj.doUpdate(dt);
     }
   }
 
-  public void doFixedUpdate(float dt)
-  {
-    for (GameObject obj: GameObjects.values()
+  public void doFixedUpdate(float dt) {
+    for (GameObject obj : GameObjects.values()
     ) {
       obj.doFixedUpdate(dt);
     }
@@ -51,26 +50,27 @@ public class GameObjectManager {
   }
 
 
-  public void render(SpriteBatch batch)
-  {
+  public void render(SpriteBatch batch) {
 
-    for (GameObject obj:
-    GameObjects.values()) {
-    obj.render(batch);
+    for (GameObject obj :
+        GameObjects.values()) {
+      obj.render(batch);
     }
 
   }
-public void DestroyGameObject(GameObject obj){
-obj.destroyed =  true;
 
-GameObjects.remove(obj.getUID());
-}
-  public int CreateUID()
-  {
+  public void DestroyGameObject(GameObject obj) {
+    obj.destroyed = true;
+
+    GameObjects.remove(obj.getUID());
+  }
+
+  public int CreateUID() {
     int UID = 0;
 
-    while (GameObjects.containsKey(UID))
+    while (GameObjects.containsKey(UID)) {
       UID = rand.nextInt();
+    }
 
     return UID;
 

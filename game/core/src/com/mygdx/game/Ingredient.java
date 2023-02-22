@@ -8,9 +8,9 @@ package com.mygdx.game;
  */
 public class Ingredient {
 
-  private String name;
+  private final String name;
   private String state;
-  private String station;
+  private final String station;
 
   /**
    * Creates the ingredient with a certain name; all ingredients start unprocessed;

@@ -10,27 +10,24 @@ public class BlackSprite extends Renderable {
 
   @Override
   public void Render(SpriteBatch batch, float x, float y) {
-    sprite.setPosition(x,y);
-   sprite.draw(batch);
+    sprite.setPosition(x, y);
+    sprite.draw(batch);
 
 
   }
 
   @Override
   public void setSize(float x, float y) {
-    sprite.setSize(x,y);
+    sprite.setSize(x, y);
   }
 
-  public void setSprite(Sprite sprite){
-    if(this.sprite == null)
-    {
+  public void setSprite(Sprite sprite) {
+    if (this.sprite == null) {
       this.sprite = sprite;
       return;
     }
     this.sprite.set(sprite);
   }
-
-
 
 
 }

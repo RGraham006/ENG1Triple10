@@ -55,26 +55,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 public class GameScreen implements Screen {
 
   // game attributes
-  private MyGdxGame game;
+  private final MyGdxGame game;
 
   // camera
-  private OrthographicCamera camera;
-  private int TILE_WIDTH = 32;
-  private int TILE_HEIGHT = 32;
+  private final OrthographicCamera camera;
+  private final int TILE_WIDTH = 32;
+  private final int TILE_HEIGHT = 32;
 
   // box2d
   static World world;
-  private Box2DDebugRenderer b2dr;
+  private final Box2DDebugRenderer b2dr;
 
   // map
-  private TiledMap map;
-  private TiledMapRenderer mapRenderer;
+  private final TiledMap map;
+  private final TiledMapRenderer mapRenderer;
 
   // character assets
   private static ArrayList<TextureAtlas> chefAtlasArray;
-  private Chef[] chef;
+  private final Chef[] chef;
   private static ArrayList<TextureAtlas> customerAtlasArray;
-  private Customer[] customers = new Customer[5];
+  private final Customer[] customers = new Customer[5];
   private int chefControl;
 
 
@@ -89,7 +89,7 @@ public class GameScreen implements Screen {
 
   public CustomerCounters[] customerCounters;
   public Texture menu = new Texture("recipeSheet.png");
-  private int x = 3;
+  private final int x = 3;
 
 
   public Texture ingredientsSprites = new Texture("pixel_veggies1.png");
@@ -109,8 +109,8 @@ public class GameScreen implements Screen {
   // game timer and displayTimer
   private float seconds = 0f;
   private int timer = 0;
-  private Label timerLabel;
-  private BitmapFont timerFont;
+  private final Label timerLabel;
+  private final BitmapFont timerFont;
 
   Music gameMusic;
 
@@ -123,7 +123,6 @@ public class GameScreen implements Screen {
   public GameScreen(MyGdxGame game) {
     this.game = game;
     camera = new OrthographicCamera();
-
 
     int viewportWidth = 32 * TILE_WIDTH;
     int viewportHeight = 18 * TILE_HEIGHT;
@@ -150,13 +149,13 @@ public class GameScreen implements Screen {
     mapRenderer = new OrthogonalTiledMapRenderer(map);
     mapRenderer.setView(camera);
 
-
     chefAtlasArray = new ArrayList<TextureAtlas>();
     generateChefArray();
     chef = new Chef[2];
     chefControl = 0;
     for (int i = 0; i < chef.length; i++) {
-      GameObject chefsGameObject = new GameObject(new BlackSprite());//passing in null since chef will define it later
+      GameObject chefsGameObject = new GameObject(
+          new BlackSprite());//passing in null since chef will define it later
       chef[i] = new Chef(world, i);
       chefsGameObject.attachScript(chef[i]);
       chefsGameObject.image.setSize(18, 40);
@@ -164,21 +163,20 @@ public class GameScreen implements Screen {
       chef[i].updateSpriteFromInput("idlesouth");
     }
 
-
     chopping = new Station("chopping");
     toaster = new Station("toaster");
     frying = new Station("frying");
     counters = new Station[5];
     for (int i = 0; i < counters.length; i++) {
-      counters[i] = new Station("counters" + Integer.toString(i));
+      counters[i] = new Station("counters" + i);
     }
     assemblyStations = new AssemblyStation[5];
     for (int i = 0; i < assemblyStations.length; i++) {
-      assemblyStations[i] = new AssemblyStation("assembly" + Integer.toString(i));
+      assemblyStations[i] = new AssemblyStation("assembly" + i);
     }
     customerCounters = new CustomerCounters[5];
     for (int i = 0; i < customerCounters.length; i++) {
-      customerCounters[i] = new CustomerCounters("customerCounter" + Integer.toString(i));
+      customerCounters[i] = new CustomerCounters("customerCounter" + i);
     }
 
     // generate customer sprites to be used by customer class
@@ -198,21 +196,20 @@ public class GameScreen implements Screen {
     int[] objectLayers = {3, 4, 6, 9, 11, 13, 16, 18, 20, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32,
         33, 34, 35, 36, 37, 38, 39};
 
-      //Fixed the hideous mechanism for creating collidable objects
-      for (int n = 0; n < objectLayers.length; n++) {
-        MapLayer layer = map.getLayers().get(objectLayers[n]);
-        String name = layer.getName();
+    //Fixed the hideous mechanism for creating collidable objects
+    for (int n = 0; n < objectLayers.length; n++) {
+      MapLayer layer = map.getLayers().get(objectLayers[n]);
+      String name = layer.getName();
 
-        for (MapObject object : layer.getObjects()
-            .getByType(RectangleMapObject.class))
-        {
+      for (MapObject object : layer.getObjects()
+          .getByType(RectangleMapObject.class)) {
 
-          Rectangle rect = ((RectangleMapObject) object).getRectangle();
-          buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
-              name);
-        }
+        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+        buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
+            name);
       }
-    timerLabel = new Label("TIME: " + Integer.toString(timer),
+    }
+    timerLabel = new Label("TIME: " + timer,
         new Label.LabelStyle(new BitmapFont(), Color.WHITE));
     timerFont = new BitmapFont();
   }
@@ -313,7 +310,7 @@ public class GameScreen implements Screen {
       timer++;
       seconds = 0f;
     }
-    CharSequence str = "TIME: " + Integer.toString(timer);
+    CharSequence str = "TIME: " + timer;
     timerFont.draw(game.batch, str, 380, 35);
     timerFont.getData().setScale(1.5f, 1.5f);
     timerLabel.setText(str);
@@ -346,8 +343,6 @@ public class GameScreen implements Screen {
       }
     }
 
-
-
     // Runs chefs logic updates
     chef[chefControl].updateSpriteFromInput(chef[chefControl].getMove());
     for (int i = 0; i < customers.length; i++) {
@@ -372,21 +367,14 @@ public class GameScreen implements Screen {
     // Calls the function to display timer
     displayTimer();
 
-
-
-
     //Update Scripts
     GameObjectManager.objManager.doUpdate(Gdx.graphics.getDeltaTime());
     //New rendering system
     RenderManager.renderer.onRender(game.batch);
 
-
-
-
-
     // Draws the chefs
     for (int i = 0; i < chef.length; i++) {
-     //chef[i].sprite.setSize(18,40);
+      //chef[i].sprite.setSize(18,40);
       //chef[i].sprite.draw(game.batch);
       if (chef[i].isFrozen) {  // if frozen, need to update timer and sprite
         chef[i].drawTimer(game.batch);
@@ -401,10 +389,12 @@ public class GameScreen implements Screen {
       if (customers[i].isWaiting()) {
         Customer customer = customers[i];
         if (customer.getDish() == "salad") {
-          game.batch.draw(dish1, ((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5),
+          game.batch.draw(dish1,
+              ((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5),
               ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
         } else if (customer.getDish() == "burger") {
-          game.batch.draw(dish2, ((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5),
+          game.batch.draw(dish2,
+              ((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5),
               ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
         }
       }
@@ -671,11 +661,7 @@ public class GameScreen implements Screen {
           boolean isSpace = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
           boolean isR = Gdx.input.isKeyPressed(Input.Keys.R);
           boolean invFull;
-          if (chef[chefControl].getInventory().getName() == "none") {
-            invFull = false;
-          } else {
-            invFull = true;
-          }
+          invFull = chef[chefControl].getInventory().getName() != "none";
 
           // The following statements are for picking items up from the stations
           if (objectA == "tomato" && !invFull && isSpace) {
@@ -792,7 +778,7 @@ public class GameScreen implements Screen {
 
           // Checks all the assembly stations for interactions
           for (int i = 0; i < assemblyStations.length; i++) {
-            if (objectA.toString().contentEquals("assembly" + Integer.toString(i + 1))) {
+            if (objectA.toString().contentEquals("assembly" + (i + 1))) {
               if (isSpace && assemblyStations[i].validIngredient(
                   chef[chefControl].getInventory().getName())
                   && chef[chefControl].getInventory().getState() == "processed") {
@@ -815,7 +801,7 @@ public class GameScreen implements Screen {
 
           // Checks all the customer counters for interactions
           for (int i = 0; i < customerCounters.length; i++) {
-            if (objectA.toString().contentEquals("customerCounter" + Integer.toString(i + 1))) {
+            if (objectA.toString().contentEquals("customerCounter" + (i + 1))) {
               if (isSpace && customers[i].getDish() == chef[chefControl].getInventory().getName()) {
                 Ingredient tempDish = new Ingredient(chef[chefControl].getInventory().getName());
                 customerCounters[i].setDish(tempDish.getName());
