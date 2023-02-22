@@ -32,9 +32,11 @@ jobs: # what to do
         with:
           arguments: build
           build-root-directory: game
+      - name: Create executable JAR
+        run: ./gradlew desktop:dist
       - name: Upload JAR
         uses: actions/upload-artifact@v3.1.2
         with:
             name: lib-${{ matrix.os }}.jar
-            path: game/core/build/libs/core-1.0.jar
+            path: game/desktop/build/libs/desktop-1.0.jar
           
