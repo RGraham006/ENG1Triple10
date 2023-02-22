@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.Core.GameObjectManager;
+import com.mygdx.game.Core.RenderManager;
 
 /**
  * Implements the screen that's displayed for the start of the game
@@ -23,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class MenuScreen implements Screen {
 
   GameScreen gameScreen;
+  GameScreen VictoryScreen;
   TextureAtlas mainMenuAtlas;
   final MyGdxGame root;
 
@@ -41,8 +44,13 @@ public class MenuScreen implements Screen {
    * @param root The base object
    */
   public MenuScreen(final MyGdxGame root) {
+
+    new GameObjectManager();
+    new RenderManager();
+
     this.root = root;
     gameScreen = new GameScreen(root);
+
     mainMenuAtlas = new TextureAtlas(Gdx.files.internal("mainMenu.atlas"));
     playbtn = new TextureRegion(mainMenuAtlas.findRegion("playButton"));
     playbtnDown = new TextureRegion(mainMenuAtlas.findRegion("playButtonDown"));
@@ -93,7 +101,7 @@ public class MenuScreen implements Screen {
     ChangeListener playbtnMouseListener = new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
-        root.setScreen(new GameScreen(root));
+        root.setScreen(gameScreen);
         dispose();
       }
     };

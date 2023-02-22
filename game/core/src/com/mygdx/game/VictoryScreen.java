@@ -32,9 +32,11 @@ public class VictoryScreen implements Screen {
    * @param root the base object to interact with
    * @param time the integer time value set for timer
    */
-  public VictoryScreen(final MyGdxGame root, int time) {
+  public VictoryScreen(final MyGdxGame root,GameScreen gscreen, int time) {
     this.root = root;
-    gameScreen = new GameScreen(root);
+
+    //this might cause issues if so, change back to new GameScreen
+    gameScreen = gscreen;
     victoryScreen = new Texture(Gdx.files.internal("endScreenBG.png"));
     Image image = new Image(victoryScreen);
     stage = new Stage();
