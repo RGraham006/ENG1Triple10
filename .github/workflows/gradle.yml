@@ -1,12 +1,13 @@
 name: Java CI with Gradle
+
 on: #when to run the workflow
   push: #when pushing to main branch
     branches: [ "main" ]
-   pull_request: # when pushing to a main PR
+  pull_request: # when pushing to a main PR
     branches: [ "main" ]
     
     
-   jobs: # what to do
+jobs: # what to do
     build:
       strategy:
         matrix:
