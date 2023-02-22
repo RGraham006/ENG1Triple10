@@ -38,8 +38,6 @@ jobs: # what to do
         with:
           arguments: desktop:dist
           build-root-directory: game
-      - name: Change name of JAR
-        run: mv game/desktop/build/libs/desktop-1.0.jar game/desktop/build/libs/PiazzaPanic.jar
       - name: Upload JAR
         uses: actions/upload-artifact@v3.1.2
         if: startsWith(matrix.os, 'ubuntu')
@@ -62,7 +60,7 @@ jobs: # what to do
       - name: Download executable JAR
         uses: actions/download-artifact@v3.0.2
         with:
-          name: PiazzaPanic.jar
+          name: desktop-1.0.jar
       - name: Release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
