@@ -32,4 +32,9 @@ jobs: # what to do
         with:
           arguments: build
           build-root-directory: game
-        
+      - name: Upload JAR
+        uses: actions/upload-artifact@v3.1.2
+        with:
+            name: lib.jar
+            path: game/lib/build/libs/lib.jar
+          
