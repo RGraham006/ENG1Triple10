@@ -43,7 +43,7 @@ jobs: # what to do
         if: startsWith(matrix.os, 'ubuntu')
         with:
             name: PiazzaPanic.jar
-            path: game/desktop/build/libs/PiazzaPanic.jar
+            path: game/desktop/build/libs/desktop-1.0.jar
       - name: Upload Checkstyle report
         uses: actions/upload-artifact@v3.1.1
         if: startsWith(matrix.os, 'ubuntu')
