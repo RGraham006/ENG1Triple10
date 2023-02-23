@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package piazzapanictests;
+package piazzapanictests.tests;
 
 import java.util.HashMap;
 import java.util.Map;

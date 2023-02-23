@@ -1,4 +1,4 @@
-package piazzapanictests;
+package piazzapanictests.tests;
 
 import static org.junit.Assert.assertTrue;
 

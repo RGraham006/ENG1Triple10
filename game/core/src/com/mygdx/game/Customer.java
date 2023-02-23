@@ -265,12 +265,12 @@ public class Customer extends Scriptable implements Person {
    *
    * @param batch the batch in which we draw onto
    */
-  @Override
-  public void draw(Batch batch) {
-    if (!idle) {
-      sprite.draw(batch);
-    }
-  }
+  //  @Override
+  //  public void draw(Batch batch) {
+  //    if (!idle) {
+  //      sprite.draw(batch);
+  //    }
+  //  }
 
   /**
    * Checks if the customer has successfully been fed.
