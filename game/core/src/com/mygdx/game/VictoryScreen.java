@@ -22,8 +22,8 @@ public class VictoryScreen implements Screen {
   Texture victoryScreen;
   Stage stage;
   int timer;
-  private BitmapFont timerFont;
-  private Label timerLabel;
+  private final BitmapFont timerFont;
+  private final Label timerLabel;
 
   /**
    * Assigns all the necessary variables needed for the victory screen and other objects such as the
@@ -32,9 +32,11 @@ public class VictoryScreen implements Screen {
    * @param root the base object to interact with
    * @param time the integer time value set for timer
    */
-  public VictoryScreen(final MyGdxGame root, int time) {
+  public VictoryScreen(final MyGdxGame root, GameScreen gscreen, int time) {
     this.root = root;
-    gameScreen = new GameScreen(root);
+
+    //this might cause issues if so, change back to new GameScreen
+    gameScreen = gscreen;
     victoryScreen = new Texture(Gdx.files.internal("endScreenBG.png"));
     Image image = new Image(victoryScreen);
     stage = new Stage();
@@ -44,7 +46,7 @@ public class VictoryScreen implements Screen {
     this.timer = time;
     Gdx.input.setInputProcessor(stage);
     timerFont = new BitmapFont();
-    timerLabel = new Label("TIME: " + Integer.toString(timer),
+    timerLabel = new Label("TIME: " + timer,
         new Label.LabelStyle(new BitmapFont(), Color.WHITE));
   }
 
@@ -60,7 +62,7 @@ public class VictoryScreen implements Screen {
    * Displays the timer onto the screen with the set time defined
    */
   public void displayTimer() {
-    CharSequence str = "Final Time: " + Integer.toString(timer);
+    CharSequence str = "Final Time: " + timer;
     timerFont.draw(root.batch, str, 200, 250);
     timerFont.getData().setScale(3f, 3f);
     timerLabel.setText(str);

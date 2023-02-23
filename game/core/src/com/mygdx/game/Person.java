@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public interface Person {
 
-  public void updateSpriteFromInput(String newOrientation);
+  void updateSpriteFromInput(String newOrientation);
 
-  public void setTexture(String spriteState);
+  void setTexture(String spriteState);
 
-  public String getMove();
+  String getMove();
 }

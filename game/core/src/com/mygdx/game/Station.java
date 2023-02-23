@@ -8,7 +8,7 @@ package com.mygdx.game;
  */
 public class Station {
 
-  private String name;
+  private final String name;
   private Ingredient ingredient;
 
   private boolean locked;

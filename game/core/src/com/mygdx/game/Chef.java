@@ -5,10 +5,20 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.physics.box2d.*;
+
+import com.mygdx.game.Core.Scriptable;
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Creates the chef object which will interact with every object on the map and assemble dishes to
@@ -19,29 +29,24 @@ import java.util.ArrayList;
  * @author Labib Zabeneh
  * @author Riko Puusepp
  */
-public class Chef extends Sprite implements Person {
+public class Chef extends Scriptable implements Person {
 
-  Sprite sprite;
-  private String spriteOrientation;
-  private String spriteState;
+  float speed = 2000;
+
+  private String spriteOrientation, spriteState;
   private int currentSpriteAnimation;
-  private int maxAnimation = 4;
+  private final int MAX_ANIMATION = 4;
   private float stateTime = 0;
-  private float posX;
-  private float posY;
   private TextureAtlas chefAtlas;
   public boolean isFrozen;
   private String lastOrientation;
   public Body b2body;
-  protected Fixture fixture;
-  public static final short DEFAULT_BIT = 1;
-  public static final short CHEF_BIT = 2;
-  public static final short TOMATO_BIT = 4;
+
   private Station currentStation;
   Rectangle chefRectangle;
   World world;
 
-  private int id;
+  private final int id;
 
   private Ingredient ingredient;
 
@@ -62,17 +67,23 @@ public class Chef extends Sprite implements Person {
    */
   public Chef(World world, int id) {
     this.id = id;
+    this.world = world;
+  }
+
+  @Override
+  public void Start() {
+    //Reorganised to fit work flow and requires access to data not yet created
     chefAtlas = getChefAtlas(GameScreen.getChefAtlasArray());
-    sprite = chefAtlas.createSprite("south1");
+    gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
-    posX = 700 + 32 * id;
-    posY = 300;
+    gameObject.position.x = 700 + 32 * id;
+    gameObject.position.y = 300;
     isFrozen = false;
-    sprite.setPosition(posX, posY);
-    this.lastOrientation = "south";
-    this.world = world;
+    //sprite.setPosition(posX, posY); unnessary now
     //MyGdxGame.buildObject(world, posX, posY, sprite.getWidth(), sprite.getHeight(), "Dynamic");
+    this.lastOrientation = "south";
+
     defineChef();
     ingredient = new Ingredient("none");
     timerAtlas = new TextureAtlas("Timer/timer.txt");
@@ -86,7 +97,7 @@ public class Chef extends Sprite implements Person {
    */
   public void defineChef() {
     BodyDef bdef = new BodyDef();
-    bdef.position.set(this.posX, this.posY);
+    bdef.position.set(gameObject.position.x, gameObject.position.y);
     bdef.type = BodyDef.BodyType.DynamicBody;
     b2body = world.createBody(bdef);
     b2body.setUserData("Chef" + id);
@@ -118,10 +129,10 @@ public class Chef extends Sprite implements Person {
         currentSpriteAnimation = 1;
         stateTime = 0;
       } else {
-        if (stateTime > 0.06666) {
+        if (stateTime > 1 / 15.0) {
           currentSpriteAnimation++;
           // System.out.println(spriteState);
-          if (currentSpriteAnimation > maxAnimation) {
+          if (currentSpriteAnimation > MAX_ANIMATION) {
             currentSpriteAnimation = 1;
           }
           stateTime = 0;
@@ -129,33 +140,37 @@ public class Chef extends Sprite implements Person {
           stateTime += 0.01;
         }
       }
-      spriteState = newOrientation + Integer.toString(currentSpriteAnimation);
+      spriteState = newOrientation + currentSpriteAnimation;
     }
     setTexture(spriteState);
     spriteOrientation = newOrientation;
     float velx = 0;
     float vely = 0;
+
     switch (spriteOrientation) {
+
+      //removed multiply by position bc lol whats going on with that
       case "north":
-        velx = 0;
-        vely = 2000 * posY;
+        velx = velx;
+        vely = speed;
         break;
       case "south":
-        velx = 0;
-        vely = -2000 * posY;
+        velx = velx;
+        vely = -speed;
         break;
       case "east":
-        velx = 2000 * posX;
-        vely = 0;
+        velx = speed;
+        vely = vely;
         break;
       case "west":
-        velx = -2000 * posX;
-        vely = 0;
+        velx = -speed;
+        vely = vely;
         break;
     }
     b2body.setLinearVelocity(velx, vely);
-    posX = (b2body.getPosition().x / 1.6f) - getWidth() / 2;
-    posY = b2body.getPosition().y / 1.2f;
+    //cant figure out how to speed the character up it doesnt want to function
+    gameObject.position.x = (b2body.getPosition().x / 1.6f) - getWidth() / 2;
+    gameObject.position.y = b2body.getPosition().y / 1.2f;
   }
 
   /**
@@ -164,7 +179,7 @@ public class Chef extends Sprite implements Person {
   @Override
   public void setTexture(String texture) {
     //System.out.println(texture);
-    sprite.setRegion(chefAtlas.findRegion(texture));
+    gameObject.getSprite().sprite.setRegion(chefAtlas.findRegion(texture));
   }
 
   /**
@@ -173,7 +188,7 @@ public class Chef extends Sprite implements Person {
    * @return int posX
    */
   public float getX() {
-    return posX;
+    return gameObject.position.x;
   }
 
   /**
@@ -182,25 +197,25 @@ public class Chef extends Sprite implements Person {
    * @return int posY
    */
   public float getY() {
-    return posY;
+    return gameObject.position.y;
   }
 
   /**
-   * Returns the width of the chef.
+   * Returns the width of the chef
    *
    * @return int width
    */
   public float getWidth() {
-    return sprite.getWidth();
+    return gameObject.getSprite().sprite.getWidth();
   }
 
   /**
-   * Returns the height of the chef.
+   * Returns the height of the chef
    *
    * @return int height
    */
   public float getHeight() {
-    return sprite.getHeight();
+    return gameObject.getSprite().sprite.getHeight();
   }
 
   /**
@@ -235,10 +250,7 @@ public class Chef extends Sprite implements Person {
    * @return boolean
    */
   public boolean isCtrl() {
-    if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT)) {
-      return true;
-    }
-    return false;
+    return Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT);
   }
 
   /**
@@ -315,13 +327,13 @@ public class Chef extends Sprite implements Person {
    */
   public void drawTimer(SpriteBatch batch) {
     System.out.println("draw");
-    timerSprite.setPosition(posX, posY + getHeight());
+    timerSprite.setPosition(gameObject.position.x, gameObject.position.y + getHeight());
     if (currentTimerFrame <= 7) {
       System.out.println(animationTime);
       if (animationTime <= 0) {
         currentTimerFrame++;
         animationTime = frameTime;
-        String state = "0" + Integer.toString(currentTimerFrame);
+        String state = "0" + currentTimerFrame;
         timerSprite.setRegion(timerAtlas.findRegion(state));
       }
       timerSprite.draw(batch);

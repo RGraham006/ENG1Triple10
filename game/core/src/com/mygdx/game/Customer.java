@@ -2,11 +2,17 @@ package com.mygdx.game;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import com.mygdx.game.Core.Scriptable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Assigns all attributes and animation and interactions that the customer will go through in the
@@ -14,27 +20,24 @@ import java.util.Random;
  *
  * @author Robin Graham
  */
-public class Customer extends Sprite implements Person {
+public class Customer extends Scriptable implements Person {
 
   Sprite sprite;
-  private float waitHeight;
-  private float waitWidth;
+  private float waitHeight, waitWidth;
   private int currentSpriteAnimation;
-  private int maxAnimation = 4;
+  private int MAX_ANIMATION = 4;
   private TextureAtlas customerAtlas;
   private float stateTime = 0;
-  private float posX;
-  private float posY;
+  private float posX, posY;
   private int size;
-  private String spriteOrientation;
-  private String spriteState;
+  private String spriteOrientation, spriteState;
   private String lastOrientation;
   private int customerNumber;
   private boolean idle;   // customer will be invisible during idle because out of map
   private boolean waitingAtCounter;   // customer will be waiting at the counter for their dish
   private boolean eaten;
   private int spawnWait;
-  private String dish;
+  private final String dish;
 
   Random rand = new Random();
 
@@ -45,13 +48,9 @@ public class Customer extends Sprite implements Person {
    * @param customerNumber the ID of each individual customer which will be interacted with
    */
   public Customer(int customerNumber) {
-    customerAtlas = getCustomerAtlas(GameScreen.getCustomerAtlasArray());
-    sprite = customerAtlas.createSprite("north1");
     currentSpriteAnimation = 1;
     spriteOrientation = "north";
-    posX = 148;
-    posY = 66;
-    sprite.setPosition(posX, posY);
+    // sprite.setPosition(posX, posY);
     this.idle = true;
     this.waitingAtCounter = false;
     this.customerNumber = customerNumber;
@@ -66,6 +65,15 @@ public class Customer extends Sprite implements Person {
     }
     this.dish = pickDish();
     System.out.println("customer " + customerNumber + ": " + dish);
+  }
+
+  @Override
+  public void Start() {
+    customerAtlas = getCustomerAtlas(GameScreen.getCustomerAtlasArray());
+    gameObject.getSprite().setSprite(customerAtlas.createSprite("north1"));
+    gameObject.position.x = 148;
+    gameObject.position.y = 66;
+
   }
 
   /**
@@ -83,7 +91,7 @@ public class Customer extends Sprite implements Person {
       } else {
         if (stateTime > 0.06666) {
           currentSpriteAnimation++;
-          if (currentSpriteAnimation > maxAnimation) {
+          if (currentSpriteAnimation > MAX_ANIMATION) {
             currentSpriteAnimation = 1;
           }
           stateTime = 0;
@@ -91,23 +99,23 @@ public class Customer extends Sprite implements Person {
           stateTime += 0.01;
         }
       }
-      spriteState = newOrientation + Integer.toString(currentSpriteAnimation);
+      spriteState = newOrientation + currentSpriteAnimation;
     }
     setTexture(spriteState);
     spriteOrientation = newOrientation;
 
     switch (spriteOrientation) {
       case "north":
-        posY += 2;
+        gameObject.position.y += 2;
         break;
       case "south":
-        posY -= 2;
+        gameObject.position.y -= 2;
         break;
       case "east":
-        posX += 2;
+        gameObject.position.x += 2;
         break;
       case "west":
-        posX -= 2;
+        gameObject.position.x -= 2;
         break;
     }
   }
@@ -117,7 +125,7 @@ public class Customer extends Sprite implements Person {
    */
   @Override
   public void setTexture(String texture) {
-    sprite.setRegion(customerAtlas.findRegion(texture));
+    gameObject.getSprite().sprite.setRegion(customerAtlas.findRegion(texture));
   }
 
   /**
@@ -153,9 +161,9 @@ public class Customer extends Sprite implements Person {
     String direction = "waiting";
     // customer is walking to counter
     if (!idle && !eaten) {
-      if (posY < waitHeight) {
+      if (gameObject.position.y < waitHeight) {
         direction = "north";
-      } else if (posX < waitWidth) {
+      } else if (gameObject.position.x < waitWidth) {
         direction = "east";
       } else {
         waitingAtCounter = true;
@@ -163,9 +171,9 @@ public class Customer extends Sprite implements Person {
     }
     // customer is walking away from counter
     if (!idle && eaten) {
-      if (posX > 148) {
+      if (gameObject.position.x > 148) {
         direction = "west";
-      } else if (posY > 66) {
+      } else if (gameObject.position.y > 66) {
         direction = "south";
       } else {
         idle = true;
@@ -181,7 +189,7 @@ public class Customer extends Sprite implements Person {
    * @return int posX the x position of the customer
    */
   public float getX() {
-    return posX;
+    return gameObject.position.x;
   }
 
   /**
@@ -190,7 +198,7 @@ public class Customer extends Sprite implements Person {
    * @return int posY the y position of the customer
    */
   public float getY() {
-    return posY;
+    return gameObject.position.y;
   }
 
   /**
