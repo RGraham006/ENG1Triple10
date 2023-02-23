@@ -1,0 +1,124 @@
+customer3.png
+size: 48, 1152
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+south1
+  rotate: false
+  xy: 0, 96
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+south2
+  rotate: false
+  xy: 0, 0
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+south3
+  rotate: false
+  xy: 0, 96
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+south4
+  rotate: false
+  xy: 0, 192
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+west1
+  rotate: false
+  xy: 0, 384
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+west2
+  rotate: false
+  xy: 0, 288
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+west3
+  rotate: false
+  xy: 0, 384
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+west4
+  rotate: false
+  xy: 0, 480
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+east1
+  rotate: false
+  xy: 0, 672
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+east2
+  rotate: false
+  xy: 0, 576
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+east3
+  rotate: false
+  xy: 0, 672
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+east4
+  rotate: false
+  xy: 0, 768
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+idleeast
+  rotate: false
+  xy: 0, 672
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north1
+  rotate: false
+  xy: 0, 960
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north2
+  rotate: false
+  xy: 0, 864
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north3
+  rotate: false
+  xy: 0, 960
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+north4
+  rotate: false
+  xy: 0, 1056
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1

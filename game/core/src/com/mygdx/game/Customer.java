@@ -2,16 +2,11 @@ package com.mygdx.game;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Assigns all attributes and animation and interactions that the customer will go through in the
@@ -22,14 +17,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Customer extends Sprite implements Person {
 
   Sprite sprite;
-  private float waitHeight, waitWidth;
+  private float waitHeight;
+  private float waitWidth;
   private int currentSpriteAnimation;
-  private int MAX_ANIMATION = 4;
+  private int maxAnimation = 4;
   private TextureAtlas customerAtlas;
   private float stateTime = 0;
-  private float posX, posY;
+  private float posX;
+  private float posY;
   private int size;
-  private String spriteOrientation, spriteState;
+  private String spriteOrientation;
+  private String spriteState;
   private String lastOrientation;
   private int customerNumber;
   private boolean idle;   // customer will be invisible during idle because out of map
@@ -71,8 +69,9 @@ public class Customer extends Sprite implements Person {
   }
 
   /**
-   * Updates the sprite to follow the correct animation
+   * Updates the sprite to follow the correct animation.
    */
+  @SuppressWarnings("checkstyle:MissingSwitchDefault")
   @Override
   public void updateSpriteFromInput(String newOrientation) {
     if (newOrientation.contains("idle")) {
@@ -84,7 +83,7 @@ public class Customer extends Sprite implements Person {
       } else {
         if (stateTime > 0.06666) {
           currentSpriteAnimation++;
-          if (currentSpriteAnimation > MAX_ANIMATION) {
+          if (currentSpriteAnimation > maxAnimation) {
             currentSpriteAnimation = 1;
           }
           stateTime = 0;
@@ -114,7 +113,7 @@ public class Customer extends Sprite implements Person {
   }
 
   /**
-   * Sets the customer teexure for each customer
+   * Sets the customer teexure for each customer.
    */
   @Override
   public void setTexture(String texture) {
@@ -122,7 +121,7 @@ public class Customer extends Sprite implements Person {
   }
 
   /**
-   * Gets the move of the customer and direction and sets the animations accordingly
+   * Gets the move of the customer and direction and sets the animations accordingly.
    *
    * @return currentDirection direction of the customer
    */
@@ -138,7 +137,7 @@ public class Customer extends Sprite implements Person {
   }
 
   /**
-   * Spawns the customer and sets it course
+   * Spawns the customer and sets it course.
    *
    * @return if customer waiting or moving
    */
@@ -177,7 +176,7 @@ public class Customer extends Sprite implements Person {
   }
 
   /**
-   * Returns the x of the customer
+   * Returns the x of the customer.
    *
    * @return int posX the x position of the customer
    */

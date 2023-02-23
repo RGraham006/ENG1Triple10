@@ -3,7 +3,7 @@ package com.mygdx.game;
 import java.util.ArrayList;
 
 /**
- * Assembly station for assembling our ingredients into a final dish
+ * Assembly station for assembling our ingredients into a final dish.
  *
  * @author Robin Graham
  */
@@ -17,7 +17,7 @@ public class AssemblyStation {
   private String dish;
 
   /**
-   * Assigns name to station and creates an arraylist which our ingredients will be placed onto
+   * Assigns name to station and creates an arraylist which our ingredients will be placed onto.
    *
    * @param name name (number) of station e.g. assemblyStation1
    */
@@ -27,7 +27,7 @@ public class AssemblyStation {
   }
 
   /**
-   * Adds ingredient to the ingredients arraylist
+   * Adds ingredient to the ingredients arraylist.
    *
    * @param ingredient new ingredient to be added to arraylist
    */
@@ -36,7 +36,7 @@ public class AssemblyStation {
   }
 
   /**
-   * Returns the list of ingredients in our arraylist form
+   * Returns the list of ingredients in our arraylist form.
    *
    * @return ArrayList ingredients
    */
@@ -45,7 +45,7 @@ public class AssemblyStation {
   }
 
   /**
-   * Returns the name of the sation
+   * Returns the name of the station.
    *
    * @return String name
    */
@@ -54,8 +54,8 @@ public class AssemblyStation {
   }
 
   /**
-   * removes all ingredients from the arraylist which means a successfull dish or simply ingredients
-   * taken away
+   * removes all ingredients from the arraylist which means a successfull dish or simply
+   * ingredients. taken away
    */
   public void clearIngredients() {
     this.ingredients = new ArrayList<Ingredient>();
@@ -63,7 +63,7 @@ public class AssemblyStation {
 
   /**
    * Checks if the ingredient we put on the station is valid For example, if we have lettuce we can
-   * ONLY make a salad from there
+   * ONLY make a salad from there.
    *
    * @param name name of ingredient passed in
    * @return Boolean value determining if ingredient placed on is valid
@@ -87,7 +87,7 @@ public class AssemblyStation {
   }
 
   /**
-   * Assembles the dish into the final one when we have all the correct ingredients
+   * Assembles the dish into the final one when we have all the correct ingredients.
    */
   public void assembleDish() {
     ArrayList<String> currentIngredients = new ArrayList<String>();
@@ -109,9 +109,9 @@ public class AssemblyStation {
   }
 
   /**
-   * Gets our current dish name
+   * Gets our current dish name.
    *
-   * @return String dish is dish is returned, none otherwise
+   * @return String dish is returned, none otherwise
    */
   public String getDish() {
     if (assembled) {
@@ -122,7 +122,7 @@ public class AssemblyStation {
   }
 
   /**
-   * Set our dish to the dish passed in the parameter
+   * Set our dish to the dish passed in the parameter.
    *
    * @param dish the dish name passed in
    */

@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/game" />
             <option value="$PROJECT_DIR$/game/core" />
             <option value="$PROJECT_DIR$/game/desktop" />
+            <option value="$PROJECT_DIR$/game/tests" />
           </set>
         </option>
       </GradleProjectSettings>

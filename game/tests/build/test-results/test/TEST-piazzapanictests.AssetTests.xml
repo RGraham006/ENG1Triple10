@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="piazzapanictests.AssetTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-23T18:35:05" hostname="LAPTOP-VP3JQ610" time="0.014">
+  <properties/>
+  <testcase name="testChefAssetExists" classname="piazzapanictests.AssetTests" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
