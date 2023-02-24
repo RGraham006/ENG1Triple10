@@ -664,24 +664,26 @@ public class GameScreen implements Screen {
           invFull = chef[chefControl].getInventory().getName() != "none";
 
           // The following statements are for picking items up from the stations
-          if (objectA == "tomato" && !invFull && isSpace) {
+          // Uses (string)objectA.contains(String) because there are invisible
+          // characters in the map layers
+          if (objectA.toString().contains("tomato") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("tomato"));
           }
-          if (objectA == "lettuce" && !invFull && isSpace) {
+          if (objectA.toString().contains("lettuce") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("lettuce"));
           }
-          if (objectA == "onion" && !invFull && isSpace) {
+          if (objectA.toString().contains("onion") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("onion"));
           }
-          if (objectA == "patty" && !invFull && isSpace) {
+          if (objectA.toString().contains("patty") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("patty"));
           }
-          if (objectA == "bun" && !invFull && isSpace) {
+          if (objectA.toString().contains("bun") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("bun"));
           }
 
           // Runs all the checks for the chopping board
-          if (objectA == "chopping") {
+          if (objectA.toString().contains("chopping")) {
             if (chef[chefControl].getInventory().getStation() == "chopping"
                 && chopping.getIngredient().getName() == "none" && isSpace) {
               Ingredient tempIngredient = new Ingredient(
@@ -705,7 +707,7 @@ public class GameScreen implements Screen {
           }
 
           // Runs all the checks for the frying pan
-          if (objectA == "frying") {
+          if (objectA.toString().contains("frying")) {
             if (chef[chefControl].getInventory().getStation() == "frying"
                 && frying.getIngredient().getName() == "none" && isSpace) {
               Ingredient tempIngredient = new Ingredient(
@@ -729,7 +731,7 @@ public class GameScreen implements Screen {
           }
 
           // Runs all the checks on the toaster
-          if (objectA == "toaster") {
+          if ((objectA.toString().contains("toaster"))) {
             if (chef[chefControl].getInventory().getStation() == "toaster"
                 && toaster.getIngredient().getName() == "none" && isSpace) {
               Ingredient tempIngredient = new Ingredient(
@@ -753,7 +755,7 @@ public class GameScreen implements Screen {
           }
 
           // Gets rid of inventory if next to bin
-          if (objectA == "bins" && isSpace) {
+          if ((objectA.toString().contains("bin") && isSpace)) {
             chef[chefControl].setInventory(new Ingredient("none"));
           }
 
@@ -778,7 +780,7 @@ public class GameScreen implements Screen {
 
           // Checks all the assembly stations for interactions
           for (int i = 0; i < assemblyStations.length; i++) {
-            if (objectA.toString().contentEquals("assembly" + (i + 1))) {
+            if (objectA.toString().contains("assembly" + (i + 1))) {
               if (isSpace && assemblyStations[i].validIngredient(
                   chef[chefControl].getInventory().getName())
                   && chef[chefControl].getInventory().getState() == "processed") {
