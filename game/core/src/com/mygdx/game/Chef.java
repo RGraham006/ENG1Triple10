@@ -106,7 +106,7 @@ public class Chef extends Scriptable implements Person {
 
     for (int i = 0; i < CarryCapacity; i++)
     {
-      HeldItemGameObjects.add(new GameObject( new BlackTexture(Item.GetItemPath(ItemEnum.bun))));
+      HeldItemGameObjects.add(new GameObject( new BlackTexture(Item.GetItemPath(ItemEnum.Buns))));
       HeldItemGameObjects.get(i).isVisible = false;
 
     }
@@ -147,13 +147,37 @@ public class Chef extends Scriptable implements Person {
     i++;
 
     GameObject obj = HeldItemGameObjects.get(i);
+    if(!obj.isVisible)
+      obj.image = item.tex;
 
-      ((BlackTexture)obj.image).changeTextureFromPath(Item.GetItemPath(item.name));
+      obj.isVisible = true;
     }
 
     for (int j = i+1; j < CarryCapacity; j++) {
       GameObject obj = HeldItemGameObjects.get(j);
     obj.isVisible = false;
+    }
+
+    for (int j = 0; j < CarryCapacity; j++) {
+      GameObject obj = HeldItemGameObjects.get(j);
+      obj.position.x = gameObject.position.x ;
+      obj.position.y = gameObject.position.y+j*5;
+      obj.image.layer = 1+j;
+
+        //removed multiply by position bc lol whats going on with that
+        if( spriteOrientation.contains("north")) {
+          obj.position.y += obj.image.GetHeight() / 2;
+          obj.image.layer -= CarryCapacity;
+        }
+        else
+        if( spriteOrientation.contains("south"))          obj.position.y -= obj.image.GetHeight()/2;
+else
+      if( spriteOrientation.contains("east"))          obj.position.x += obj.image.GetWidth()/2;
+else
+
+      if( spriteOrientation.contains("west"))          obj.position.x -=  obj.image.GetWidth()/2 + 5;
+
+
     }
   }
 

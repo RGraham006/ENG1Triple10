@@ -666,23 +666,21 @@ public class GameScreen implements Screen {
           invFull = chef[chefControl].getInventory().getName() != "none";
 
           // The following statements are for picking items up from the stations
-          if (((String)objectA).contains("tomato") && !invFull && isSpace) {
-            chef[chefControl].setInventory(new Ingredient("tomato"));
+          if (((String)objectA).contains("tomato")  && isSpace) {
+            chef[chefControl].GiveItem(new Item(ItemEnum.Tomato));
           }
-          if (((String)objectA).contains("lettuce") && !invFull && isSpace) {
-            chef[chefControl].setInventory(new Ingredient("lettuce"));
+          if (((String)objectA).contains("lettuce") && isSpace) {
+            chef[chefControl].GiveItem(new Item(ItemEnum.Lettuce));
           }
-          if (((String)objectA).contains("onion") && !invFull && isSpace) {
-            chef[chefControl].setInventory(new Ingredient("onion"));
+          if (((String)objectA).contains("onion")  && isSpace) {
+            chef[chefControl].GiveItem(new Item(ItemEnum.Onion));
           }
 
-          if (((String)objectA).contains("patty") && !invFull && isSpace) {
-            chef[chefControl].setInventory(new Ingredient("patty"));
-            chef[chefControl].GiveItem(new Item(ItemEnum.patty));
+          if (((String)objectA).contains("patty") && isSpace) {
+            chef[chefControl].GiveItem(new Item(ItemEnum.Patty));
           }
-          if (((String)objectA).contains("bun") && !invFull && isSpace) {
-            chef[chefControl].setInventory(new Ingredient("bun"));
-            chef[chefControl].GiveItem(new Item(ItemEnum.bun));
+          if (((String)objectA).contains("bun") && isSpace) {
+            chef[chefControl].GiveItem(new Item(ItemEnum.Buns));
 
           }
 

@@ -30,4 +30,8 @@ public abstract class Renderable {
     //o1 > o2
     return 1;
   }
+
+  public abstract int GetWidth();
+  public abstract int GetHeight();
+
 }

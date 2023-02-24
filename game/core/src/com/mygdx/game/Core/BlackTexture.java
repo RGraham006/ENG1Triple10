@@ -13,7 +13,7 @@ public class BlackTexture extends Renderable {
 
   public BlackTexture(String tex) {
 
-    ;
+    changeTextureFromPath(tex);
   }
 
 
@@ -45,6 +45,7 @@ public class BlackTexture extends Renderable {
     width = _w;
     height = _h;
 
+
   }
 
   /**
@@ -65,6 +66,14 @@ public class BlackTexture extends Renderable {
   @Override
   public void Render(SpriteBatch batch, float x, float y) {
     batch.draw(textureRegion, x, y, width, height);
+  }
+
+  public int GetWidth()
+  {
+    return width;
+  }
+  public int GetHeight(){
+    return  height;
   }
 
 

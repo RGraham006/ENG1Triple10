@@ -33,7 +33,7 @@ public class RenderManager {
     Collections.sort(LayerOrderedRenderables, new Comparator<GameObject>() {
       @Override
       public int compare(GameObject o1, GameObject o2) {
-        return -o1.image.compare(o1.image, o2.image);
+        return o1.image.compare(o1.image, o2.image);
       }
     });
 
