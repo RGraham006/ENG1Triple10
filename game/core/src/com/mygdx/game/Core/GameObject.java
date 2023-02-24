@@ -12,6 +12,8 @@ public class GameObject {
 
   public Vector2 position;
   public Boolean destroyed = false;
+
+  public Boolean isVisible = true;
   private Integer UID;
   List<Scriptable> Scripts = new LinkedList<>();
 
@@ -55,9 +57,20 @@ public class GameObject {
       script.FixedUpdate(dt);
     }
   }
-
+  public void doOnRenderUpdate() {
+    for (Scriptable script : Scripts
+    ) {
+      script.OnRender();
+    }
+  }
 
   public void render(SpriteBatch batch) {
+
+    if(!isVisible)
+      return;
+
+
+    doOnRenderUpdate();
 
     image.Render(batch, position.x, position.y);
 

@@ -17,7 +17,7 @@ public class BlackSprite extends Renderable {
   }
 
   @Override
-  public void setSize(float x, float y) {
+  public void setSize(int x,int y) {
     sprite.setSize(x, y);
   }
 

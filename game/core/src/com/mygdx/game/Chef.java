@@ -13,9 +13,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.physics.box2d.*;
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Scriptable;
+import com.mygdx.game.Items.Item;
+import com.mygdx.game.Items.ItemEnum;
+import com.sun.tools.javac.jvm.Items;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Stack;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,6 +41,10 @@ import java.util.concurrent.ScheduledExecutorService;
 public class Chef extends Scriptable implements Person {
 
   float speed = 2000;
+
+  Stack<Item> heldItems = new Stack<>();
+  List<GameObject> HeldItemGameObjects = new LinkedList<>();
+  int CarryCapacity = 3;
 
   private String spriteOrientation, spriteState;
   private int currentSpriteAnimation;
@@ -84,12 +97,19 @@ public class Chef extends Scriptable implements Person {
     //sprite.setPosition(posX, posY); unnessary now
     //MyGdxGame.buildObject(world, posX, posY, sprite.getWidth(), sprite.getHeight(), "Dynamic");
     this.lastOrientation = "south";
-
+    inventory = "none";
     defineChef();
     ingredient = new Ingredient("none");
     timerAtlas = new TextureAtlas("Timer/timer.txt");
     timerSprite = timerAtlas.createSprite("01");
     currentStation = new Station("none");
+
+    for (int i = 0; i < CarryCapacity; i++)
+    {
+      HeldItemGameObjects.add(new GameObject( new BlackTexture(Item.GetItemPath(ItemEnum.bun))));
+      HeldItemGameObjects.get(i).isVisible = false;
+
+    }
 
   }
 
@@ -117,6 +137,33 @@ public class Chef extends Scriptable implements Person {
 
 
   }
+
+
+
+  void changeItemVisibilities(){
+  int i = -1;
+    for (Item item:heldItems
+    ) {
+    i++;
+
+    GameObject obj = HeldItemGameObjects.get(i);
+
+      ((BlackTexture)obj.image).changeTextureFromPath(Item.GetItemPath(item.name));
+    }
+
+    for (int j = i+1; j < CarryCapacity; j++) {
+      GameObject obj = HeldItemGameObjects.get(j);
+    obj.isVisible = false;
+    }
+  }
+
+@Override
+public void OnRender()
+{
+
+  changeItemVisibilities();
+}
+
 
   /**
    * Updates the chef position and shows the animation depending on its direction and speed
@@ -321,6 +368,27 @@ public class Chef extends Scriptable implements Person {
     return atlas;
   }
 
+  public Optional<Item> FetchItem(){
+
+    if(heldItems.size()==0)
+      return null;
+
+    return Optional.ofNullable(heldItems.pop());
+  }
+
+  public Boolean GiveItem(Item item){
+    if(heldItems.size() < CarryCapacity)
+    {
+      heldItems.add(item);
+      return true;
+    }
+
+    return false;
+  }
+
+  public void DropItem(){
+    heldItems.pop();
+  }
   /**
    * Draws the timer onto the screen and runs the animation for the set time Then unfreezes the chef
    * after timer is finished

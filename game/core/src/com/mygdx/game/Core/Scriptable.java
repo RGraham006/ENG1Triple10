@@ -19,5 +19,8 @@ public class Scriptable {
   public void FixedUpdate(float dt) {
   }
 
+  public void OnRender(){
+
+  }
 
 }

@@ -8,7 +8,7 @@ public abstract class Renderable {
 
   public abstract void Render(SpriteBatch batch, float x, float y);
 
-  public abstract void setSize(float x, float y);
+  public abstract void setSize(int x, int y);
 
   public Renderable(int layer) {
     this.layer = layer;

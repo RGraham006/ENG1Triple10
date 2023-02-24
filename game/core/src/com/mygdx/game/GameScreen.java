@@ -8,6 +8,8 @@ import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.RenderManager;
 import com.mygdx.game.Core.Renderable;
+import com.mygdx.game.Items.Item;
+import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -664,20 +666,24 @@ public class GameScreen implements Screen {
           invFull = chef[chefControl].getInventory().getName() != "none";
 
           // The following statements are for picking items up from the stations
-          if (objectA == "tomato" && !invFull && isSpace) {
+          if (((String)objectA).contains("tomato") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("tomato"));
           }
-          if (objectA == "lettuce" && !invFull && isSpace) {
+          if (((String)objectA).contains("lettuce") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("lettuce"));
           }
-          if (objectA == "onion" && !invFull && isSpace) {
+          if (((String)objectA).contains("onion") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("onion"));
           }
-          if (objectA == "patty" && !invFull && isSpace) {
+
+          if (((String)objectA).contains("patty") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("patty"));
+            chef[chefControl].GiveItem(new Item(ItemEnum.patty));
           }
-          if (objectA == "bun" && !invFull && isSpace) {
+          if (((String)objectA).contains("bun") && !invFull && isSpace) {
             chef[chefControl].setInventory(new Ingredient("bun"));
+            chef[chefControl].GiveItem(new Item(ItemEnum.bun));
+
           }
 
           // Runs all the checks for the chopping board

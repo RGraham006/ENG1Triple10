@@ -8,28 +8,40 @@ public class BlackTexture extends Renderable {
 
   public Texture texture;
   public TextureRegion textureRegion;
-  public float ImageWidth, ImageHeight;
-  public float width, height;
+  public int ImageWidth, ImageHeight;
+  public int width, height;
 
   public BlackTexture(String tex) {
 
-    texture = new Texture(tex);
+    ;
+  }
+
+
+  public void changeTextureFromPath(String path){
+    texture = new Texture(path);
+
 
     ImageWidth = texture.getWidth();
     ImageHeight = texture.getHeight();
 
+
+
     width = ImageWidth;
     height = ImageHeight;
+
+
+    if(textureRegion == null)
+      textureRegion = new TextureRegion(texture,width,height);
 
   }
 
 
-  public void setImageSize(float _w, float _h) {
+  public void setImageSize(int _w,int  _h) {
     ImageWidth = _w;
     ImageHeight = _h;
   }
 
-  public void setSize(float _w, float _h) {
+  public void setSize(int  _w, int  _h) {
     width = _w;
     height = _h;
 
