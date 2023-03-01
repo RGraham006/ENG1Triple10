@@ -8,7 +8,7 @@ public interface Interactable {
   public boolean CanRetrieve();
   public boolean CanGive();
 
-  public Optional<Item> RetrieveItem();
+  public Item RetrieveItem();
 
   public boolean GiveItem(Item item);
 }

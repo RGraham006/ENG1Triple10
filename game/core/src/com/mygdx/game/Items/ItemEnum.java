@@ -2,11 +2,23 @@ package com.mygdx.game.Items;
 
 public enum ItemEnum
 {
-  meat,
-  Patty,
-  Buns,
-  Burnt,
-  Tomato,
+  Cinder,
   Lettuce,
-  Onion
+  CutLettuce,
+  Tomato,
+  CutTomato,
+  Onion,
+  CutOnion,
+  LettuceTomatoSalad,
+  LettuceOnionSalad,
+  TomatoOnionSalad,
+  TomatoOnionLettuceSalad,
+  Mince,
+  RawPatty,
+  CookedPatty,
+  Buns,
+  ToastedBuns,
+  Cheese,
+  Burger,
+  CheeseBurger
 }

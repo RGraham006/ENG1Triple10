@@ -83,12 +83,6 @@ public class GameScreen implements Screen {
   Texture dish1, dish2;
   Texture spaceTexture, ctrlTexture, shiftTexture, rTexture, mTexture;
 
-  public Station chopping;
-  public Station toaster;
-  public Station frying;
-  public Station[] counters;
-  public AssemblyStation[] assemblyStations;
-
   public CustomerCounters[] customerCounters;
   public Texture menu = new Texture("recipeSheet.png");
   private final int x = 3;
@@ -165,17 +159,6 @@ public class GameScreen implements Screen {
       chef[i].updateSpriteFromInput("idlesouth");
     }
 
-    chopping = new Station("chopping");
-    toaster = new Station("toaster");
-    frying = new Station("frying");
-    counters = new Station[5];
-    for (int i = 0; i < counters.length; i++) {
-      counters[i] = new Station("counters" + i);
-    }
-    assemblyStations = new AssemblyStation[5];
-    for (int i = 0; i < assemblyStations.length; i++) {
-      assemblyStations[i] = new AssemblyStation("assembly" + i);
-    }
     customerCounters = new CustomerCounters[5];
     for (int i = 0; i < customerCounters.length; i++) {
       customerCounters[i] = new CustomerCounters("customerCounter" + i);
@@ -355,10 +338,6 @@ public class GameScreen implements Screen {
 
     world.step(1 / 60f, 6, 2);
 
-    // Checks if the assembly stations have a completed dish on them
-    for (int i = 0; i < assemblyStations.length; i++) {
-      assemblyStations[i].assembleDish();
-    }
 
     //Begins drawing the game batch
     game.batch.begin();
@@ -665,154 +644,6 @@ public class GameScreen implements Screen {
           boolean invFull;
           invFull = chef[chefControl].getInventory().getName() != "none";
 
-          // The following statements are for picking items up from the stations
-          if (((String)objectA).contains("tomato")  && isSpace) {
-            chef[chefControl].GiveItem(new Item(ItemEnum.Tomato));
-          }
-          if (((String)objectA).contains("lettuce") && isSpace) {
-            chef[chefControl].GiveItem(new Item(ItemEnum.Lettuce));
-          }
-          if (((String)objectA).contains("onion")  && isSpace) {
-            chef[chefControl].GiveItem(new Item(ItemEnum.Onion));
-          }
-
-          if (((String)objectA).contains("patty") && isSpace) {
-            chef[chefControl].GiveItem(new Item(ItemEnum.Patty));
-          }
-          if (((String)objectA).contains("bun") && isSpace) {
-            chef[chefControl].GiveItem(new Item(ItemEnum.Buns));
-
-          }
-
-          // Runs all the checks for the chopping board
-          if (objectA == "chopping") {
-            if (chef[chefControl].getInventory().getStation() == "chopping"
-                && chopping.getIngredient().getName() == "none" && isSpace) {
-              Ingredient tempIngredient = new Ingredient(
-                  chef[chefControl].getInventory().getName());
-              tempIngredient.setState(chef[chefControl].getInventory().getState());
-              chopping.setIngredient(tempIngredient);
-              chef[chefControl].setInventory(new Ingredient("none"));
-            }
-            if (isShift && chopping.getIngredient().getName() != "none") {
-              chef[chefControl].freeze(3, chopping);
-              chopping.getIngredient().setState("processed");
-            }
-            if (chopping.getIngredient().getState() == "processed"
-                && chopping.getIngredient().getName() != "none" && !invFull && isSpace
-                && !chopping.getLocked()) {
-              Ingredient tempIngredient = new Ingredient(chopping.getIngredient().getName());
-              tempIngredient.setState(chopping.getIngredient().getState());
-              chef[chefControl].setInventory(tempIngredient);
-              chopping.setIngredient(new Ingredient("none"));
-            }
-          }
-
-          // Runs all the checks for the frying pan
-          if (objectA == "frying") {
-            if (chef[chefControl].getInventory().getStation() == "frying"
-                && frying.getIngredient().getName() == "none" && isSpace) {
-              Ingredient tempIngredient = new Ingredient(
-                  chef[chefControl].getInventory().getName());
-              tempIngredient.setState(chef[chefControl].getInventory().getState());
-              frying.setIngredient(tempIngredient);
-              chef[chefControl].setInventory(new Ingredient("none"));
-            }
-            if (isShift && frying.getIngredient().getName() != "none") {
-              chef[chefControl].freeze(3, frying);
-              frying.getIngredient().setState("processed");
-            }
-            if (frying.getIngredient().getState() == "processed"
-                && frying.getIngredient().getName() != "none" && !invFull && isSpace
-                && !frying.getLocked()) {
-              Ingredient tempIngredient = new Ingredient(frying.getIngredient().getName());
-              tempIngredient.setState(frying.getIngredient().getState());
-              chef[chefControl].setInventory(tempIngredient);
-              frying.setIngredient(new Ingredient("none"));
-            }
-          }
-
-          // Runs all the checks on the toaster
-          if (objectA == "toaster") {
-            if (chef[chefControl].getInventory().getStation() == "toaster"
-                && toaster.getIngredient().getName() == "none" && isSpace) {
-              Ingredient tempIngredient = new Ingredient(
-                  chef[chefControl].getInventory().getName());
-              tempIngredient.setState(chef[chefControl].getInventory().getState());
-              toaster.setIngredient(tempIngredient);
-              chef[chefControl].setInventory(new Ingredient("none"));
-            }
-            if (isShift && toaster.getIngredient().getName() != "none") {
-              chef[chefControl].freeze(3, toaster);
-              toaster.getIngredient().setState("processed");
-            }
-            if (toaster.getIngredient().getState() == "processed"
-                && toaster.getIngredient().getName() != "none" && !invFull && isSpace
-                && !toaster.getLocked()) {
-              Ingredient tempIngredient = new Ingredient(toaster.getIngredient().getName());
-              tempIngredient.setState(toaster.getIngredient().getState());
-              chef[chefControl].setInventory(tempIngredient);
-              toaster.setIngredient(new Ingredient("none"));
-            }
-          }
-
-          // Gets rid of inventory if next to bin
-          if (objectA == "bins" && isSpace) {
-            chef[chefControl].setInventory(new Ingredient("none"));
-          }
-
-          // Checks all the counters for interactions
-          for (int i = 1; i < 6; i++) {
-            if (objectA.toString().contentEquals("counter" + i)) {
-              if (isSpace && counters[i - 1].getIngredient().getName() == "none") {
-                Ingredient tempIngredient = new Ingredient(
-                    chef[chefControl].getInventory().getName());
-                tempIngredient.setState(chef[chefControl].getInventory().getState());
-                counters[i - 1].setIngredient(tempIngredient);
-                chef[chefControl].setInventory(new Ingredient("none"));
-              } else if (isSpace && chef[chefControl].getInventory().getName() == "none") {
-                Ingredient tempIngredient = new Ingredient(
-                    counters[i - 1].getIngredient().getName());
-                tempIngredient.setState(counters[i - 1].getIngredient().getState());
-                chef[chefControl].setInventory(tempIngredient);
-                counters[i - 1].setIngredient(new Ingredient("none"));
-              }
-            }
-          }
-
-          // Checks all the assembly stations for interactions
-          for (int i = 0; i < assemblyStations.length; i++) {
-            if (objectA.toString().contentEquals("assembly" + (i + 1))) {
-              if (isSpace && assemblyStations[i].validIngredient(
-                  chef[chefControl].getInventory().getName())
-                  && chef[chefControl].getInventory().getState() == "processed") {
-                Ingredient tempIngredient = new Ingredient(
-                    chef[chefControl].getInventory().getName());
-                tempIngredient.setState(chef[chefControl].getInventory().getState());
-                chef[chefControl].setInventory(new Ingredient("none"));
-                assemblyStations[i].addIngredient(tempIngredient);
-              }
-              if (assemblyStations[i].getDish() != "none" && isSpace) {
-                chef[chefControl].setInventory(new Ingredient(assemblyStations[i].getDish()));
-                assemblyStations[i].setDish("none");
-              }
-              if (isR) {
-                assemblyStations[i].clearIngredients();
-                assemblyStations[i].setDish("none");
-              }
-            }
-          }
-
-          // Checks all the customer counters for interactions
-          for (int i = 0; i < customerCounters.length; i++) {
-            if (objectA.toString().contentEquals("customerCounter" + (i + 1))) {
-              if (isSpace && customers[i].getDish() == chef[chefControl].getInventory().getName()) {
-                Ingredient tempDish = new Ingredient(chef[chefControl].getInventory().getName());
-                customerCounters[i].setDish(tempDish.getName());
-                chef[chefControl].setInventory(new Ingredient("none"));
-              }
-            }
-          }
         }
       }
     }
