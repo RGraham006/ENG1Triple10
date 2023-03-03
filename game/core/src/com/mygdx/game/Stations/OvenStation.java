@@ -18,7 +18,10 @@ public class OvenStation extends Station {
         ready = false;
         maxProgress = 10;
         if (ItemWhiteList.isEmpty()) {
-            ItemWhiteList = new ArrayList<>(Arrays.asList());
+            ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Potato, ItemEnum.CheesePotato, ItemEnum.MeatPotato,
+                    ItemEnum.CheesePizza, ItemEnum.MeatPizza, ItemEnum.VegPizza, ItemEnum.CheesePizzaCooked,
+                    ItemEnum.MeatPizzaCooked, ItemEnum.VegPizzaCooked, ItemEnum.BakedPotato, ItemEnum.CheeseBake,
+                    ItemEnum.MeatBake));
         }
     }
 
@@ -62,9 +65,6 @@ public class OvenStation extends Station {
             currentRecipe = null;
     }
 
-    public void burnItem() {
-        changeItem(new Item(ItemEnum.Cinder));
-    }
 
     public void Cook(float dt) {
         ready = currentRecipe.RecipeSteps.get(item.step).timeStep(item, dt, interacted, maxProgress);
@@ -73,6 +73,5 @@ public class OvenStation extends Station {
             changeItem(new Item(currentRecipe.endItem));
             checkItem();
         }
-
     }
 }

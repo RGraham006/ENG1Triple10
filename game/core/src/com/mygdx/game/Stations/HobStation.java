@@ -19,7 +19,7 @@ public class HobStation extends Station{
         ready = false;
         maxProgress = 5;
         if(ItemWhiteList.isEmpty())
-            ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.RawPatty, ItemEnum.Buns));
+            ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.RawPatty, ItemEnum.CookedPatty));
     }
 
 
