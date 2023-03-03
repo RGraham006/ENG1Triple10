@@ -68,6 +68,7 @@ public class Chef extends Scriptable implements Person {
   public Chef(World world, int id) {
     this.id = id;
     this.world = world;
+
   }
 
   @Override
@@ -103,6 +104,7 @@ public class Chef extends Scriptable implements Person {
     b2body.setUserData("Chef" + id);
     FixtureDef fdefine = new FixtureDef();
     CircleShape shape = new CircleShape();
+    shape.setPosition(new Vector2(0,10));
     shape.setRadius(10);
 
     fdefine.shape = shape;
@@ -110,7 +112,7 @@ public class Chef extends Scriptable implements Person {
     EdgeShape head = new EdgeShape();
     head.set((new Vector2(-2, 7)), new Vector2(2, 7));
     fdefine.shape = head;
-    fdefine.isSensor = true;
+    fdefine.isSensor = false;
     b2body.createFixture(fdefine).setUserData("head");
 
 
@@ -121,7 +123,7 @@ public class Chef extends Scriptable implements Person {
    */
   @SuppressWarnings("checkstyle:MissingSwitchDefault")
   @Override
-  public void updateSpriteFromInput(String newOrientation) {
+  public void  updateSpriteFromInput(String newOrientation) {
     if (newOrientation.contains("idle")) {
       spriteState = newOrientation;
     } else {

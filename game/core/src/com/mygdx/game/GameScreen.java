@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Core.BlackSprite;
 import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.GameObjectManager;
@@ -29,16 +30,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
@@ -76,6 +67,7 @@ public class GameScreen implements Screen {
   private static ArrayList<TextureAtlas> customerAtlasArray;
   private final Customer[] customers = new Customer[5];
   private int chefControl;
+
 
 
   Texture dish1, dish2;
@@ -348,8 +340,6 @@ public class GameScreen implements Screen {
     for (int i = 0; i < customers.length; i++) {
       customers[i].updateSpriteFromInput(customers[i].getMove());
     }
-
-    //Removed and simplified logic
 
     world.step(1 / 60f, 6, 2);
 
@@ -832,6 +822,7 @@ public class GameScreen implements Screen {
         Object objectA = contact.getFixtureA().getBody().getUserData();
         Object objectB = contact.getFixtureB().getBody().getUserData();
         Gdx.app.log("beginContact", "between " + objectA + " and " + objectB);
+
       }
 
 
@@ -846,6 +837,7 @@ public class GameScreen implements Screen {
         Object objectA = contact.getFixtureA().getBody().getUserData();
         Object objectB = contact.getFixtureB().getBody().getUserData();
         Gdx.app.log("endContact", "between " + objectA + " and " + objectB);
+
       }
 
       /**
