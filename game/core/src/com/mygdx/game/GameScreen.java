@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.mygdx.game.Core.BlackSprite;
 import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.GameObjectManager;
+import com.mygdx.game.Core.Interactions.Interactable;
+import com.mygdx.game.Core.MasterChef;
 import com.mygdx.game.Core.RenderManager;
 import com.mygdx.game.Core.Renderable;
 import com.mygdx.game.Items.Item;
@@ -73,15 +75,14 @@ public class GameScreen implements Screen {
   private final TiledMapRenderer mapRenderer;
 
   // character assets
-  private static ArrayList<TextureAtlas> chefAtlasArray;
-  private final Chef[] chef;
   private static ArrayList<TextureAtlas> customerAtlasArray;
   private final Customer[] customers = new Customer[5];
   private int chefControl;
 
-
+  MasterChef masterChef;
   Texture dish1, dish2;
   Texture spaceTexture, ctrlTexture, shiftTexture, rTexture, mTexture;
+
 
   public CustomerCounters[] customerCounters;
   public Texture menu = new Texture("recipeSheet.png");
@@ -145,19 +146,12 @@ public class GameScreen implements Screen {
     mapRenderer = new OrthogonalTiledMapRenderer(map);
     mapRenderer.setView(camera);
 
-    chefAtlasArray = new ArrayList<TextureAtlas>();
-    generateChefArray();
-    chef = new Chef[2];
-    chefControl = 0;
-    for (int i = 0; i < chef.length; i++) {
-      GameObject chefsGameObject = new GameObject(
-          new BlackSprite());//passing in null since chef will define it later
-      chef[i] = new Chef(world, i);
-      chefsGameObject.attachScript(chef[i]);
-      chefsGameObject.image.setSize(18, 40);
 
-      chef[i].updateSpriteFromInput("idlesouth");
-    }
+
+
+    masterChef = new MasterChef(2,world);
+    GameObjectManager.objManager.AppendLooseScript(masterChef);
+
 
     customerCounters = new CustomerCounters[5];
     for (int i = 0; i < customerCounters.length; i++) {
@@ -247,27 +241,6 @@ public class GameScreen implements Screen {
   }
 
 
-  /**
-   * Generates a chef array which can be used to get random chef sprites from the chef class
-   */
-  public void generateChefArray() {
-    String filename;
-    TextureAtlas chefAtlas;
-    for (int i = 1; i < 4; i++) {
-      filename = "Chefs/Chef" + i + "/chef" + i + ".txt";
-      chefAtlas = new TextureAtlas(filename);
-      chefAtlasArray.add(chefAtlas);
-    }
-  }
-
-  /**
-   * Returns the chef array that's been created
-   *
-   * @return ArrayList<TextureAtlas> chefAtlasArray;
-   */
-  public static ArrayList<TextureAtlas> getChefAtlasArray() {
-    return chefAtlasArray;
-  }
 
   /**
    * Returns the customer array that's been created
@@ -317,19 +290,6 @@ public class GameScreen implements Screen {
     mapRenderer.setView(camera);
     mapRenderer.render();
 
-    //Check which chef is being control
-    if (chef[0].isCtrl()) {
-      chef[0].stop();
-      chef[1].stop();
-      if (chefControl == 0) {
-        chefControl = 1;
-      } else {
-        chefControl = 0;
-      }
-    }
-
-    // Runs chefs logic updates
-    chef[chefControl].updateSpriteFromInput(chef[chefControl].getMove());
     for (int i = 0; i < customers.length; i++) {
       customers[i].updateSpriteFromInput(customers[i].getMove());
     }
@@ -343,7 +303,7 @@ public class GameScreen implements Screen {
     game.batch.begin();
 
     // Calls the function to draw all the ingredients
-    drawIngredients();
+    //drawIngredients();
 
     // Calls the function to display timer
     displayTimer();
@@ -354,11 +314,11 @@ public class GameScreen implements Screen {
     RenderManager.renderer.onRender(game.batch);
 
     // Draws the chefs
-    for (int i = 0; i < chef.length; i++) {
+    for (int i = 0; i < masterChef.returnChefCount(); i++) {
       //chef[i].sprite.setSize(18,40);
       //chef[i].sprite.draw(game.batch);
-      if (chef[i].isFrozen) {  // if frozen, need to update timer and sprite
-        chef[i].drawTimer(game.batch);
+      if (masterChef.getChef(i).isFrozen) {  // if frozen, need to update timer and sprite
+        masterChef.getChef(i).drawTimer(game.batch);
       }
     }
 
@@ -423,203 +383,6 @@ public class GameScreen implements Screen {
    * Checks each chef, counter, station, and assembly station then draws the ingredient sprites on
    * them
    */
-  public void drawIngredients() {
-
-    // Checks the chopping board for ingredients
-    if (chopping.getIngredient().getName() != "none") {
-      switch (chopping.getIngredient().getName()) {
-        case "tomato":
-          if (chopping.getIngredient().getState() == "unprocessed") {
-            System.out.println("here");
-            game.batch.draw(tomatoUnchopped, 460, 350, 15, 15);
-          } else {
-            game.batch.draw(tomatoChopped, 460, 350, 15, 15);
-          }
-          break;
-        case "onion":
-          if (chopping.getIngredient().getState() == "unprocessed") {
-            System.out.println("here");
-            game.batch.draw(onionUnchopped, 460, 350, 15, 15);
-          } else {
-            game.batch.draw(onionChopped, 460, 350, 15, 15);
-          }
-          break;
-        case "lettuce":
-          if (chopping.getIngredient().getState() == "unprocessed") {
-            System.out.println("here");
-            game.batch.draw(lettuceUnchopped, 460, 350, 15, 15);
-          } else {
-            game.batch.draw(lettuceChopped, 460, 350, 15, 15);
-          }
-          break;
-      }
-    }
-
-    // Checks the frying pan for ingredients
-    if (frying.getIngredient().getName() != "none") {
-      switch (frying.getIngredient().getState()) {
-        case "unprocessed":
-          game.batch.draw(meatUncooked, 500, 295, 15, 15);
-          break;
-        case "processed":
-          game.batch.draw(meatCooked, 500, 295, 15, 15);
-          break;
-      }
-    }
-
-    // checks the toaster for ingredients
-    if (toaster.getIngredient().getName() != "none") {
-      switch (toaster.getIngredient().getState()) {
-        case "unprocessed":
-          game.batch.draw(bunUntoasted, 555, 255, 15, 15);
-          break;
-        case "processed":
-          game.batch.draw(bunToasted, 555, 255, 15, 15);
-          break;
-      }
-    }
-
-    // Checks the counters for ingredients
-    for (int i = 0; i < counters.length; i++) {
-      switch (counters[i].getIngredient().getName()) {
-        case "tomato":
-          if (counters[i].getIngredient().getState() == "unprocessed") {
-            game.batch.draw(tomatoUnchopped, 300 + i * 20, 160, 15, 15);
-          } else {
-            game.batch.draw(tomatoChopped, 300 + i * 20, 160, 15, 15);
-          }
-          break;
-        case "lettuce":
-          if (counters[i].getIngredient().getState() == "unprocessed") {
-            game.batch.draw(lettuceUnchopped, 300 + i * 20, 160, 15, 15);
-          } else {
-            game.batch.draw(lettuceChopped, 300 + i * 20, 160, 15, 15);
-          }
-          break;
-        case "onion":
-          if (counters[i].getIngredient().getState() == "unprocessed") {
-            game.batch.draw(onionUnchopped, 300 + i * 20, 160, 15, 15);
-          } else {
-            game.batch.draw(onionChopped, 300 + i * 20, 160, 15, 15);
-          }
-          break;
-        case "patty":
-          if (counters[i].getIngredient().getState() == "unprocessed") {
-            game.batch.draw(meatUncooked, 300 + i * 20, 160, 15, 15);
-          } else {
-            game.batch.draw(meatCooked, 300 + i * 20, 160, 15, 15);
-          }
-          break;
-        case "bun":
-          if (counters[i].getIngredient().getState() == "unprocessed") {
-            game.batch.draw(bunUntoasted, 300 + i * 20, 160, 15, 15);
-          } else {
-            game.batch.draw(bunToasted, 300 + i * 20, 160, 15, 15);
-          }
-          break;
-        case "salad":
-          game.batch.draw(salad, 300 + i * 20, 160, 15, 15);
-          break;
-        case "burger":
-          game.batch.draw(burger, 300 + i * 20, 160, 15, 15);
-      }
-    }
-
-    // Checks the chefs inventory for ingredients
-    for (int i = 0; i < chef.length; i++) {
-      switch (chef[i].getInventory().getName()) {
-        case "tomato":
-          if (chef[i].getInventory().getState() == "unprocessed") {
-            game.batch.draw(tomatoUnchopped, 10 + i * 600, 18, 20, 20);
-          } else {
-            game.batch.draw(tomatoChopped, 10 + i * 600, 18, 20, 20);
-          }
-          break;
-        case "lettuce":
-          if (chef[i].getInventory().getState() == "unprocessed") {
-            game.batch.draw(lettuceUnchopped, 10 + i * 600, 18, 20, 20);
-          } else {
-            game.batch.draw(lettuceChopped, 10 + i * 600, 18, 20, 20);
-          }
-          break;
-        case "onion":
-          if (chef[i].getInventory().getState() == "unprocessed") {
-            game.batch.draw(onionUnchopped, 10 + i * 600, 18, 20, 20);
-          } else {
-            game.batch.draw(onionChopped, 10 + i * 600, 18, 20, 20);
-          }
-          break;
-        case "patty":
-          if (chef[i].getInventory().getState() == "unprocessed") {
-            game.batch.draw(meatUncooked, 10 + i * 600, 18, 20, 20);
-          } else {
-            game.batch.draw(meatCooked, 10 + i * 600, 18, 20, 20);
-          }
-          break;
-        case "bun":
-          if (chef[i].getInventory().getState() == "unprocessed") {
-            game.batch.draw(bunUntoasted, 10 + i * 600, 18, 20, 20);
-          } else {
-            game.batch.draw(bunToasted, 10 + i * 600, 18, 20, 20);
-          }
-          break;
-        case "burger":
-          game.batch.draw(burger, 10 + i * 600, 18, 20, 20);
-          break;
-        case "salad":
-          game.batch.draw(salad, 10 + i * 600, 18, 20, 20);
-      }
-    }
-
-    //Checks the assembly stations for ingredients
-    for (int i = 0; i < assemblyStations.length; i++) {
-      if (assemblyStations[i].getDish() == "none") {
-        for (int j = 0; j < assemblyStations[i].getIngredients().size(); j++) {
-          int x = 420 + i * 20;
-          int y = 160;
-          switch (j) {
-            case 0:
-              x = 420 + i * 20;
-              y = 160;
-              break;
-            case 1:
-              x = 420 + i * 20;
-              y = 160 + 10;
-              break;
-            case 2:
-              x = 430 + i * 20;
-              y = 160;
-              break;
-            case 3:
-              x = 430 + i * 20;
-              y = 160 + 10;
-              break;
-          }
-          switch (assemblyStations[i].getIngredients().get(j).getName()) {
-            case "tomato":
-              game.batch.draw(tomatoChopped, x, y, 10, 10);
-              break;
-            case "bun":
-              game.batch.draw(bunToasted, x, y, 10, 10);
-              break;
-            case "patty":
-              game.batch.draw(meatCooked, x, y, 10, 10);
-              break;
-            case "onion":
-              game.batch.draw(onionChopped, x, y, 10, 10);
-              break;
-            case "lettuce":
-              game.batch.draw(lettuceChopped, x, y, 10, 10);
-              break;
-          }
-        }
-      } else if (assemblyStations[i].getDish() == "salad") {
-        game.batch.draw(salad, 420 + i * 20, 160, 20, 20);
-      } else if (assemblyStations[i].getDish() == "burger") {
-        game.batch.draw(burger, 420 + i * 20, 160, 20, 20);
-      }
-    }
-  }
 
   /**
    * Gets all the collisions and checks if the input keys are pressed and then performs the actions
@@ -642,7 +405,7 @@ public class GameScreen implements Screen {
           boolean isSpace = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
           boolean isR = Gdx.input.isKeyPressed(Input.Keys.R);
           boolean invFull;
-          invFull = chef[chefControl].getInventory().getName() != "none";
+          invFull = masterChef.getCurrentChef().getInventory().getName() != "none";
 
         }
       }

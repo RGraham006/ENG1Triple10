@@ -18,7 +18,7 @@ public class OvenStation extends Station {
         ready = false;
         maxProgress = 10;
         if (ItemWhiteList.isEmpty()) {
-            ItemWhiteList = new ArrayList<>(Arrays.asList());
+            ItemWhiteList = new ArrayList<ItemEnum>(Arrays.<ItemEnum>asList());
         }
     }
 

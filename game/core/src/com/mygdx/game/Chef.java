@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
+import com.mygdx.game.Core.Inputs;
 import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
@@ -80,15 +81,15 @@ public class Chef extends Scriptable implements Person {
    * @param world the world in which our objects lie
    * @param id    the individual id of each chef i.e 0,1,2....
    */
-  public Chef(World world, int id) {
+  public Chef(World world, int id, ArrayList<TextureAtlas> chefAtlas) {
     this.id = id;
     this.world = world;
+    this.chefAtlas = getChefAtlas(chefAtlas);
   }
 
   @Override
   public void Start() {
     //Reorganised to fit work flow and requires access to data not yet created
-    chefAtlas = getChefAtlas(GameScreen.getChefAtlasArray());
     gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
@@ -103,7 +104,6 @@ public class Chef extends Scriptable implements Person {
     ingredient = new Ingredient("none");
     timerAtlas = new TextureAtlas("Timer/timer.txt");
     timerSprite = timerAtlas.createSprite("01");
-    currentStation = new Station("none");
 
     for (int i = 0; i < CarryCapacity; i++)
     {
@@ -122,9 +122,11 @@ public class Chef extends Scriptable implements Person {
     BodyDef bdef = new BodyDef();
     bdef.position.set(gameObject.position.x, gameObject.position.y);
     bdef.type = BodyDef.BodyType.DynamicBody;
+    bdef.bullet = true;
     b2body = world.createBody(bdef);
     b2body.setUserData("Chef" + id);
     FixtureDef fdefine = new FixtureDef();
+
     CircleShape shape = new CircleShape();
     shape.setRadius(10);
 
@@ -302,13 +304,13 @@ public void OnRender()
       System.out.println("Frozen");
       return "idle" + this.lastOrientation;
     } else {
-      if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+      if (Gdx.input.isKeyPressed(Inputs.MOVE_CHEF_LEFT)) {
         newOrientation = "west";
-      } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+      } else if (Gdx.input.isKeyPressed(Inputs.MOVE_CHEF_RIGHT)) {
         newOrientation = "east";
-      } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+      } else if (Gdx.input.isKeyPressed(Inputs.MOVE_CHEF_UP)) {
         newOrientation = "north";
-      } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+      } else if (Gdx.input.isKeyPressed(Inputs.MOVE_CHEF_DOWN)) {
         newOrientation = "south";
       } else {
         return "idle" + lastOrientation;
@@ -348,7 +350,7 @@ public void OnRender()
   public void unfreeze() {
     isFrozen = false;
     currentStation.setLocked(false);
-    this.currentStation = new Station("none");
+    //this.currentStation = new Station("none");
     currentTimerFrame = 1;
   }
 
@@ -393,16 +395,28 @@ public void OnRender()
     return atlas;
   }
 
+  public boolean CanFetchItem() {
+    if (heldItems.size() == 0)
+      return false;
+
+    return true;
+
+  }
+
+  public boolean CanGiveItem(){
+    return heldItems.size() < CarryCapacity;
+
+  }
   public Optional<Item> FetchItem(){
 
-    if(heldItems.size()==0)
+    if(!CanFetchItem())
       return null;
 
     return Optional.ofNullable(heldItems.pop());
   }
 
   public Boolean GiveItem(Item item){
-    if(heldItems.size() < CarryCapacity)
+    if(CanGiveItem())
     {
       heldItems.add(item);
       return true;

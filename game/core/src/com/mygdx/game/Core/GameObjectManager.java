@@ -1,16 +1,39 @@
 package com.mygdx.game.Core;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import java.util.Dictionary;
+import java.awt.font.FontRenderContext;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class GameObjectManager {
 
   public Hashtable<Integer, GameObject> GameObjects = new Hashtable<>();
+
+  public List<Scriptable> LooseScripts = new LinkedList<>();
   public static GameObjectManager objManager;
   Random rand;
 
+
+  public void AppendLooseScript(Scriptable scriptable){
+    LooseScripts.add(scriptable);
+    scriptable.Start();
+  }
+
+  public List<Scriptable> returnObjectsWithScript(Class<?> scriptType){
+    List<Scriptable> scripts = new LinkedList<>();
+    for (GameObject obj: GameObjects.values()
+    ) {
+      for (Scriptable script: obj.Scripts
+      ) {
+        if(scriptType == script.getClass())
+          scripts.add(script);
+
+      }
+    }
+    return scripts;
+  }
   public GameObjectManager() {
     if (objManager != null) {
       throw new IllegalArgumentException("This cannot be created more than once");
@@ -35,6 +58,12 @@ public class GameObjectManager {
 
 
   public void doUpdate(float dt) {
+
+    for (Scriptable scr : LooseScripts)
+    {
+      scr.Update(dt);
+
+    }
     for (GameObject obj : GameObjects.values()
     ) {
       obj.doUpdate(dt);
@@ -42,6 +71,14 @@ public class GameObjectManager {
   }
 
   public void doFixedUpdate(float dt) {
+
+
+    for (Scriptable scr : LooseScripts)
+    {
+      scr.FixedUpdate(dt);
+
+    }
+
     for (GameObject obj : GameObjects.values()
     ) {
       obj.doFixedUpdate(dt);
