@@ -20,5 +20,20 @@ public enum ItemEnum
   ToastedBuns,
   Cheese,
   Burger,
-  CheeseBurger
+  CheeseBurger,
+  Dough,
+  PizzaBase,
+  TomPizza,
+  CheesePizza,
+  CheesePizzaCooked,
+  MeatPizza,
+  MeatPizzaCooked,
+  VegPizza,
+  VegPizzaCooked,
+  Potato,
+  BakedPotato,
+  CheesePotato,
+  CheeseBake,
+  MeatPotato,
+  MeatBake
 }
