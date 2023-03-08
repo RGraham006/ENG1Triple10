@@ -6,11 +6,6 @@ public class CustomerController extends Scriptable
 
 
 
-  public CustomerController()
-  {
-
-
-  }
 
 
 }

@@ -8,6 +8,7 @@ import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.MasterChef;
+import com.mygdx.game.Core.Pathfinding;
 import com.mygdx.game.Core.RenderManager;
 import com.mygdx.game.Core.Renderable;
 import com.mygdx.game.Items.Item;
@@ -63,12 +64,16 @@ public class GameScreen implements Screen {
 
   // camera
   private final OrthographicCamera camera;
+  private Pathfinding pathfinding;
   private final int TILE_WIDTH = 32;
   private final int TILE_HEIGHT = 32;
 
   // box2d
   static World world;
   private final Box2DDebugRenderer b2dr;
+
+
+
 
   // map
   private final TiledMap map;
@@ -146,10 +151,10 @@ public class GameScreen implements Screen {
     mapRenderer = new OrthogonalTiledMapRenderer(map);
     mapRenderer.setView(camera);
 
+    pathfinding = new Pathfinding(TILE_WIDTH,viewportWidth,viewportWidth);
 
 
-
-    masterChef = new MasterChef(2,world);
+    masterChef = new MasterChef(2,world,camera,pathfinding);
     GameObjectManager.objManager.AppendLooseScript(masterChef);
 
 
@@ -183,9 +188,9 @@ public class GameScreen implements Screen {
       for (MapObject object : layer.getObjects()
           .getByType(RectangleMapObject.class)) {
 
-        Rectangle rect = ((RectangleMapObject) object).getRectangle();
-        buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
-            name);
+    //    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+      //  buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
+        //    name);
       }
     }
     timerLabel = new Label("TIME: " + timer,
@@ -210,6 +215,9 @@ public class GameScreen implements Screen {
     bdef.position.set((x + width / 2), (y + height / 2));
     if (type == "Static") {
       bdef.type = BodyDef.BodyType.StaticBody;
+
+
+
     } else if (type == "Dynamic") {
       bdef.type = BodyDef.BodyType.DynamicBody;
     }
@@ -298,6 +306,7 @@ public class GameScreen implements Screen {
 
     world.step(1 / 60f, 6, 2);
 
+    game.batch.setProjectionMatrix(camera.combined);
 
     //Begins drawing the game batch
     game.batch.begin();
