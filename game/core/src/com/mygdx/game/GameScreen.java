@@ -188,9 +188,9 @@ public class GameScreen implements Screen {
       for (MapObject object : layer.getObjects()
           .getByType(RectangleMapObject.class)) {
 
-    //    Rectangle rect = ((RectangleMapObject) object).getRectangle();
-      //  buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
-        //    name);
+        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+        buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
+            name);
       }
     }
     timerLabel = new Label("TIME: " + timer,

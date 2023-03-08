@@ -164,12 +164,7 @@ public class MasterChef extends Scriptable
     if( Gdx.input.isButtonJustPressed(0)) {
       Vector3 touchpos = new Vector3();
       touchpos.set(Gdx.input.getX(), Gdx.input.getY(),0);
-      System.out.println("touch: "+ touchpos);
-      System.out.println("unpro: " + camera.unproject(touchpos));
-      System.out.println("chef: " +getCurrentChef().gameObject.position);
-      //touchpos = camera.project(touchpos);
-      touchpos.y = pathfind.GridY* pathfind.gridSize - touchpos.y;
-      System.out.println("faked: "+ touchpos);
+      touchpos = camera.unproject(touchpos);
 
       List<Vector2> path = pathfind.FindPath((int)getCurrentChef().gameObject.position.x,(int)getCurrentChef().gameObject.position.y,(int)touchpos.x,(int)touchpos.y,DistanceTest.Euclidean);
       System.out.println(path);
