@@ -848,7 +848,7 @@ public class GameScreen implements Screen {
        * @param contact The object containing collision information
        * @param oldManifold Needed by the override
        */
-      @Override
+
       public void preSolve(Contact contact, Manifold oldManifold) {
         Object objectA = contact.getFixtureA().getBody().getUserData();
         Object objectB = contact.getFixtureB().getBody().getUserData();
