@@ -3,9 +3,14 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.Core.*;
+import com.mygdx.game.Core.BlackSprite;
+import com.mygdx.game.Core.GameObject;
+import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.Interactions.Interactable;
+import com.mygdx.game.Core.MasterChef;
+import com.mygdx.game.Core.Pathfinding;
+import com.mygdx.game.Core.RenderManager;
+import com.mygdx.game.Core.Renderable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
@@ -66,6 +71,9 @@ public class GameScreen implements Screen {
   static World world;
   private final Box2DDebugRenderer b2dr;
 
+
+
+
   // map
   private final TiledMap map;
   private final TiledMapRenderer mapRenderer;
@@ -117,7 +125,6 @@ public class GameScreen implements Screen {
     this.game = game;
     camera = new OrthographicCamera();
 
-
     int viewportWidth = 32 * TILE_WIDTH;
     int viewportHeight = 18 * TILE_HEIGHT;
     camera.setToOrtho(false, viewportWidth, viewportHeight);
@@ -143,10 +150,10 @@ public class GameScreen implements Screen {
     mapRenderer = new OrthogonalTiledMapRenderer(map);
     mapRenderer.setView(camera);
 
+    pathfinding = new Pathfinding(TILE_WIDTH,viewportWidth,viewportWidth);
 
 
-
-    masterChef = new MasterChef(2,world);
+    masterChef = new MasterChef(2,world,camera,pathfinding);
     GameObjectManager.objManager.AppendLooseScript(masterChef);
 
 
@@ -295,6 +302,7 @@ public class GameScreen implements Screen {
 
     world.step(1 / 60f, 6, 2);
 
+    game.batch.setProjectionMatrix(camera.combined);
 
     //Begins drawing the game batch
     game.batch.begin();
@@ -343,7 +351,6 @@ public class GameScreen implements Screen {
             System.out.println("DONE");
           }
         }
-
       }
 
       if (customers[i].getDish() == customerCounters[i].getDish()) {

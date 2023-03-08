@@ -22,21 +22,21 @@ public class Pathfinding
 
 
 
-    int  getIndex(int x, int y)
+  private   int  getIndex(int x, int y)
   {
     return x + y * GridX;
   }
 
-  OccupationID getOccupation(int x, int y)
+  private  OccupationID getOccupation(int x, int y)
   {
     return Cells[getIndex(x,y)];
   }
 
-  float Euclidian(int ix, int iy, int jx, int jy){
+  private float Euclidian(int ix, int iy, int jx, int jy){
     return (float) Math.sqrt(Math.pow(jx-ix,2) + Math.pow(jy-iy,2));
   }
 
-  float Manhatten(int ix, int iy, int jx, int jy)
+  private float Manhatten(int ix, int iy, int jx, int jy)
   {
     return Math.abs(ix-jx) + Math.abs(iy-jy);
   }
@@ -44,23 +44,46 @@ public class Pathfinding
   public Pathfinding(int gridSize, int GridX, int GridY)
   {
 
-    this.GridX = GridX;
-    this.GridY = GridY;
+    this.GridX = GridX/gridSize;
+    this.GridY = GridY/gridSize;
     this.gridSize = gridSize;
 
+    Cells = new OccupationID[GridX*GridY];
+
+    for (int i = 0; i < Cells.length; i++) {
+      Cells[i] = OccupationID.Empty;
+    }
 
   }
 
-  public float DistanceTesting(int ix, int iy, int jx, int jy, DistanceTest test){
+  private float DistanceTesting(int ix, int iy, int jx, int jy, DistanceTest test){
       if(test == DistanceTest.Euclidean)
         return Euclidian(ix,iy,jx,jy);
       return Manhatten(ix,iy,jx,jy);
   }
 
+  private  boolean LegalMove(int x, int y, int index)
+  {
+    if(!(x>=0 && x< GridX))
+      return false;
+    if(!(y>=0 && y< GridY))
+      return false;
 
-  public List<Vector2> FindPath(int x, int y, final int goalX, final int goalY, final DistanceTest distanceTest){
+      return Cells[index] == OccupationID.Empty;
+
+
+
+  }
+
+
+  public List<Vector2> FindPath(int x, int y, int goalX, int goalY, final DistanceTest distanceTest){
     HashMap<Integer, PathfindingCell> ReachedCells = new HashMap<>();
 
+    x = x/gridSize;
+    y = y/gridSize;
+
+    goalX = goalX/gridSize;
+    goalY = goalY/gridSize;
 
     PriorityQueue<PathfindingCell> frontier = new PriorityQueue<>();
 
@@ -90,22 +113,25 @@ public class Pathfinding
 
         ndex = getIndex(nx,ny);
 
-        if(ReachedCells.containsKey(ndex)){
+        if(LegalMove(nx,ny,ndex)) {
+          if (ReachedCells.containsKey(ndex)) {
 
-          ncell = ReachedCells.get(ndex);
+            ncell = ReachedCells.get(ndex);
 
-          if(cell.PathCost + 1 < ncell.PathCost){
-            //swap
+            if (cell.PathCost + 1 < ncell.PathCost) {
+              //swap
+              ncell.parent = cell;
+              ncell.PathCost = cell.PathCost + 1;
+            }
+
+          } else {
+            ncell = new PathfindingCell(nx, ny, ndex,
+                DistanceTesting(nx, ny, goalX, goalY, distanceTest), cell.PathCost + 1);
             ncell.parent = cell;
-            ncell.PathCost = cell.PathCost + 1;
+            frontier.add(ncell);
+            ReachedCells.put(ndex, ncell);
+
           }
-
-        } else {
-          ncell = new PathfindingCell(nx,ny, ndex, DistanceTesting(nx,ny,goalX,goalY,distanceTest),cell.PathCost+1);
-          ncell.parent = cell;
-          frontier.add(ncell);
-          ReachedCells.put(ndex,ncell);
-
         }
       }
       if(cell.x+1 < GridX){
@@ -113,23 +139,26 @@ public class Pathfinding
         ny = cell.y;
 
         ndex = getIndex(nx,ny);
+        if(LegalMove(nx,ny,ndex)) {
 
-        if(ReachedCells.containsKey(ndex)){
+          if (ReachedCells.containsKey(ndex)) {
 
-          ncell = ReachedCells.get(ndex);
+            ncell = ReachedCells.get(ndex);
 
-          if(cell.PathCost + 1 < ncell.PathCost){
-            //swap
+            if (cell.PathCost + 1 < ncell.PathCost) {
+              //swap
+              ncell.parent = cell;
+              ncell.PathCost = cell.PathCost + 1;
+            }
+
+
+          } else {
+            ncell = new PathfindingCell(nx, ny, ndex,
+                DistanceTesting(nx, ny, goalX, goalY, distanceTest), cell.PathCost + 1);
             ncell.parent = cell;
-            ncell.PathCost = cell.PathCost + 1;
+            frontier.add(ncell);
+            ReachedCells.put(ndex, ncell);
           }
-
-
-        }else {
-          ncell = new PathfindingCell(nx,ny, ndex, DistanceTesting(nx,ny,goalX,goalY,distanceTest),cell.PathCost+1);
-          ncell.parent = cell;
-          frontier.add(ncell);
-          ReachedCells.put(ndex,ncell);
         }
       }
 
@@ -138,46 +167,54 @@ public class Pathfinding
         ny = cell.y - 1;
 
         ndex = getIndex(nx,ny);
+        if(LegalMove(nx,ny,ndex)) {
 
-        if(ReachedCells.containsKey(ndex)){
+          if (ReachedCells.containsKey(ndex)) {
 
-          ncell = ReachedCells.get(ndex);
+            ncell = ReachedCells.get(ndex);
 
-          if(cell.PathCost + 1 < ncell.PathCost){
-            //swap
+            if (cell.PathCost + 1 < ncell.PathCost) {
+              //swap
+              ncell.parent = cell;
+              ncell.PathCost = cell.PathCost + 1;
+            }
+
+
+          } else {
+            ncell = new PathfindingCell(nx, ny, ndex,
+                DistanceTesting(nx, ny, goalX, goalY, distanceTest), cell.PathCost + 1);
             ncell.parent = cell;
-            ncell.PathCost = cell.PathCost + 1;
+            frontier.add(ncell);
+            ReachedCells.put(ndex, ncell);
           }
-
-
-        }else {
-          ncell = new PathfindingCell(nx,ny, ndex, DistanceTesting(nx,ny,goalX,goalY,distanceTest),cell.PathCost+1);
-          ncell.parent = cell;
-          frontier.add(ncell);
-          ReachedCells.put(ndex,ncell);
         }
       }
-      if(cell.y+1 < GridY){
+      if(cell.y+1 < GridY) {
         nx = cell.x;
         ny = cell.y + 1;
 
-        ndex = getIndex(nx,ny);
-        if(ReachedCells.containsKey(ndex)){
+        ndex = getIndex(nx, ny);
 
-          ncell = ReachedCells.get(ndex);
+        if (LegalMove(nx, ny, ndex)) {
 
-          if(cell.PathCost + 1 < ncell.PathCost){
-            //swap
+          if (ReachedCells.containsKey(ndex)) {
+
+            ncell = ReachedCells.get(ndex);
+
+            if (cell.PathCost + 1 < ncell.PathCost) {
+              //swap
+              ncell.parent = cell;
+              ncell.PathCost = cell.PathCost + 1;
+            }
+
+
+          } else {
+            ncell = new PathfindingCell(nx, ny, ndex,
+                DistanceTesting(nx, ny, goalX, goalY, distanceTest), cell.PathCost + 1);
             ncell.parent = cell;
-            ncell.PathCost = cell.PathCost + 1;
+            frontier.add(ncell);
+            ReachedCells.put(ndex, ncell);
           }
-
-
-        }else {
-          ncell = new PathfindingCell(nx,ny, ndex, DistanceTesting(nx,ny,goalX,goalY,distanceTest),cell.PathCost+1);
-          ncell.parent = cell;
-          frontier.add(ncell);
-          ReachedCells.put(ndex,ncell);
         }
       }
 
@@ -209,13 +246,14 @@ public class Pathfinding
     }
 
     List<Vector2> path = new LinkedList<>();
-    path.add(new Vector2(cell.x,cell.y));
+    path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
 
     while(cell.parent != null)
     {
       cell = cell.parent;
-      path.add(new Vector2(cell.x,cell.y));
+      path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
     }
+
     Collections.reverse(path);
     return path;
 

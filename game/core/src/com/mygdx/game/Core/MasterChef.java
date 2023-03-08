@@ -2,8 +2,12 @@ package com.mygdx.game.Core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Chef;
 import com.mygdx.game.Core.Interactions.Interactable;
@@ -11,6 +15,7 @@ import com.mygdx.game.Core.Interactions.Interaction;
 import com.mygdx.game.Core.Interactions.Interaction.InteractionType;
 import com.mygdx.game.Items.Item;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MasterChef extends Scriptable
@@ -19,7 +24,10 @@ public class MasterChef extends Scriptable
   public int currentControlledChef = 0;
   private static ArrayList<TextureAtlas> chefAtlasArray;
 
+  private Camera camera;
   Chef[] chefs;
+
+  private Pathfinding pathfind;
 
 
   public int returnChefCount(){
@@ -59,12 +67,14 @@ public class MasterChef extends Scriptable
   }
 
 
-  public MasterChef(int count, World world){
+  public MasterChef(int count, World world, Camera camera, Pathfinding pathfinding){
 
     chefAtlasArray = new ArrayList<TextureAtlas>();
+    this.pathfind = pathfinding;
     generateChefArray();
     chefs = new Chef[count];
 
+    this.camera = camera;
 
 
     for (int i = 0; i < chefs.length; i++) {
@@ -151,7 +161,19 @@ public class MasterChef extends Scriptable
     if(Gdx.input.isKeyJustPressed(Inputs.FETCH_ITEM))
       FetchItem();
 
+    if( Gdx.input.isButtonJustPressed(0)) {
+      Vector3 touchpos = new Vector3();
+      touchpos.set(Gdx.input.getX(), Gdx.input.getY(),0);
+      touchpos = camera.unproject(touchpos);
 
-  }
+      List<Vector2> path = pathfind.FindPath((int)getCurrentChef().gameObject.position.x,(int)getCurrentChef().gameObject.position.y,(int)touchpos.x,(int)touchpos.y,DistanceTest.Euclidean);
+      System.out.println(path);
+      getCurrentChef().GivePath(path);
+    }
+
+    if(Gdx.input.isKeyJustPressed(Keys.B))
+      getCurrentChef().MoveAlongPath();
+
+    }
 
 }

@@ -57,6 +57,8 @@ public class Chef extends Scriptable implements Person {
   private String lastOrientation;
   public Body b2body;
 
+  List<Vector2> path;
+
   private Station currentStation;
   Rectangle chefRectangle;
   World world;
@@ -85,6 +87,7 @@ public class Chef extends Scriptable implements Person {
     this.id = id;
     this.world = world;
     this.chefAtlas = getChefAtlas(chefAtlas);
+    this.path = new LinkedList<>();
   }
 
   @Override
@@ -111,6 +114,19 @@ public class Chef extends Scriptable implements Person {
       HeldItemGameObjects.get(i).isVisible = false;
 
     }
+
+  }
+
+  public void GivePath(List<Vector2> newPath){
+    path = newPath;
+  }
+  public void MoveAlongPath(){
+    if(path.size()<=0)
+      return;
+
+    gameObject.position.set(path.get(0));
+    path.remove(0);
+
 
   }
 
