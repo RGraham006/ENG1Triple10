@@ -3,13 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
-import com.mygdx.game.Core.BlackSprite;
-import com.mygdx.game.Core.GameObject;
-import com.mygdx.game.Core.GameObjectManager;
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.Core.*;
 import com.mygdx.game.Core.Interactions.Interactable;
-import com.mygdx.game.Core.MasterChef;
-import com.mygdx.game.Core.RenderManager;
-import com.mygdx.game.Core.Renderable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
@@ -120,6 +116,7 @@ public class GameScreen implements Screen {
   public GameScreen(MyGdxGame game) {
     this.game = game;
     camera = new OrthographicCamera();
+
 
     int viewportWidth = 32 * TILE_WIDTH;
     int viewportHeight = 18 * TILE_HEIGHT;
@@ -330,14 +327,23 @@ public class GameScreen implements Screen {
       if (customers[i].isWaiting()) {
         Customer customer = customers[i];
         if (customer.getDish() == "salad") {
-          game.batch.draw(dish1,
-              ((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5),
-              ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
+          BlackTexture saladText = new BlackTexture("speech_dish1.png");
+          GameObject saladGameObject = new GameObject(saladText);
+          saladGameObject.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
+          if(saladGameObject.isClicked(camera)){
+            System.out.println("DONE");
+          }
+
         } else if (customer.getDish() == "burger") {
-          game.batch.draw(dish2,
-              ((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5),
-              ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
+          BlackTexture burgerText = new BlackTexture("speech_dish2.png");
+          GameObject burgerGameObject = new GameObject(burgerText);
+          burgerGameObject.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
+
+          if(burgerGameObject.isClicked(camera)){
+            System.out.println("DONE");
+          }
         }
+
       }
 
       if (customers[i].getDish() == customerCounters[i].getDish()) {
