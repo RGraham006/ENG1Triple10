@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="piazzapanictests.tests.AssetTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-24T12:36:55" hostname="LAPTOP-VP3JQ610" time="0.01">
-  <properties/>
-  <testcase name="testChefAssetExists" classname="piazzapanictests.tests.AssetTests" time="0.01"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

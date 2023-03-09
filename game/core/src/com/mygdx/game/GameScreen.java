@@ -123,7 +123,6 @@ public class GameScreen implements Screen {
   public GameScreen(MyGdxGame game) {
     this.game = game;
     camera = new OrthographicCamera();
-
     int viewportWidth = 32 * TILE_WIDTH;
     int viewportHeight = 18 * TILE_HEIGHT;
     camera.setToOrtho(false, viewportWidth, viewportHeight);
@@ -352,6 +351,7 @@ public class GameScreen implements Screen {
     //Removed and simplified logic
 
     world.step(1 / 60f, 6, 2);
+
 
     // Checks if the assembly stations have a completed dish on them
     for (int i = 0; i < assemblyStations.length; i++) {
@@ -880,6 +880,7 @@ public class GameScreen implements Screen {
 
   @Override
   public void pause() {
+
   }
 
   @Override
