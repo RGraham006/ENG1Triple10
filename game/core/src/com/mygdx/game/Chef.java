@@ -98,14 +98,13 @@ public class Chef extends Scriptable implements Person {
    */
   public void defineChef() {
     BodyDef bdef = new BodyDef();
-    bdef.position.set(gameObject.position.x/ppm, gameObject.position.y/ppm);
+    bdef.position.set(gameObject.position.x, gameObject.position.y);
     bdef.type = BodyDef.BodyType.DynamicBody;
     b2body = world.createBody(bdef);
     b2body.setUserData("Chef" + id);
-    b2body.setBullet(true);
     FixtureDef fdefine = new FixtureDef();
     CircleShape shape = new CircleShape();
-    shape.setRadius(10/ppm);
+    shape.setRadius(10);
 
     fdefine.shape = shape;
     b2body.createFixture(fdefine);
@@ -174,8 +173,6 @@ public class Chef extends Scriptable implements Person {
     //cant figure out how to speed the character up it doesn't want to function
     gameObject.position.x = (((b2body.getPosition().x) / 1.6f) - getWidth() / 2);
     gameObject.position.y = ((b2body.getPosition().y) / 1.2f);
-    System.out.println(gameObject.position.x);
-    System.out.println(gameObject.position.y);
   }
 
   /**
