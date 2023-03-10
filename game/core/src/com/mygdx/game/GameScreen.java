@@ -3,14 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
-import com.mygdx.game.Core.BlackSprite;
-import com.mygdx.game.Core.GameObject;
-import com.mygdx.game.Core.GameObjectManager;
+import com.mygdx.game.Core.*;
 import com.mygdx.game.Core.Interactions.Interactable;
-import com.mygdx.game.Core.MasterChef;
-import com.mygdx.game.Core.Pathfinding;
-import com.mygdx.game.Core.RenderManager;
-import com.mygdx.game.Core.Renderable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
@@ -81,6 +75,7 @@ public class GameScreen implements Screen {
   // character assets
   private static ArrayList<TextureAtlas> customerAtlasArray;
   private final Customer[] customers = new Customer[5];
+  private final Pathfinding pathfinding;
   private int chefControl;
 
   MasterChef masterChef;
@@ -339,7 +334,7 @@ public class GameScreen implements Screen {
           GameObject saladGameObject = new GameObject(saladText);
           saladGameObject.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
           if(saladGameObject.isClicked(camera)){
-            System.out.println("DONE");
+            System.out.println(customer.getDish());
           }
 
         } else if (customer.getDish() == "burger") {
@@ -348,7 +343,7 @@ public class GameScreen implements Screen {
           burgerGameObject.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
 
           if(burgerGameObject.isClicked(camera)){
-            System.out.println("DONE");
+            System.out.println(customer.getDish());
           }
         }
       }

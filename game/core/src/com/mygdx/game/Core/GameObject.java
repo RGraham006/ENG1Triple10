@@ -96,12 +96,9 @@ public class GameObject {
   }
   public boolean isClicked(OrthographicCamera camera){
     Vector3 touchPos = new Vector3();
-    if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+    if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
       touchPos.set(Gdx.input.getX(), Gdx.input.getY(),0);
       touchPos = camera.unproject(touchPos);
-      System.out.println(touchPos);
-      System.out.println(String.valueOf(position.x) + "," + String.valueOf(position.x + image.GetWidth()));
-      System.out.println(String.valueOf(position.y) + "," + String.valueOf(position.y - image.GetHeight()));
       if (touchPos.x > position.x && touchPos.x < position.x + image.GetWidth()) {
         if (touchPos.y > position.y && touchPos.y < position.y + image.GetHeight()) {
           return true;
