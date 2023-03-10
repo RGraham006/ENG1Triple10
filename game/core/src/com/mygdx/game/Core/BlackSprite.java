@@ -1,5 +1,6 @@
 package com.mygdx.game.Core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -39,5 +40,6 @@ public class BlackSprite extends Renderable {
   public int GetHeight(){
     return  (int)(sprite.getHeight());
   }
+
 
 }
