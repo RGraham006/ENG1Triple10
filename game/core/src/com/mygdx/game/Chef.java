@@ -125,6 +125,7 @@ public class Chef extends Scriptable implements Person {
       return;
 
     gameObject.position.set(path.get(0));
+    b2body.setTransform(gameObject.position.x,gameObject.position.y,b2body.getAngle());
     path.remove(0);
 
 
@@ -261,8 +262,8 @@ public void OnRender()
 
     b2body.setLinearVelocity(velx, vely);
     //cant figure out how to speed the character up it doesnt want to function
-    gameObject.position.x = (b2body.getPosition().x / 1.6f) - getWidth() / 2;
-    gameObject.position.y = b2body.getPosition().y / 1.2f;
+    gameObject.position.x = (b2body.getPosition().x) - getWidth() / 2;
+    gameObject.position.y = b2body.getPosition().y;
   }
 
   /**
@@ -426,7 +427,7 @@ public void OnRender()
   public Optional<Item> FetchItem(){
 
     if(!CanFetchItem())
-      return null;
+      return Optional.empty();
 
     return Optional.ofNullable(heldItems.pop());
   }

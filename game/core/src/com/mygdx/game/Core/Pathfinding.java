@@ -62,6 +62,30 @@ public class Pathfinding
       return Manhatten(ix,iy,jx,jy);
   }
 
+  public void addStaticObject(int x, int y, int width, int height)
+  {
+    int _x = x;
+    int _y = y;
+
+
+    x /= gridSize;
+    y /= gridSize;
+
+    _x -= x * gridSize;
+    _y -= y * gridSize;
+
+    width  = (int)Math.ceil((double)(width + _x)/gridSize);
+    height = (int)Math.ceil((double)(height + _y)/gridSize);
+
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        Cells[getIndex(x+i,y+j)] = OccupationID.Filled;
+      }
+    }
+
+  }
+
+
   private  boolean LegalMove(int x, int y, int index)
   {
     if(!(x>=0 && x< GridX))
@@ -81,6 +105,9 @@ public class Pathfinding
 
     x = x/gridSize;
     y = y/gridSize;
+
+    int _goalX = goalX;
+    int _goalY = goalY;
 
     goalX = goalX/gridSize;
     goalY = goalY/gridSize;
@@ -223,6 +250,7 @@ public class Pathfinding
 
 
     }
+    List<Vector2> path = new LinkedList<>();
 
 
     if(!Found)
@@ -242,17 +270,22 @@ public class Pathfinding
       }
 
 
+      path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
+
+    } else {
+      path.add(new Vector2(_goalX,_goalY));
 
     }
 
-    List<Vector2> path = new LinkedList<>();
-    path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
 
     while(cell.parent != null)
     {
       cell = cell.parent;
+      if(cell.parent != null || !Found)
       path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
     }
+
+
 
     Collections.reverse(path);
     return path;

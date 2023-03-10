@@ -209,19 +209,20 @@ public class GameScreen implements Screen {
    * @param type   the type of the world
    * @param name   the name of the world
    */
-  public static void buildObject(World world, float x, float y, float width, float height,
+  public void buildObject(World world, float x, float y, float width, float height,
       String type, String name) {
     BodyDef bdef = new BodyDef();
     bdef.position.set((x + width / 2), (y + height / 2));
     if (type == "Static") {
       bdef.type = BodyDef.BodyType.StaticBody;
-
+      pathfinding.addStaticObject((int)x,(int)y,(int)width,(int)height);
 
 
     } else if (type == "Dynamic") {
       bdef.type = BodyDef.BodyType.DynamicBody;
     }
     Body body = world.createBody(bdef);
+    body.getPosition();
     body.setUserData(name);
     PolygonShape shape = new PolygonShape();
     shape.setAsBox((width / 2), (height / 2));
@@ -437,6 +438,8 @@ public class GameScreen implements Screen {
       public void beginContact(Contact contact) {
 
         Object objectA = contact.getFixtureA().getBody().getUserData();
+        Object AA = contact.getFixtureA().getBody();
+        Object BB = contact.getFixtureB().getBody();
         Object objectB = contact.getFixtureB().getBody().getUserData();
         Gdx.app.log("beginContact", "between " + objectA + " and " + objectB);
       }
