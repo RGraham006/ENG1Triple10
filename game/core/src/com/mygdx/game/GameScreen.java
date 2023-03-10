@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
   private final int TILE_HEIGHT = 32;
 
   // box2d
-  static World world;
+  public static World world;
   private final Box2DDebugRenderer b2dr;
 
   // map
@@ -155,9 +155,9 @@ public class GameScreen implements Screen {
     for (int i = 0; i < chef.length; i++) {
       GameObject chefsGameObject = new GameObject(
           new BlackSprite());//passing in null since chef will define it later
-      chef[i] = new Chef(world, i);
+      chef[i] = new Chef(world, i, getChefAtlasArray().get(chefControl));
       chefsGameObject.attachScript(chef[i]);
-      chefsGameObject.image.setSize(18, 40);
+      chefsGameObject.image.setSize(18, 40); // set size of sprite
 
       chef[i].updateSpriteFromInput("idlesouth");
     }
@@ -271,6 +271,7 @@ public class GameScreen implements Screen {
       filename = "Chefs/Chef" + i + "/chef" + i + ".txt";
       chefAtlas = new TextureAtlas(filename);
       chefAtlasArray.add(chefAtlas);
+
     }
   }
 

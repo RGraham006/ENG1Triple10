@@ -66,15 +66,16 @@ public class Chef extends Scriptable implements Person {
    * @param world the world in which our objects lie
    * @param id    the individual id of each chef i.e 0,1,2....
    */
-  public Chef(World world, int id) {
+  public Chef(World world, int id, TextureAtlas chefAtlas) {
     this.id = id;
     this.world = world;
+    this.chefAtlas = chefAtlas;
   }
 
   @Override
   public void Start() {
     //Reorganised to fit work flow and requires access to data not yet created
-    chefAtlas = getChefAtlas(GameScreen.getChefAtlasArray());
+//    chefAtlas = getChefAtlas(GameScreen.getChefAtlasArray());
     gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
