@@ -161,6 +161,7 @@ public class Chef extends Scriptable implements Person {
 
 
   void changeItemVisibilities(){
+
   int i = -1;
     for (Item item:heldItems
     ) {

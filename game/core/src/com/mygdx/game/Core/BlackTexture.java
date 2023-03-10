@@ -16,6 +16,11 @@ public class BlackTexture extends Renderable {
     changeTextureFromPath(tex);
   }
 
+  public void changeTexture(Texture tex){
+    texture = tex;
+    textureRegion.setTexture(texture);
+  }
+
 
   public void changeTextureFromPath(String path){
     texture = new Texture(path);

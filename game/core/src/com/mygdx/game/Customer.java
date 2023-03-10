@@ -9,8 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Scriptable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -38,7 +41,10 @@ public class Customer extends Scriptable implements Person {
   private boolean eaten;
   private int spawnWait;
   private final String dish;
+  public HashMap<String, String> itemMap = new HashMap<>();
 
+
+  public GameObject foodIcon;
   Random rand = new Random();
 
   /**
@@ -48,6 +54,8 @@ public class Customer extends Scriptable implements Person {
    * @param customerNumber the ID of each individual customer which will be interacted with
    */
   public Customer(int customerNumber) {
+    itemMap.put("salad", "speech_dish1.png");
+    itemMap.put("burger", "speech_dish2.png");
     currentSpriteAnimation = 1;
     spriteOrientation = "north";
     // sprite.setPosition(posX, posY);
@@ -65,6 +73,8 @@ public class Customer extends Scriptable implements Person {
     }
     this.dish = pickDish();
     System.out.println("customer " + customerNumber + ": " + dish);
+    foodIcon = new GameObject(new BlackTexture(itemMap.get(this.dish)));
+    foodIcon.isVisible = false;
   }
 
   @Override

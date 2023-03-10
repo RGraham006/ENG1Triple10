@@ -8,6 +8,7 @@ import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -86,6 +87,8 @@ public class GameScreen implements Screen {
   public CustomerCounters[] customerCounters;
   public Texture menu = new Texture("recipeSheet.png");
   private final int x = 3;
+
+
 
 
   public Texture ingredientsSprites = new Texture("pixel_veggies1.png");
@@ -330,30 +333,20 @@ public class GameScreen implements Screen {
     for (int i = 0; i < customers.length; i++) {
       //customers[i].gameObject.getSprite().setSize(18, 40);
       //customers[i].draw(game.batch);
-
+      GameObject foodIcon = customers[i].foodIcon;
       if (customers[i].isWaiting()) {
         Customer customer = customers[i];
-        if (customer.getDish() == "salad") {
-          BlackTexture saladText = new BlackTexture("speech_dish1.png");
-          GameObject saladGameObject = new GameObject(saladText);
-          saladGameObject.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
-          if(saladGameObject.isClicked(camera)){
-            System.out.println(customer.getDish());
-          }
-
-        } else if (customer.getDish() == "burger") {
-          BlackTexture burgerText = new BlackTexture("speech_dish2.png");
-          GameObject burgerGameObject = new GameObject(burgerText);
-          burgerGameObject.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
-
-          if(burgerGameObject.isClicked(camera)){
-            System.out.println(customer.getDish());
-          }
+        foodIcon.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
+        foodIcon.isVisible = true;
+        if(foodIcon.isClicked(camera)){
+          System.out.println(customer.getDish());
         }
       }
 
       if (customers[i].getDish() == customerCounters[i].getDish()) {
         customers[i].fed();
+        foodIcon.isVisible = false;
+        foodIcon = null;
       }
     }
 
@@ -373,7 +366,6 @@ public class GameScreen implements Screen {
     game.batch.draw(rTexture, 450, 413, 90, 53);
     game.batch.draw(mTexture, 534, 413, 90, 53);
     game.batch.draw(menu, 10, 405, 130, 70);
-
     game.batch.end();
 
     // Runs the logic for the collisions between counters and chefs
