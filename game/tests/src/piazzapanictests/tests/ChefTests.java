@@ -30,7 +30,10 @@ public class ChefTests {
   public Chef[] chef;
   public World world;
 
-  public void instantiateWorldAndChefs() {
+  /**
+   * Instantiates the world and chefs so that these can be used in the tests.
+   */
+  private void instantiateWorldAndChefs() {
     world = new World(new Vector2(0, 0), true);
     generateChefArray();
     chef = new Chef[2];
@@ -48,7 +51,7 @@ public class ChefTests {
   /**
    * Generates a chef array which can be used to get random chef sprites from the chef class.
    */
-  public void generateChefArray() {
+  private void generateChefArray() {
     String filename;
     TextureAtlas chefAtlas;
     for (int i = 1; i < 4; i++) {
@@ -62,7 +65,7 @@ public class ChefTests {
    * Returns the chef atlas array.
    * @return chefAtlasArray
    */
-  public static ArrayList<TextureAtlas> getChefAtlasArray() {
+  private static ArrayList<TextureAtlas> getChefAtlasArray() {
     return chefAtlasArray;
   }
 
@@ -73,15 +76,10 @@ public class ChefTests {
   public void testChefMoveUp() {
     instantiateWorldAndChefs();
     float currentY = chef[0].getY();
-//    for (int i = 0; i < 10; i++) {
-//      world.step(1 / 60f, 6, 2);
-//      chef[0].updateSpriteFromInput("north");
-//    }
-    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("north");
     world.step(1 / 60f, 6, 2);
     chef[0].updateSpriteFromInput("north");
-
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("north");
     assertTrue("The y position of the chef should be greater ",chef[0].getY() > currentY);
   }
 
@@ -89,10 +87,32 @@ public class ChefTests {
   public void testChefMoveDown() {
     instantiateWorldAndChefs();
     float currentY = chef[0].getY();
-    for (int i = 0; i < 10; i++) {
-      world.step(1 / 60f, 6, 2);
-      chef[0].updateSpriteFromInput("south");
-    }
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("south");
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("south");
     assertTrue("The y position of the chef should be less ",chef[0].getY() < currentY);
+  }
+
+  @Test
+  public void testChefMoveLeft() {
+    instantiateWorldAndChefs();
+    float currentX = chef[0].getX();
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("west");
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("west");
+    assertTrue("The x position of the chef should be less ",chef[0].getX() < currentX);
+  }
+
+  @Test
+  public void testChefMoveRight() {
+    instantiateWorldAndChefs();
+    float currentX = chef[0].getX();
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("east");
+    world.step(1 / 60f, 6, 2);
+    chef[0].updateSpriteFromInput("east");
+    assertTrue("The x position of the chef should be greater ",chef[0].getX() > currentX);
   }
 }
