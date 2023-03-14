@@ -148,7 +148,7 @@ public class GameScreen implements Screen {
     mapRenderer = new OrthogonalTiledMapRenderer(map);
     mapRenderer.setView(camera);
 
-    pathfinding = new Pathfinding(TILE_WIDTH,viewportWidth,viewportWidth);
+    pathfinding = new Pathfinding(TILE_WIDTH/4,viewportWidth,viewportWidth);
 
 
     masterChef = new MasterChef(2,world,camera,pathfinding);

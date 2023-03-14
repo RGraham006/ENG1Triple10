@@ -166,9 +166,9 @@ public class MasterChef extends Scriptable
       touchpos.set(Gdx.input.getX(), Gdx.input.getY(),0);
       touchpos = camera.unproject(touchpos);
 
-   //   List<Vector2> path = pathfind.FindPath((int)getCurrentChef().gameObject.position.x,(int)getCurrentChef().gameObject.position.y,(int)touchpos.x,(int)touchpos.y,DistanceTest.Euclidean);
-      //System.out.println(path);
-     // getCurrentChef().GivePath(path);
+      List<Vector2> path = pathfind.FindPath((int)getCurrentChef().gameObject.position.x,(int)getCurrentChef().gameObject.position.y,(int)touchpos.x,(int)touchpos.y,DistanceTest.Euclidean);
+      System.out.println(path);
+      getCurrentChef().GivePath(path);
     }
 
     if(Gdx.input.isKeyJustPressed(Keys.B))
