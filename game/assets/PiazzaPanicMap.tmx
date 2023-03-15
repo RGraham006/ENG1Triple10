@@ -79,7 +79,7 @@
   <object id="67" x="883.333" y="353.333" width="31.3333" height="61.3333"/>
   <object id="70" x="863.333" y="383.333" width="20" height="32"/>
   <object id="71" x="429.333" y="384" width="434" height="58.6667"/>
-  <object id="73" x="801" y="163" width="65.5" height="32"/>
+  <object id="73" x="800.094" y="162.313" width="66.4063" height="32.6875"/>
  </objectgroup>
  <layer id="5" name="counters + wall decor" width="32" height="18">
   <data encoding="csv">
@@ -104,8 +104,8 @@
 </data>
  </layer>
  <objectgroup id="34" name="counters" offsetx="0.833333" offsety="0.333333">
-  <object id="44" x="672" y="139.5" width="64" height="37.5"/>
-  <object id="45" x="768" y="140.5" width="31" height="37"/>
+  <object id="44" x="670.844" y="139.5" width="65.1563" height="37.5"/>
+  <object id="45" x="767.25" y="140.5" width="31.75" height="37"/>
   <object id="72" x="833.167" y="364.333" width="28" height="16.6667"/>
  </objectgroup>
  <layer id="6" name="pantry+objects" width="32" height="18">
@@ -153,7 +153,7 @@
 </data>
  </layer>
  <objectgroup id="32" name="frying">
-  <object id="23" x="793" y="198" width="71" height="47"/>
+  <object id="23" x="800.136" y="198" width="63.8636" height="45.9091"/>
  </objectgroup>
  <layer id="29" name="chopping board" width="32" height="18">
   <data encoding="csv">
@@ -178,7 +178,7 @@
 </data>
  </layer>
  <objectgroup id="30" name="chopping board">
-  <object id="22" x="737.5" y="139" width="29.5" height="38"/>
+  <object id="22" x="736.844" y="139" width="31.0938" height="38"/>
  </objectgroup>
  <layer id="16" name="tomato" width="32" height="18">
   <data encoding="csv">
@@ -325,7 +325,7 @@
 </data>
  </layer>
  <objectgroup id="28" name="buns">
-  <object id="21" x="488.5" y="130" width="47.5" height="50"/>
+  <object id="21" x="480.5" y="130" width="62.75" height="50"/>
  </objectgroup>
  <layer id="23" name="toaster" width="32" height="18">
   <data encoding="csv">
@@ -350,7 +350,7 @@
 </data>
  </layer>
  <objectgroup id="22" name="toaster" opacity="0.94">
-  <object id="9" x="865.5" y="244.5" width="52.5" height="61.5"/>
+  <object id="9" x="867.682" y="248.136" width="50.3182" height="57.8636"/>
  </objectgroup>
  <objectgroup id="37" name="assembly1">
   <object id="52" x="672.5" y="364.5" width="29.5" height="19"/>
@@ -395,7 +395,7 @@
   <object id="84" x="402.5" y="282.5" width="26" height="38.5"/>
  </objectgroup>
  <objectgroup id="53" name="customerCounter5">
-  <object id="85" x="402.5" y="322" width="26" height="47"/>
+  <object id="85" x="402.5" y="322" width="26" height="61.875"/>
  </objectgroup>
  <layer id="9" name="pantry shelves" width="32" height="18">
   <data encoding="csv">

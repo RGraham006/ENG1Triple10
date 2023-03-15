@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Inputs;
+import com.mygdx.game.Core.PathfindingAgent;
 import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
@@ -40,7 +41,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * @author Labib Zabeneh
  * @author Riko Puusepp
  */
-public class Chef extends Scriptable implements Person {
+public class Chef extends PathfindingAgent implements Person {
 
   float speed = 2000;
 
@@ -55,7 +56,6 @@ public class Chef extends Scriptable implements Person {
   private TextureAtlas chefAtlas;
   public boolean isFrozen;
   private String lastOrientation;
-  public Body b2body;
 
   List<Vector2> path;
 
@@ -84,6 +84,7 @@ public class Chef extends Scriptable implements Person {
    * @param id    the individual id of each chef i.e 0,1,2....
    */
   public Chef(World world, int id, ArrayList<TextureAtlas> chefAtlas) {
+    super();
     this.id = id;
     this.world = world;
     this.chefAtlas = getChefAtlas(chefAtlas);
@@ -117,9 +118,6 @@ public class Chef extends Scriptable implements Person {
 
   }
 
-  public void GivePath(List<Vector2> newPath){
-    path = newPath;
-  }
   public void MoveAlongPath(){
     if(path.size()<=0)
       return;
@@ -215,6 +213,32 @@ public void OnRender()
    */
   @Override
   public void updateSpriteFromInput(String newOrientation) {
+
+    Vector2 dir = GetMoveDir().nor();
+
+    System.out.println(dir);
+    if(dir.dot(dir)<=0)
+      newOrientation = "idle" + spriteOrientation.replace("idle","");
+    else {
+      if (Math.abs(dir.dot(new Vector2(1, 0))) < Math.abs(dir.dot(new Vector2(0, 1)))) {
+        //North prefered
+
+        if (dir.dot(new Vector2(0, 1)) > 0)
+          newOrientation = "north";
+        else
+          newOrientation = "south";
+
+
+      } else {
+        if (dir.dot(new Vector2(1, 0)) > 0)
+          newOrientation = "east";
+        else
+          newOrientation = "west";
+      }
+    }
+
+    System.out.println(newOrientation + " : "  + spriteOrientation + " : " + lastOrientation);
+
     if (newOrientation.contains("idle")) {
       spriteState = newOrientation;
     } else {
@@ -261,10 +285,10 @@ public void OnRender()
         break;
     }
 
-    b2body.setLinearVelocity(velx, vely);
+   // b2body.setLinearVelocity(velx, vely);
     //cant figure out how to speed the character up it doesnt want to function
-    gameObject.position.x = (b2body.getPosition().x) - getWidth() / 2;
-    gameObject.position.y = b2body.getPosition().y;
+   // gameObject.position.x = (b2body.getPosition().x) - getWidth() / 2;
+    //gameObject.position.y = b2body.getPosition().y;
   }
 
   /**

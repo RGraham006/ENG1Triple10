@@ -100,21 +100,26 @@ public class Pathfinding
   }
 
 
-  public List<Vector2> FindPath(int x, int y, int goalX, int goalY, final DistanceTest distanceTest){
+  public List<Vector2> FindPath(int x, int y, int goalX, int goalY, final DistanceTest distanceTest) {
     HashMap<Integer, PathfindingCell> ReachedCells = new HashMap<>();
 
-    x = x/gridSize;
-    y = y/gridSize;
+    int _x = x;
+    int _y = y;
+    x = x / gridSize;
+    y = y / gridSize;
 
     int _goalX = goalX;
     int _goalY = goalY;
 
-    goalX = goalX/gridSize;
-    goalY = goalY/gridSize;
+    goalX = goalX / gridSize;
+    goalY = goalY / gridSize;
 
     PriorityQueue<PathfindingCell> frontier = new PriorityQueue<>();
 
-    frontier.add(new PathfindingCell(x,y, getIndex(x,y), DistanceTesting(x,y,goalX,goalY,distanceTest),0));
+    System.out.println("First: " + getIndex(x, y));
+    frontier.add(
+        new PathfindingCell(x, y, getIndex(x, y), DistanceTesting(x, y, goalX, goalY, distanceTest),
+            0));
 
     PathfindingCell cell = null;
     int nx;
@@ -123,24 +128,21 @@ public class Pathfinding
     float nDist = 0;
     PathfindingCell ncell;
     boolean Found = false;
-    while(frontier.size()>0)
-    {
+    while (frontier.size() > 0) {
       cell = frontier.remove();
 
-      if(cell.x == goalX && cell.y == goalY)
-      {
+      if (cell.x == goalX && cell.y == goalY) {
         Found = true;
         break;
       }
 
-      if(cell.x-1 >= 0)
-      {
-        nx = cell.x -1;
+      if (cell.x - 1 >= 0) {
+        nx = cell.x - 1;
         ny = cell.y;
 
-        ndex = getIndex(nx,ny);
+        ndex = getIndex(nx, ny);
 
-        if(LegalMove(nx,ny,ndex)) {
+        if (LegalMove(nx, ny, ndex)) {
           if (ReachedCells.containsKey(ndex)) {
 
             ncell = ReachedCells.get(ndex);
@@ -161,12 +163,12 @@ public class Pathfinding
           }
         }
       }
-      if(cell.x+1 < GridX){
+      if (cell.x + 1 < GridX) {
         nx = cell.x + 1;
         ny = cell.y;
 
-        ndex = getIndex(nx,ny);
-        if(LegalMove(nx,ny,ndex)) {
+        ndex = getIndex(nx, ny);
+        if (LegalMove(nx, ny, ndex)) {
 
           if (ReachedCells.containsKey(ndex)) {
 
@@ -189,12 +191,12 @@ public class Pathfinding
         }
       }
 
-      if(cell.y-1 >= 0){
+      if (cell.y - 1 >= 0) {
         nx = cell.x;
         ny = cell.y - 1;
 
-        ndex = getIndex(nx,ny);
-        if(LegalMove(nx,ny,ndex)) {
+        ndex = getIndex(nx, ny);
+        if (LegalMove(nx, ny, ndex)) {
 
           if (ReachedCells.containsKey(ndex)) {
 
@@ -216,7 +218,7 @@ public class Pathfinding
           }
         }
       }
-      if(cell.y+1 < GridY) {
+      if (cell.y + 1 < GridY) {
         nx = cell.x;
         ny = cell.y + 1;
 
@@ -246,44 +248,43 @@ public class Pathfinding
       }
 
 
-
-
-
     }
     List<Vector2> path = new LinkedList<>();
 
+    if (!Found) {
+      float MaxDistance = DistanceTesting(x, y, goalX, goalY, distanceTest);
+      ;
+      for (PathfindingCell tcell : ReachedCells.values()) {
+        float distance = DistanceTesting(tcell.x, tcell.y, goalX, goalY, distanceTest);
 
-    if(!Found)
-    {
-      float MaxDistance = DistanceTesting(x, y, goalX,goalY,distanceTest);;
-      for (PathfindingCell tcell: ReachedCells.values())
-      {
-      float distance =   DistanceTesting(tcell.x,tcell.y, goalX,goalY,distanceTest);
-
-
-        if(distance<MaxDistance)
-        {
+        if (distance < MaxDistance) {
           cell = tcell;
           MaxDistance = distance;
         }
 
       }
 
-
-      path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
+      path.add(new Vector2(cell.x * gridSize, cell.y * gridSize));
 
     } else {
-      path.add(new Vector2(_goalX,_goalY));
+      path.add(new Vector2(_goalX, _goalY));
 
     }
 
-
-    while(cell.parent != null)
-    {
+    while (cell.parent != null) {
       cell = cell.parent;
-      if(cell.parent != null || !Found)
-      path.add(new Vector2(cell.x*gridSize,cell.y*gridSize));
+      if (cell.parent != null || !Found) {
+        System.out.println(
+            cell + " : " + getIndex(cell.x, cell.y) + Cells[getIndex(cell.x, cell.y)] + " : "
+                + LegalMove(cell.x, cell.y, getIndex(cell.x, cell.y)));
+        path.add(new Vector2(cell.x * gridSize, cell.y * gridSize));
+
+      }
     }
+
+
+      path.remove(path.size() - 1);
+    //path.add(new Vector2(_x, _y));
 
 
 
