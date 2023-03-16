@@ -5,20 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.physics.box2d.*;
-
 import com.mygdx.game.Core.Scriptable;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Creates the chef object which will interact with every object on the map and assemble dishes to
@@ -35,7 +26,7 @@ public class Chef extends Scriptable implements Person {
 
   private String spriteOrientation, spriteState;
   private int currentSpriteAnimation;
-  private final int MAX_ANIMATION = 4;
+  private final int maxAnimation = 4;
   private float stateTime = 0;
   private TextureAtlas chefAtlas;
   public boolean isFrozen;
@@ -69,13 +60,15 @@ public class Chef extends Scriptable implements Person {
   public Chef(World world, int id, TextureAtlas chefAtlas) {
     this.id = id;
     this.world = world;
-    this.chefAtlas = chefAtlas;
+    this.chefAtlas = chefAtlas; // chef now takes a texture atlas so
+    // that the chefs can be created in the test files. Originally,
+    // chefs were given a texture atlas from the getChefAtlasArray function in the GameScreen class.
+    // Gamescreen could not be directly used in the test files as it caused an error.
   }
 
   @Override
   public void Start() {
     //Reorganised to fit work flow and requires access to data not yet created
-//    chefAtlas = getChefAtlas(GameScreen.getChefAtlasArray());
     gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
@@ -133,8 +126,7 @@ public class Chef extends Scriptable implements Person {
       } else {
         if (stateTime > 1 / 15.0) { // sprite is updated every 15th of a second
           currentSpriteAnimation++;
-//           System.out.println(spriteState);
-          if (currentSpriteAnimation > MAX_ANIMATION) { // a chef has 4 different animations
+          if (currentSpriteAnimation > maxAnimation) { // a chef has 4 different animations
             currentSpriteAnimation = 1;
           }
           stateTime = 0;
@@ -204,7 +196,7 @@ public class Chef extends Scriptable implements Person {
   }
 
   /**
-   * Returns the width of the chef
+   * Returns the width of the chef.
    *
    * @return int width
    */
@@ -213,7 +205,7 @@ public class Chef extends Scriptable implements Person {
   }
 
   /**
-   * Returns the height of the chef
+   * Returns the height of the chef.
    *
    * @return int height
    */
