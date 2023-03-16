@@ -1,11 +1,8 @@
 package com.mygdx.game.Core;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import java.awt.font.FontRenderContext;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class GameObjectManager {
 
@@ -21,14 +18,34 @@ public class GameObjectManager {
     scriptable.Start();
   }
 
-  public List<Scriptable> returnObjectsWithScript(Class<?> scriptType){
+  public List<Scriptable> returnObjectsWithInterface(Class<?> scriptType){
     List<Scriptable> scripts = new LinkedList<>();
     for (GameObject obj: GameObjects.values()
     ) {
       for (Scriptable script: obj.Scripts
       ) {
-        if(scriptType == script.getClass())
-          scripts.add(script);
+
+        Class<?>[] a = script.getClass().getInterfaces();
+        for (Class<?> interf:a
+             ) {
+          if(scriptType == interf) {
+            scripts.add(script);
+            break;
+          }
+        }
+
+        if(script.getClass().getSuperclass() != null) {
+          Class<?>[] b = script.getClass().getSuperclass().getInterfaces();
+
+          for (Class<?> interf:b
+          ) {
+            if(scriptType == interf) {
+              scripts.add(script);
+              break;
+            }
+          }
+
+        }
 
       }
     }

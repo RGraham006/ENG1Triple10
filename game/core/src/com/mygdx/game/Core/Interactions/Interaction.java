@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.Scriptable;
 import java.util.List;
-import java.util.Vector;
 
 public class Interaction {
 
@@ -15,11 +14,11 @@ public class Interaction {
 
 
 
-  public static Scriptable FindClosetInteractable(Vector2 pos, InteractionType type)
+  public static Scriptable FindClosetInteractable(Vector2 pos, InteractionType type, float maxRange)
   {
-    List<Scriptable> interactables = GameObjectManager.objManager.returnObjectsWithScript(Interactable.class);
+    List<Scriptable> interactables = GameObjectManager.objManager.returnObjectsWithInterface(Interactable.class);
 
-    float distance = 99999999;
+    float distance = maxRange*maxRange;
     float dst2 = 0;
     Scriptable currentClosestScript = null;
     Vector2 temp = Vector2.Zero;

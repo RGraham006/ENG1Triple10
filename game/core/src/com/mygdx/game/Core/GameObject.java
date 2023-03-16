@@ -71,7 +71,8 @@ public class GameObject {
   }
 
   public void render(SpriteBatch batch) {
-
+    if(image == null)
+      return;
     if(!isVisible)
       return;
 

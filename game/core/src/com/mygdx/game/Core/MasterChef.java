@@ -21,6 +21,7 @@ import java.util.Optional;
 public class MasterChef extends Scriptable
 {
 
+  public float maxRange = 25;
   public int currentControlledChef = 0;
   private static ArrayList<TextureAtlas> chefAtlasArray;
 
@@ -100,10 +101,13 @@ public class MasterChef extends Scriptable
   public void GiveItem()
   {
 
-    if(chefs[currentControlledChef].CanFetchItem())
+    if(!chefs[currentControlledChef].CanFetchItem())
       return;
 
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Give);
+    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Give, maxRange);
+
+    if(script == null)
+      return;
 
     Optional<Item> itemToGive = chefs[currentControlledChef].FetchItem();
 
@@ -116,11 +120,13 @@ public class MasterChef extends Scriptable
 
   public void FetchItem(){
 
-    if(chefs[currentControlledChef].CanGiveItem())
+    if(!chefs[currentControlledChef].CanGiveItem())
       return;
 
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Fetch);
+    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Fetch, maxRange);
 
+    if(script == null)
+      return;
 
     Item itemToGive = ((Interactable)script).RetrieveItem();
 

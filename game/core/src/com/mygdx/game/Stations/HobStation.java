@@ -12,13 +12,14 @@ public class HobStation extends Station{
     boolean interacted;
     boolean ready;
     public static ArrayList<ItemEnum> ItemWhiteList;
+    public float progress;
     public float maxProgress;
 
     public HobStation(){
         interacted = false;
         ready = false;
         maxProgress = 5;
-        if(ItemWhiteList.isEmpty())
+        if(ItemWhiteList == null)
             ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.RawPatty, ItemEnum.CookedPatty));
     }
 
@@ -46,12 +47,12 @@ public class HobStation extends Station{
 
 
     public boolean CanRetrieve(){
-        return true;
+        return item != null;
     }
 
 
     public boolean CanGive(){
-        return true;
+        return item == null;
     }
 
 
@@ -88,5 +89,21 @@ public class HobStation extends Station{
         }
         if(ready)
             burnItem();
+    }
+
+
+    public void ProgressBar() {
+        progress = item.progress / maxProgress;
+    }
+
+
+    @Override
+    public void Update(float dt) {
+        if (currentRecipe != null) {
+            Cook(dt);
+            ProgressBar();
+        }
+
+        interacted = false;
     }
 }

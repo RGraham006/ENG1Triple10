@@ -12,13 +12,14 @@ public class ChopStation extends Station{
     boolean interacted;
     boolean ready;
     public static ArrayList<ItemEnum> ItemWhiteList;
+    public float progress;
     public float maxProgress;
 
     public ChopStation(){
         interacted = false;
         ready = false;
         maxProgress = 5;
-        if(ItemWhiteList.isEmpty())
+        if(ItemWhiteList == null)
             ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Lettuce, ItemEnum.Tomato,
             ItemEnum.Onion, ItemEnum.Mince));
     }
@@ -26,11 +27,12 @@ public class ChopStation extends Station{
 
     @Override
     public boolean GiveItem(Item item){
-        if(this.item != null)
-            return false;
-        changeItem(item);
-        checkItem();
-        return true;
+        if(this.item == null) {
+            changeItem(item);
+            checkItem();
+            return true;
+        }
+        return false;
     }
 
 
@@ -47,12 +49,12 @@ public class ChopStation extends Station{
 
 
     public boolean CanRetrieve(){
-        return true;
+        return item != null;
     }
 
 
     public boolean CanGive(){
-        return true;
+        return item == null;
     }
 
 
@@ -76,5 +78,19 @@ public class ChopStation extends Station{
             changeItem(new Item(currentRecipe.endItem));
             checkItem();
         }
+    }
+
+    public void ProgressBar() {
+        progress = item.progress / maxProgress;
+    }
+
+
+    @Override
+    public void Update(float dt) {
+        if (currentRecipe != null) {
+            Cut(dt);
+            ProgressBar();
+        }
+
     }
 }

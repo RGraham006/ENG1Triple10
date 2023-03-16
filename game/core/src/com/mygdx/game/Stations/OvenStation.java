@@ -11,13 +11,14 @@ public class OvenStation extends Station {
     boolean interacted;
     boolean ready;
     public float maxProgress;
+    public float progress;
     public static ArrayList<ItemEnum> ItemWhiteList;
 
 
     public OvenStation() {
         ready = false;
         maxProgress = 10;
-        if (ItemWhiteList.isEmpty()) {
+        if (ItemWhiteList == null) {
             ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Potato, ItemEnum.CheesePotato, ItemEnum.MeatPotato,
                     ItemEnum.CheesePizza, ItemEnum.MeatPizza, ItemEnum.VegPizza, ItemEnum.CheesePizzaCooked,
                     ItemEnum.MeatPizzaCooked, ItemEnum.VegPizzaCooked, ItemEnum.BakedPotato, ItemEnum.CheeseBake,
@@ -54,7 +55,7 @@ public class OvenStation extends Station {
 
 
     public boolean CanGive() {
-        return true;
+        return item == null;
     }
 
 
@@ -73,5 +74,20 @@ public class OvenStation extends Station {
             changeItem(new Item(currentRecipe.endItem));
             checkItem();
         }
+    }
+
+
+    public void ProgressBar() {
+        progress = item.progress / maxProgress;
+    }
+
+
+    @Override
+    public void Update(float dt) {
+        if (currentRecipe != null) {
+            Cook(dt);
+            ProgressBar();
+        }
+
     }
 }

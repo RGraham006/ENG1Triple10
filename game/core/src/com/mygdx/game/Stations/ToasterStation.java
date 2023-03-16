@@ -11,13 +11,14 @@ public class ToasterStation extends Station{
     boolean interacted;
     boolean ready;
     public float maxProgress;
+    public float progress;
     public static ArrayList<ItemEnum> ItemWhiteList;
 
 
     public ToasterStation() {
         ready = false;
         maxProgress = 8;
-        if (ItemWhiteList.isEmpty()) {
+        if (ItemWhiteList == null) {
             ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Buns));
         }
     }
@@ -51,7 +52,7 @@ public class ToasterStation extends Station{
 
 
     public boolean CanGive() {
-        return true;
+        return item == null;
     }
 
 
@@ -72,4 +73,18 @@ public class ToasterStation extends Station{
         }
     }
 
+
+    public void ProgressBar() {
+        progress = item.progress / maxProgress;
+    }
+
+
+    @Override
+    public void Update(float dt) {
+        if (currentRecipe != null) {
+            Cook(dt);
+            ProgressBar();
+        }
+
+    }
 }

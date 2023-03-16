@@ -39,7 +39,7 @@ public class CustomerCounters extends Station{
 
 
     public boolean CanGive(){
-        return true;
+        return item == null;
     }
 
 
@@ -49,4 +49,8 @@ public class CustomerCounters extends Station{
         return interacted = true;
     }
 
+
+    @Override
+    public void Update(float dt) {
+    }
 }

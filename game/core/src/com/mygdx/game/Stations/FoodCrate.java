@@ -1,10 +1,11 @@
 package com.mygdx.game.Stations;
 
 import com.mygdx.game.Core.Interactions.Interactable;
+import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 
-public class FoodCrate implements Interactable {
+public class FoodCrate extends Scriptable implements Interactable {
 
     private ItemEnum ingredient;
 

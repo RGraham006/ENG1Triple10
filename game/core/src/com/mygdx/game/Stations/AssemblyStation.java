@@ -58,7 +58,7 @@ public class AssemblyStation extends Station{
 
 
   public boolean CanGive(){
-    return true;
+    return ingredients.size()<4;
   }
 
 
@@ -130,4 +130,7 @@ public class AssemblyStation extends Station{
   public void setDish(ItemEnum item) {
     this.dish = new Item(item);
   }
+
+  @Override
+  public void Update(float dt){}
 }
