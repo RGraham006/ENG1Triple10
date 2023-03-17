@@ -185,8 +185,8 @@ public class GameScreen implements Screen {
         33, 34, 35, 36, 37, 38, 39};
 
     //Fixed the hideous mechanism for creating collidable objects
-    for (int n = 0; n < objectLayers.length; n++) {
-      MapLayer layer = map.getLayers().get(objectLayers[n]);
+    for (int n = 0; n < 17; n++) {
+      MapLayer layer = map.getLayers().get(n);
       String name = layer.getName();
 
       for (MapObject object : layer.getObjects()
