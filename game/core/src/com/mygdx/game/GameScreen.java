@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
   private final int TILE_HEIGHT = 32;
 
   // box2d
-  static World world;
+  public static World world;
   private final Box2DDebugRenderer b2dr;
 
 
@@ -129,7 +129,6 @@ public class GameScreen implements Screen {
   public GameScreen(MyGdxGame game) {
     this.game = game;
     camera = new OrthographicCamera();
-
     int viewportWidth = 32 * TILE_WIDTH;
     int viewportHeight = 18 * TILE_HEIGHT;
     camera.setToOrtho(false, viewportWidth, viewportHeight);
@@ -604,6 +603,7 @@ public class GameScreen implements Screen {
 
   @Override
   public void pause() {
+
   }
 
   @Override

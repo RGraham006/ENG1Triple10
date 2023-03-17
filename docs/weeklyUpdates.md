@@ -112,3 +112,85 @@
   To mitigate risk R2.1 we took meeting minutes (which are accessible by all team members) 
   and updated him on what happened at the end of the week.
 </figure>
+
+###Minutes Taken During Team Meetings
+####Week 1
+**16/02/2023**
+
+Members present - Jack Hinton, Jack Vickers, Felix Seanor, Azzam Amirul Bahri, Hubert Solecki
+Member missing - Sam Toner
+
+- Started looking through documentation
+- Felix looked through licensing
+- Jack Hinton and Felix looked at the method selection and planning deliverable
+- Jack Vickers converted all of the other group’s pdfs and fixed formatting issues with them
+
+**17/02/2023**
+
+Members present - Jack Hinton, Jack Vickers, Felix Seanor, Azzam Amirul Bahri, Hubert Solecki
+Member missing - Sam Toner
+- Jack Vickers, Azzam Amirul Bahri, Hubert Solecki started looking at the existing risk deliverable and created a new risk register
+- Jack Hinton and Felix continued working on the method selection and planning document
+
+####Week 2
+**22/02/2023**
+
+Members Present - Jack Hinton, Jack Vickers, Felix Seanor, Azzam Amirul Bahri, Sam Toner
+Member missing - Hubert Solecki
+- Jack Vickers started implementing continuous integration. He created and began using the gradle.yml file in the github workflow folder
+- Azzam Amirul Bahri and Sam Toner worked on updating the requirements deliverable
+- Azzam Amirul Bahri began looking at unit tests
+- Jack Hinton and Felix Seanor spent time looking through the existing codebase to understand how the previous team has implemented different aspects of the game
+
+**23/02/2023**
+
+Members present - Jack Hinton, Jack Vickers, Felix Seanor, Azzam Amirul Bahri, Hubert Solecki
+Member missing - Sam Toner
+- Jack Vickers finished most of the continuous integration after the previous meeting and so started working on setting up unit tests
+- Jack Hinton and Felix Seanor continued looking at the codebase
+- Hubert Solecki finished his section of the risks deliverable
+
+**24/02/2023**
+
+Members present - Jack Hinton, Jack Vickers, Felix Seanor, Azzam Amirul Bahri, Hubert Solecki, Sam Toner
+Jack Vickers finished setting up unit tests after the previous meeting and so looked over the method selection and planning document
+- Felix Seanor implemented the game object system that we used during assessment 1 after the previous meeting
+- Sam Toner began looking at implementing a proper soundframe and fixing the collision detection system
+- Felix Seanor and Jack Hinton began implementing a proper workstation system similar to what we used for assessment 1 because the game currently uses a strange system for workstations
+- Azzam Amirul Bahri continued researching unit tests.
+
+####Week 3
+**01/03/2023**
+
+Members Present - Jack Hinton, Jack Vickers, Hubert Solecki, Felix Seanor, Azzam Amirul Bahri
+Not present - Sam Toner
+- Jack Vickers and Azzam Amirul Bahri peer reviewed the requirements document which was updated by Sam Toner. They added additional user, functional and nonfunctional requirements to the document in line with the requirements brief
+- Hubert Solecki started updating the gantt chart for the previous and current week
+- Felix Seanor and Jack Hinton continued working on the interaction system for the game
+
+**03/03/2023**
+
+Members present - Jack Hinton, Jack Vickers, Hubert Solecki, Felix Seanor, Azzam Amirul Bahri, Sam Toner
+- Jack Vickers and Azzam Amirul Bahri finished adding additional requirements to the requirements document
+- Jack Vickers, Azzam Amirul Bahri, and Hubert Solecki started work on a test plan for the features required for assessment 1
+- Hubert Solecki completed the gantt chart for the current week
+- Jack Hinton and Felix Seanor continued working on the interaction system
+- Sam Toner worked on implementing the sound frame
+
+####Week 4
+**08/03/2023**
+
+Members present - Jack Hinton, Jack Vickers, Felix Seanor
+Not present - Sam Toner, Azzam Amirul Bahri, Hubert Solecki
+- Jack Vickers continued adding tests to the test plan and began implementing some tests
+- Felix Seanor began working on the customer system and implementing pathfinding
+- Jack Hinton continued working on the interaction system
+
+**09/03/2023**
+
+Members present - Jack Hinton, Jack Vickers, Sam Toner, Felix Seanor, Azzam Amirul Bahri
+Not Present - Hubert Solecki
+- The group held a brief discord meeting
+- We discussed the implementation of pathfinding and changing the control scheme of the game
+- We decided that we would no longer need to use the game’s current collision system because the pathfinding would be set up to stop the chefs from moving over counters and workstations
+- We discussed what each team member needed to be working on

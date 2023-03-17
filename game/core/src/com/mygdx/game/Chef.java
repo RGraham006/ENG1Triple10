@@ -5,12 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.physics.box2d.*;
 
 import com.mygdx.game.Core.BlackTexture;
@@ -18,23 +14,16 @@ import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Inputs;
 import com.mygdx.game.Core.PathfindingAgent;
 import com.mygdx.game.Core.Scriptable;
-import com.mygdx.game.Items.Item;
-import com.mygdx.game.Items.ItemEnum;
-import com.mygdx.game.Stations.Station;
-import com.sun.tools.javac.jvm.Items;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
-import java.util.Timer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+
 
 /**
  * Creates the chef object which will interact with every object on the map and assemble dishes to
- * be fed to the customer The class also handles all sprite animations and movement
+ * be fed to the customer The class also handles all sprite animations and movement.
  *
  * @author Robin Graham
  * @author Amy Cross
@@ -78,16 +67,18 @@ public class Chef extends PathfindingAgent implements Person {
 
 
   /**
-   * Initialise the chef object and sets its spawn position
+   * Initialise the chef object and sets its spawn position.
    *
    * @param world the world in which our objects lie
    * @param id    the individual id of each chef i.e 0,1,2....
    */
-  public Chef(World world, int id, ArrayList<TextureAtlas> chefAtlas) {
-    super();
+  public Chef(World world, int id, TextureAtlas chefAtlas) {
     this.id = id;
     this.world = world;
-    this.chefAtlas = getChefAtlas(chefAtlas);
+    this.chefAtlas = chefAtlas; // chef now takes a texture atlas so
+    // that the chefs can be created in the test files. Originally,
+    // chefs were given a texture atlas from the getChefAtlasArray function in the GameScreen class.
+    // Gamescreen could not be directly used in the test files as it caused an error.
     this.path = new LinkedList<>();
   }
 
@@ -103,7 +94,7 @@ public class Chef extends PathfindingAgent implements Person {
     //sprite.setPosition(posX, posY); unnessary now
     //MyGdxGame.buildObject(world, posX, posY, sprite.getWidth(), sprite.getHeight(), "Dynamic");
     this.lastOrientation = "south";
-    inventory = "none";
+
     defineChef();
     ingredient = new Ingredient("none");
     timerAtlas = new TextureAtlas("Timer/timer.txt");
@@ -131,7 +122,7 @@ public class Chef extends PathfindingAgent implements Person {
 
   /**
    * Defines all box2d associated variables for the chef and sets its hitbox to be used for
-   * collisions
+   * collisions.
    */
   public void defineChef() {
     BodyDef bdef = new BodyDef();
@@ -209,7 +200,7 @@ public void OnRender()
 
 
   /**
-   * Updates the chef position and shows the animation depending on its direction and speed
+   * Updates the chef position and shows the animation depending on its direction and speed.
    */
   @Override
   public void updateSpriteFromInput(String newOrientation) {
@@ -246,10 +237,9 @@ public void OnRender()
         currentSpriteAnimation = 1;
         stateTime = 0;
       } else {
-        if (stateTime > 1 / 15.0) {
+        if (stateTime > 1 / 15.0) { // sprite is updated every 15th of a second
           currentSpriteAnimation++;
-          // System.out.println(spriteState);
-          if (currentSpriteAnimation > MAX_ANIMATION) {
+          if (currentSpriteAnimation > maxAnimation) { // a chef has 4 different animations
             currentSpriteAnimation = 1;
           }
           stateTime = 0;
@@ -292,7 +282,7 @@ public void OnRender()
   }
 
   /**
-   * Sets the texture of the chef
+   * Sets the texture of the chef.
    */
   @Override
   public void setTexture(String texture) {
@@ -301,7 +291,7 @@ public void OnRender()
   }
 
   /**
-   * Returns the x position of the chef
+   * Returns the x position of the chef.
    *
    * @return int posX
    */
@@ -310,7 +300,7 @@ public void OnRender()
   }
 
   /**
-   * Returns the y position of the chef
+   * Returns the y position of the chef.
    *
    * @return int posY
    */
@@ -319,7 +309,7 @@ public void OnRender()
   }
 
   /**
-   * Returns the width of the chef
+   * Returns the width of the chef.
    *
    * @return int width
    */
@@ -328,7 +318,7 @@ public void OnRender()
   }
 
   /**
-   * Returns the height of the chef
+   * Returns the height of the chef.
    *
    * @return int height
    */
@@ -337,7 +327,7 @@ public void OnRender()
   }
 
   /**
-   * Gets the input from the user and orientates the chef accordingly
+   * Gets the input from the user and orientates the chef accordingly.
    */
   @Override
   public String getMove() {
@@ -363,7 +353,7 @@ public void OnRender()
   }
 
   /**
-   * Returns a boolean value if the user is pressing the ctrl key
+   * Returns a boolean value if the user is pressing the ctrl key.
    *
    * @return boolean
    */
@@ -372,7 +362,7 @@ public void OnRender()
   }
 
   /**
-   * Freezes the chef for a set period of time at its given station
+   * Freezes the chef for a set period of time at its given station.
    *
    * @param seconds time used to freeze chef
    * @param station station chef is currently on
@@ -387,7 +377,7 @@ public void OnRender()
   }
 
   /**
-   * Unfreezes the chef after the timer is finished
+   * Unfreezes the chef after the timer is finished.
    */
   public void unfreeze() {
     isFrozen = false;
@@ -397,7 +387,7 @@ public void OnRender()
   }
 
   /**
-   * Stops the chef from moving and sets sprite animation to "idle"
+   * Stops the chef from moving and sets sprite animation to "idle".
    */
   public void stop() {
     b2body.setLinearVelocity(0, 0);
@@ -406,7 +396,7 @@ public void OnRender()
   }
 
   /**
-   * Gets the inventory of the chef, so the item they are currently holding
+   * Gets the inventory of the chef, so the item they are currently holding.
    *
    * @return Ingredient ingredient
    */
@@ -415,7 +405,7 @@ public void OnRender()
   }
 
   /**
-   * Sets the ingredient of the inventory when the chef picks up the according ingredient
+   * Sets the ingredient of the inventory when the chef picks up the according ingredient.
    *
    * @param ingredient the ingredient which we are setting the inventory to
    */
@@ -425,7 +415,7 @@ public void OnRender()
 
   /**
    * Chooses a random sprite for the chef and makes sure both (or mroe) chef assets are different to
-   * each other
+   * each other.
    *
    * @param chefAtlasArray array of chef Atlas's
    * @return Atlas atlas of the chef atlas we are using
@@ -472,7 +462,7 @@ public void OnRender()
   }
   /**
    * Draws the timer onto the screen and runs the animation for the set time Then unfreezes the chef
-   * after timer is finished
+   * after timer is finished.
    *
    * @param batch that we are drawing to
    */

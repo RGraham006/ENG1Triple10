@@ -28,6 +28,12 @@ jobs: # what to do
           distribution: 'temurin'
       - name: Run chmod to make gradlew executable
         run: chmod +x ./game/gradlew
+      - name: Run tests
+        uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        if: startsWith(matrix.os, 'ubuntu')
+        with:
+          arguments: test
+          build-root-directory: game
       - name: Build with Gradle
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
         with:
@@ -35,6 +41,7 @@ jobs: # what to do
           build-root-directory: game
       - name: Create executable JAR
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        if: startsWith(matrix.os, 'ubuntu')
         with:
           arguments: desktop:dist
           build-root-directory: game
@@ -60,9 +67,9 @@ jobs: # what to do
       - name: Download executable JAR
         uses: actions/download-artifact@v3.0.2
         with:
-          name: desktop-1.0.jar
+          name: PiazzaPanic.jar
       - name: Release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
-          files: PiazzaPanic.jar
+          files: desktop-1.0.jar
         

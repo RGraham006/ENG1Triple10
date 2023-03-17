@@ -1,0 +1,16 @@
+apply plugin: "java"
+
+dependencies {
+    implementation 'com.badlogicgames.gdx:gdx-box2d:1.11.0'
+}
+
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = ["src/"]
+sourceSets.main.resources.srcDirs = ["../assets"]
+project.ext.assetsDir = new File("../assets")
+
+eclipse.project {
+    name = appName + "-tests"
+}

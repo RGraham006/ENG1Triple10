@@ -4,9 +4,19 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.mygdx.game.MyGdxGame;
 
-// Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
+// Please note that on macOS your application needs to be started
+// with the -XstartOnFirstThread JVM argument
+
+/**
+ * Launches the desktop (LWJGL) application.
+ */
 public class DesktopLauncher {
 
+  /**
+   * Main method.
+   *
+   * @param arg Command line arguments
+   */
   public static void main(String[] arg) {
     Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
     config.setForegroundFPS(60);
