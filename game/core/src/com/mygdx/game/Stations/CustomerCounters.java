@@ -5,17 +5,14 @@ import com.mygdx.game.Items.Item;
 
 public class CustomerCounters extends Station{
 
-    boolean interacted;
 
     public CustomerCounters(){
-        interacted = false;
+
     }
 
 
     @Override
     public boolean GiveItem(Item item){
-        if(this.item != null)
-            return false;
         changeItem(item);
         return true;
     }
@@ -23,30 +20,34 @@ public class CustomerCounters extends Station{
 
     @Override
     public Item RetrieveItem(){
-        if(item!=null){
-            returnItem = item;
-            deleteItem();
-            currentRecipe = null;
-            return returnItem;
-        }
-        return null;
+        returnItem = item;
+        deleteItem();
+        currentRecipe = null;
+        return returnItem;
     }
 
 
+    @Override
     public boolean CanRetrieve(){
-        return true;
+        return item != null;
     }
 
 
+    @Override
     public boolean CanGive(){
         return item == null;
     }
 
 
-    public boolean interact(){
-        if (currentRecipe == null)
-            return false;
-        return interacted = true;
+    @Override
+    public boolean CanInteract(){
+        return false;
+    }
+
+
+    @Override
+    public boolean Interact(){
+        return false;
     }
 
 

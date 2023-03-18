@@ -23,8 +23,10 @@ public class AssemblyStation extends Station{
 
 
   public AssemblyStation() {
-    ingredients = new ArrayList<Item>();
+    if(ingredients == null)
+      ingredients = new ArrayList<Item>();
     tempIngredients = new ArrayList<ItemEnum>();
+    assembled = false;
   }
 
 
@@ -33,12 +35,10 @@ public class AssemblyStation extends Station{
     if(assembled){
       ingredients.add(getDish());
       ingredients.add(item);
-    }
-    if(ingredients.size() < 4) {
-      ingredients.add(item);
       return true;
     }
-    return false;
+    ingredients.add(item);
+    return true;
   }
 
 
@@ -52,19 +52,26 @@ public class AssemblyStation extends Station{
   }
 
 
+  @Override
   public boolean CanRetrieve(){
     return true;
   }
 
 
+  @Override
   public boolean CanGive(){
     return ingredients.size()<4;
   }
 
 
-  public boolean interact(){
-    if (ingredients.size()<2)
-      return false;
+  @Override
+  public boolean CanInteract(){
+    return !(ingredients.size()<2);
+  }
+
+
+  @Override
+  public boolean Interact(){
     return combine();
   }
 
@@ -95,11 +102,11 @@ public class AssemblyStation extends Station{
    * Assembles the dish into the final one when we have all the correct ingredients
    */
   public boolean combine() {
-    for(int x = 0; x < (ingredients.size()-1); x++){
+    for(int x = 0; x < (ingredients.size()); x++){
       tempIngredients.add(ingredients.get(x).name);
     }
     Collections.sort(tempIngredients);
-    for(int x = 0; x < tempIngredients.size()-2; x++){
+    for(int x = 0; x < tempIngredients.size()-1; x++){
       temp = combinations.CombinationMap.get(tempIngredients.get(x).name()+tempIngredients.get(x+1).name());
       if(temp == null){
         clearTempIngredients();

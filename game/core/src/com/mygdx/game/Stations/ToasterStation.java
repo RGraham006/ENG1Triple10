@@ -26,8 +26,6 @@ public class ToasterStation extends Station{
 
     @Override
     public boolean GiveItem(Item item) {
-        if (this.item != null)
-            return false;
         changeItem(item);
         checkItem();
         return true;
@@ -36,23 +34,34 @@ public class ToasterStation extends Station{
 
     @Override
     public Item RetrieveItem() {
-        if (item != null) {
-            returnItem = item;
-            deleteItem();
-            currentRecipe = null;
-            return returnItem;
-        }
-        return null;
+        returnItem = item;
+        deleteItem();
+        currentRecipe = null;
+        return returnItem;
     }
 
 
+    @Override
     public boolean CanRetrieve() {
-        return true;
+        return item != null;
     }
 
 
+    @Override
     public boolean CanGive() {
         return item == null;
+    }
+
+
+    @Override
+    public boolean CanInteract() {
+        return false;
+    }
+
+
+    @Override
+    public boolean Interact() {
+        return false;
     }
 
 

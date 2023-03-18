@@ -46,11 +46,13 @@ public class HobStation extends Station{
     }
 
 
+    @Override
     public boolean CanRetrieve(){
         return item != null;
     }
 
 
+    @Override
     public boolean CanGive(){
         return item == null;
     }
@@ -64,9 +66,13 @@ public class HobStation extends Station{
     }
 
 
-    public boolean interact(){
-        if (currentRecipe == null)
-            return false;
+    @Override
+    public boolean CanInteract() {
+        return currentRecipe != null;
+    }
+
+    @Override
+    public boolean Interact(){
         return interacted = true;
     }
 

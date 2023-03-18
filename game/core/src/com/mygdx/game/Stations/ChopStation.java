@@ -48,15 +48,22 @@ public class ChopStation extends Station{
     }
 
 
+    @Override
     public boolean CanRetrieve(){
         return item != null;
     }
 
 
+    @Override
     public boolean CanGive(){
         return item == null;
     }
 
+
+    @Override
+    public boolean CanInteract() {
+        return currentRecipe != null;
+    }
 
     public void checkItem(){
         if(ItemWhiteList.contains(item.name))
@@ -66,9 +73,8 @@ public class ChopStation extends Station{
     }
 
 
-    public boolean interact(){
-        if (currentRecipe == null)
-            return false;
+    @Override
+    public boolean Interact(){
         return interacted = true;
     }
 

@@ -13,4 +13,5 @@ public static int MOVE_CHEF_RIGHT = Keys.D;
 public static int GIVE_ITEM = Keys.Q;
 public static int FETCH_ITEM = Keys.E;
 public static int DROP_ITEM = Keys.F;
+public static int INTERACT = Keys.SPACE;
 }

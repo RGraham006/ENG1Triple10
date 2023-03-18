@@ -6,24 +6,40 @@ import com.mygdx.game.Items.Item;
 
 public class TrashCan extends Scriptable implements Interactable {
 
+
     @Override
     public boolean GiveItem(Item item){
         return true;
     }
+
 
     @Override
     public Item RetrieveItem(){
         return null;
     }
 
+
     @Override
     public boolean CanRetrieve(){
         return false;
     }
 
+
     @Override
     public boolean CanGive(){
         return true;
+    }
+
+
+    @Override
+    public boolean CanInteract() {
+        return false;
+    }
+
+
+    @Override
+    public boolean Interact() {
+        return false;
     }
 
 

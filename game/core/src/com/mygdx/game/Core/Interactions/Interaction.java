@@ -10,6 +10,7 @@ public class Interaction {
   public enum InteractionType{
       Fetch,
       Give,
+      Interact
   }
 
 
@@ -34,6 +35,9 @@ public class Interaction {
           continue;
       } else if(type == InteractionType.Give){
         if(!((Interactable)script).CanGive())
+          continue;
+      } else if(type == InteractionType.Interact) {
+        if(!((Interactable)script).CanInteract())
           continue;
       }
       if(dst2 < distance)

@@ -81,7 +81,7 @@ public class MasterChef extends Scriptable
     for (int i = 0; i < chefs.length; i++) {
       GameObject chefsGameObject = new GameObject(
           new BlackSprite());//passing in null since chef will define it later
-      chefs[i] = new Chef(world, i,chefAtlasArray);
+      chefs[i] = new Chef(world, i,chefAtlasArray.get(i));
       chefsGameObject.attachScript(chefs[i]);
       chefsGameObject.image.setSize(18, 40);
 
@@ -139,6 +139,15 @@ public class MasterChef extends Scriptable
 
   }
 
+  public void Interact(){
+    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position, InteractionType.Interact, maxRange);
+
+    if(script == null)
+      return;
+
+    ((Interactable)script).Interact();
+  }
+
   void selectChef() {
     for (int i = 0; i < chefs.length; i++) {
       if (Gdx.input.isKeyPressed(Input.Keys.NUM_1
@@ -166,6 +175,8 @@ public class MasterChef extends Scriptable
       GiveItem();
     if(Gdx.input.isKeyJustPressed(Inputs.FETCH_ITEM))
       FetchItem();
+    if(Gdx.input.isKeyJustPressed(Inputs.INTERACT))
+      Interact();
 
     if( Gdx.input.isButtonJustPressed(0)) {
       Vector3 touchpos = new Vector3();

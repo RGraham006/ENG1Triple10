@@ -14,6 +14,10 @@ import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Inputs;
 import com.mygdx.game.Core.PathfindingAgent;
 import com.mygdx.game.Core.Scriptable;
+import com.mygdx.game.Items.Item;
+import com.mygdx.game.Items.ItemEnum;
+import com.mygdx.game.Stations.Station;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -239,7 +243,7 @@ public void OnRender()
       } else {
         if (stateTime > 1 / 15.0) { // sprite is updated every 15th of a second
           currentSpriteAnimation++;
-          if (currentSpriteAnimation > maxAnimation) { // a chef has 4 different animations
+          if (currentSpriteAnimation > MAX_ANIMATION) { // a chef has 4 different animations
             currentSpriteAnimation = 1;
           }
           stateTime = 0;
