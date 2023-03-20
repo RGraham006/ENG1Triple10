@@ -76,7 +76,7 @@ public class Chef extends PathfindingAgent implements Person {
    * @param world the world in which our objects lie
    * @param id    the individual id of each chef i.e 0,1,2....
    */
-  public Chef(World world, int id, ArrayList<TextureAtlas> chefAtlas) {
+  public Chef(World world, int id, TextureAtlas chefAtlas) {
     super();
     this.id = id;
     this.world = world;
@@ -93,7 +93,7 @@ public class Chef extends PathfindingAgent implements Person {
     gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
-    gameObject.position.x = 700 + 32 * id;
+    gameObject.position.x = 750 + 32 * id;
     gameObject.position.y = 300;
     isFrozen = false;
     //sprite.setPosition(posX, posY); unnessary now
