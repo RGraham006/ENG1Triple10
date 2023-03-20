@@ -76,6 +76,9 @@ public class GameObject {
 
     if(!isVisible || destroyed)
       return;
+    if(image == null)
+      return;
+
 
 
     doOnRenderUpdate();

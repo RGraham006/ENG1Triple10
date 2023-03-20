@@ -92,7 +92,6 @@ public class Customer extends PathfindingAgent implements Person {
   /**
    * Updates the sprite to follow the correct animation.
    */
-  @SuppressWarnings("checkstyle:MissingSwitchDefault")
   @Override
   public void updateSpriteFromInput(String newOrientation) {
     if (newOrientation.contains("idle")) {
@@ -218,7 +217,7 @@ public class Customer extends PathfindingAgent implements Person {
     if (choice) {
       return "burger";
     } else {
-      return "burger";
+      return "salad";
     }
   }
 
@@ -262,12 +261,7 @@ public class Customer extends PathfindingAgent implements Person {
    *
    * @param batch the batch in which we draw onto
    */
-  //  @Override
-  //  public void draw(Batch batch) {
-  //    if (!idle) {
-  //      sprite.draw(batch);
-  //    }
-  //  }
+
 
   /**
    * Checks if the customer has successfully been fed.

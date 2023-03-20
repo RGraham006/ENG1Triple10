@@ -13,9 +13,11 @@ import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Inputs;
 import com.mygdx.game.Core.PathfindingAgent;
+import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import com.mygdx.game.Stations.Station;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,6 +77,7 @@ public class Chef extends PathfindingAgent implements Person {
    * @param id    the individual id of each chef i.e 0,1,2....
    */
   public Chef(World world, int id, TextureAtlas chefAtlas) {
+    super();
     this.id = id;
     this.world = world;
     this.chefAtlas = chefAtlas; // chef now takes a texture atlas so
@@ -90,13 +93,13 @@ public class Chef extends PathfindingAgent implements Person {
     gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
-    gameObject.position.x = 700 + 32 * id;
+    gameObject.position.x = 750 + 32 * id;
     gameObject.position.y = 300;
     isFrozen = false;
     //sprite.setPosition(posX, posY); unnessary now
     //MyGdxGame.buildObject(world, posX, posY, sprite.getWidth(), sprite.getHeight(), "Dynamic");
     this.lastOrientation = "south";
-    inventory = "none";
+
     defineChef();
     ingredient = new Ingredient("none");
     timerAtlas = new TextureAtlas("Timer/timer.txt");

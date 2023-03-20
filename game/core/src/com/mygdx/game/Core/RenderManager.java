@@ -27,16 +27,14 @@ public class RenderManager {
 
     for (GameObject obj : GameObjectManager.objManager.GameObjects.values()
     ) {
+      if(obj.image != null)
       LayerOrderedRenderables.add(obj);
     }
 
     Collections.sort(LayerOrderedRenderables, new Comparator<GameObject>() {
       @Override
       public int compare(GameObject o1, GameObject o2) {
-        if(o1.image == null)
-          return -1;
-        if(o2.image == null)
-          return 1;
+
         return o1.image.compare(o1.image, o2.image);
       }
     });

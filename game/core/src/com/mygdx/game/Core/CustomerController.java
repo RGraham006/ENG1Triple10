@@ -54,6 +54,7 @@ public class CustomerController extends Scriptable
     tables = new LinkedList<>();
     FrustrationCallBack = (CustomerGroups a)   -> FrustrationLeave(a);
     MoneyPerCustomer = params.MoneyPerCustomer;
+    CallEndGame = CallUpGameFinish;
     Money = params.MoneyStart;
     MaxMoney = params.MaxMoney;
     Reputation = params.Reputation;
@@ -279,8 +280,8 @@ public class CustomerController extends Scriptable
 
     //Calculate points
     EndOfGameValues values = new EndOfGameValues();
-    values.score = 0;
-    values.Won  = true;
+    values.score = Money;
+    values.Won  = Reputation>0;
     CallEndGame.accept(values);
   }
   public boolean tryGiveFood(Item item){
