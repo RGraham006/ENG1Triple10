@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
   private final int TILE_HEIGHT = 32;
 
   // box2d
-  public static World world;
+  static World world;
   private final Box2DDebugRenderer b2dr;
 
 
@@ -111,14 +111,18 @@ public class GameScreen implements Screen {
   public Texture bunToasted = new Texture("bunToasted.png");
   public Texture burger = new Texture("bourger_32x32.png");
   public Texture salad = new Texture("Salad_32x32.png");
+  public GameObject exitLogo = new GameObject(new BlackTexture("Exit.png"));
 
   // game timer and displayTimer
   private float seconds = 0f;
   private int timer = 0;
   private final Label timerLabel;
   private final BitmapFont timerFont;
+  public
 
   Music gameMusic;
+
+  public showRecipeInstructions recipeScreen = new showRecipeInstructions();
 
   /**
    * Constructor class which initialises all the variables needed to draw the sprites and also
@@ -129,6 +133,8 @@ public class GameScreen implements Screen {
   public GameScreen(MyGdxGame game) {
     this.game = game;
     camera = new OrthographicCamera();
+    recipeScreen.showRecipeInstruction();
+
     int viewportWidth = 32 * TILE_WIDTH;
     int viewportHeight = 18 * TILE_HEIGHT;
     camera.setToOrtho(false, viewportWidth, viewportHeight);
@@ -139,6 +145,9 @@ public class GameScreen implements Screen {
 
     // tomatoTexture = new Texture("tomato_2.png");
 
+
+    recipeScreen.createInstructionPage("Empty");
+
     dish1 = new Texture("speech_dish1.png");
     dish2 = new Texture("speech_dish2.png");
     spaceTexture = new Texture("space.png");
@@ -148,6 +157,10 @@ public class GameScreen implements Screen {
     rTexture = new Texture("r_key.png");
     world = new World(new Vector2(0, 0), true);
     b2dr = new Box2DDebugRenderer();
+    exitLogo.isVisible = false;
+    exitLogo.getBlackTexture().height=30;
+    exitLogo.getBlackTexture().width=30;
+    exitLogo.position = new Vector2(713, 454);
 
     // add map
     map = new TmxMapLoader().load("PiazzaPanicMap.tmx");
@@ -169,6 +182,7 @@ public class GameScreen implements Screen {
     // generate customer sprites to be used by customer class
     customerAtlasArray = new ArrayList<TextureAtlas>();
     generateCustomerArray();
+
 
     for (int i = 0; i < customers.length; i++) {
 
@@ -248,6 +262,9 @@ public class GameScreen implements Screen {
     timerLabel = new Label("TIME: " + timer,
         new Label.LabelStyle(new BitmapFont(), Color.WHITE));
     timerFont = new BitmapFont();
+
+
+
   }
 
 
@@ -462,8 +479,17 @@ public class GameScreen implements Screen {
         foodIcon.position = new Vector2(((customer.getX() + customer.gameObject.getSprite().sprite.getWidth() / 2) - 5), ((customer.getY() + customer.gameObject.getSprite().sprite.getHeight()) - 5));
         foodIcon.isVisible = true;
         if(foodIcon.isClicked(camera)){
-          System.out.println(customer.getDish());
+          recipeScreen.changeInstructionPage(customer.getDish());
+          recipeScreen.makeVisible();
         }
+      }
+      if(recipeScreen.imageObject.isVisible && exitLogo.isVisible == false){
+        exitLogo.isVisible = true;
+      }
+
+      if(exitLogo.isVisible && exitLogo.isClicked(camera)){
+        exitLogo.isVisible = false;
+        recipeScreen.makeInvisible();
       }
 
 //      if (customers[i].getDish() == customerCounters[i].getDish()) {

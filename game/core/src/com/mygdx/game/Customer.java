@@ -231,7 +231,7 @@ public class Customer extends Scriptable implements Person {
     if (choice) {
       return "burger";
     } else {
-      return "salad";
+      return "burger";
     }
   }
 
