@@ -27,7 +27,9 @@ public class GameObject {
   public GameObject(Renderable renderable) {
 
     image = renderable;
-    GameObjectManager.objManager.SubmitGameObject(this);
+    if (GameObjectManager.objManager != null) {
+      GameObjectManager.objManager.SubmitGameObject(this);
+    }
     position = new Vector2();
 
   }
@@ -74,6 +76,9 @@ public class GameObject {
 
     if(!isVisible || destroyed)
       return;
+    if(image == null)
+      return;
+
 
 
     doOnRenderUpdate();

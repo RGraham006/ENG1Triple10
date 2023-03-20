@@ -68,7 +68,9 @@ public abstract class Station extends Scriptable implements Interactable {
     this.item = item;
   }
 
-  public void deleteItem(){}
+  public void deleteItem(){
+    item = null;
+  }
 
 
 

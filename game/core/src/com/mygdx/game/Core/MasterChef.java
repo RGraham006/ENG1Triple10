@@ -21,6 +21,7 @@ import java.util.Optional;
 public class MasterChef extends Scriptable
 {
 
+  public float maxRange = 25;
   public int currentControlledChef = 0;
   private static ArrayList<TextureAtlas> chefAtlasArray;
 
@@ -80,7 +81,7 @@ public class MasterChef extends Scriptable
     for (int i = 0; i < chefs.length; i++) {
       GameObject chefsGameObject = new GameObject(
           new BlackSprite());//passing in null since chef will define it later
-      chefs[i] = new Chef(world, i,chefAtlasArray);
+      chefs[i] = new Chef(world, i,chefAtlasArray.get(i));
       chefsGameObject.attachScript(chefs[i]);
       chefsGameObject.image.setSize(18, 40);
 
@@ -100,10 +101,13 @@ public class MasterChef extends Scriptable
   public void GiveItem()
   {
 
-    if(chefs[currentControlledChef].CanFetchItem())
+    if(!chefs[currentControlledChef].CanFetchItem())
       return;
 
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Give);
+    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Give, maxRange);
+
+    if(script == null)
+      return;
 
     Optional<Item> itemToGive = chefs[currentControlledChef].FetchItem();
 
@@ -116,11 +120,13 @@ public class MasterChef extends Scriptable
 
   public void FetchItem(){
 
-    if(chefs[currentControlledChef].CanGiveItem())
+    if(!chefs[currentControlledChef].CanGiveItem())
       return;
 
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Fetch);
+    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Fetch, maxRange);
 
+    if(script == null)
+      return;
 
     Item itemToGive = ((Interactable)script).RetrieveItem();
 
@@ -131,6 +137,15 @@ public class MasterChef extends Scriptable
     chefs[currentControlledChef].GiveItem(itemToGive);
 
 
+  }
+
+  public void Interact(){
+    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position, InteractionType.Interact, maxRange);
+
+    if(script == null)
+      return;
+
+    ((Interactable)script).Interact();
   }
 
   void selectChef() {
@@ -160,6 +175,8 @@ public class MasterChef extends Scriptable
       GiveItem();
     if(Gdx.input.isKeyJustPressed(Inputs.FETCH_ITEM))
       FetchItem();
+    if(Gdx.input.isKeyJustPressed(Inputs.INTERACT))
+      Interact();
 
     if( Gdx.input.isButtonJustPressed(0)) {
       Vector3 touchpos = new Vector3();

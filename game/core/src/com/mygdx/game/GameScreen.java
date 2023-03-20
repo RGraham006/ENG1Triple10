@@ -11,6 +11,8 @@ import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -43,6 +45,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.mygdx.game.RecipeAndComb.CombinationDict;
+import com.mygdx.game.RecipeAndComb.RecipeDict;
+import com.mygdx.game.Stations.*;
 
 /**
  * This is the main class of the game which runs all the logic and rendering Here all the outside
@@ -66,7 +71,7 @@ public class GameScreen implements Screen {
   private final int TILE_HEIGHT = 32;
 
   // box2d
-  static World world;
+  public static World world;
   private final Box2DDebugRenderer b2dr;
 
   private CustomerController customerController;
@@ -87,8 +92,10 @@ public class GameScreen implements Screen {
   Texture dish1, dish2;
   Texture spaceTexture, ctrlTexture, shiftTexture, rTexture, mTexture;
 
+  List<GameObject> Stations = new LinkedList();
+  List<GameObject> customerCounters = new LinkedList();
+  List<GameObject> assemblyStations = new LinkedList();
 
-  public CustomerCounters[] customerCounters;
   public Texture menu = new Texture("recipeSheet.png");
   private final int x = 3;
 
@@ -179,10 +186,10 @@ public class GameScreen implements Screen {
 
     GameObjectManager.objManager.AppendLooseScript(customerController);
 
-    customerCounters = new CustomerCounters[5];
-    for (int i = 0; i < customerCounters.length; i++) {
-      customerCounters[i] = new CustomerCounters("customerCounter" + i);
-    }
+    new CombinationDict();
+    CombinationDict.combinations.implementItems();
+    new RecipeDict();
+    RecipeDict.recipes.implementRecipes();
 
     // generate customer sprites to be used by customer class
     customerAtlasArray = new ArrayList<TextureAtlas>();
@@ -202,8 +209,8 @@ public class GameScreen implements Screen {
         33, 34, 35, 36, 37, 38, 39};
 
     //Fixed the hideous mechanism for creating collidable objects
-    for (int n = 0; n < objectLayers.length; n++) {
-      MapLayer layer = map.getLayers().get(objectLayers[n]);
+    for (int n = 0; n < 17; n++) {
+      MapLayer layer = map.getLayers().get(n);
       String name = layer.getName();
 
       for (MapObject object : layer.getObjects()
@@ -212,8 +219,57 @@ public class GameScreen implements Screen {
         Rectangle rect = ((RectangleMapObject) object).getRectangle();
         buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), "Static",
             name);
+
+        switch (name) {
+          case "bin":
+            CreateBin(rect);
+            break;
+          case "counter":
+            CreateAssembly(rect);
+            break;
+          case "frying":
+            CreateHobs(rect);
+            break;
+          case "chopping board":
+            CreateChopping(rect);
+            break;
+          case "toaster":
+            CreateToaster(rect);
+            break;
+          case "oven":
+            CreateOven(rect);
+            break;
+          case "customer counter":
+            CreateCustomerCounters(rect);
+            break;
+          case "tomato":
+            CreateFoodCrates(rect, ItemEnum.Tomato);
+            break;
+          case "lettuce":
+            CreateFoodCrates(rect, ItemEnum.Lettuce);
+            break;
+          case "onion":
+            CreateFoodCrates(rect, ItemEnum.Onion);
+            break;
+          case "mince":
+            CreateFoodCrates(rect, ItemEnum.Mince);
+            break;
+          case "buns":
+            CreateFoodCrates(rect, ItemEnum.Buns);
+            break;
+          case "dough":
+            CreateFoodCrates(rect, ItemEnum.Dough);
+            break;
+          case "cheese":
+            CreateFoodCrates(rect, ItemEnum.Cheese);
+            break;
+          case "potato":
+            CreateFoodCrates(rect, ItemEnum.Potato);
+            break;
+        }
       }
     }
+
     timerLabel = new Label("TIME: " + timer,
         new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -222,6 +278,74 @@ public class GameScreen implements Screen {
 
     timerFont = new BitmapFont();
   }
+
+
+  void CreateBin(Rectangle rect) {
+    GameObject Bin = new GameObject(null);
+    Bin.setPosition(rect.getX(), rect.getY());
+    TrashCan TC = new TrashCan();
+    Bin.attachScript(TC);
+    Stations.add(Bin);
+  }
+
+  void CreateHobs(Rectangle rect) {
+    GameObject Hob = new GameObject(null);
+    Hob.setPosition(rect.getX(), rect.getY());
+    HobStation HS = new HobStation();
+    Hob.attachScript(HS);
+    Stations.add(Hob);
+  }
+
+  void CreateToaster(Rectangle rect) {
+    GameObject Toast = new GameObject(null);
+    Toast.setPosition(rect.getX(), rect.getY());
+    ToasterStation TS = new ToasterStation();
+    Toast.attachScript(TS);
+    Stations.add(Toast);
+  }
+
+  void CreateChopping(Rectangle rect) {
+    GameObject Chop = new GameObject(null);
+    Chop.setPosition(rect.getX(), rect.getY());
+    ChopStation CS = new ChopStation();
+    Chop.attachScript(CS);
+    Stations.add(Chop);
+  }
+
+  void CreateOven(Rectangle rect) {
+    GameObject Oven = new GameObject(null);
+    Oven.setPosition(rect.getX(), rect.getY());
+    OvenStation OS = new OvenStation();
+    Oven.attachScript(OS);
+    Stations.add(Oven);
+  }
+
+  void CreateFoodCrates(Rectangle rect, ItemEnum item) {
+    GameObject Crate = new GameObject(null);
+    Crate.setPosition(rect.getX(), rect.getY());
+    FoodCrate FC = new FoodCrate(item);
+    Crate.attachScript(FC);
+    Stations.add(Crate);
+  }
+
+  void CreateAssembly(Rectangle rect) {
+    GameObject Ass = new GameObject(null);
+    Ass.setPosition(rect.getX(), rect.getY());
+    AssemblyStation AS = new AssemblyStation();
+    Ass.attachScript(AS);
+    assemblyStations.add(Ass);
+    Stations.add(Ass);
+  }
+
+  void CreateCustomerCounters(Rectangle rect) {
+    GameObject Cust = new GameObject(null);
+    Cust.setPosition(rect.getX(), rect.getY());
+    CustomerCounters CC = new CustomerCounters();
+    Cust.attachScript(CC);
+    customerCounters.add(Cust);
+    Stations.add(Cust);
+  }
+
 
   /**
    * A function which builds the world box in Box2d which is used for all the hitboxes;
@@ -526,6 +650,7 @@ public class GameScreen implements Screen {
 
   @Override
   public void pause() {
+
   }
 
   @Override

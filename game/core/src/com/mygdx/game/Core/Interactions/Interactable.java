@@ -7,8 +7,11 @@ public interface Interactable {
 
   public boolean CanRetrieve();
   public boolean CanGive();
+  public boolean CanInteract();
 
   public Item RetrieveItem();
 
   public boolean GiveItem(Item item);
+
+  public boolean Interact();
 }

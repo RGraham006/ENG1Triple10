@@ -11,13 +11,14 @@ public class OvenStation extends Station {
     boolean interacted;
     boolean ready;
     public float maxProgress;
+    public float progress;
     public static ArrayList<ItemEnum> ItemWhiteList;
 
 
     public OvenStation() {
         ready = false;
         maxProgress = 10;
-        if (ItemWhiteList.isEmpty()) {
+        if (ItemWhiteList == null) {
             ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Potato, ItemEnum.CheesePotato, ItemEnum.MeatPotato,
                     ItemEnum.CheesePizza, ItemEnum.MeatPizza, ItemEnum.VegPizza, ItemEnum.CheesePizzaCooked,
                     ItemEnum.MeatPizzaCooked, ItemEnum.VegPizzaCooked, ItemEnum.BakedPotato, ItemEnum.CheeseBake,
@@ -28,8 +29,6 @@ public class OvenStation extends Station {
 
     @Override
     public boolean GiveItem(Item item) {
-        if (this.item != null)
-            return false;
         changeItem(item);
         checkItem();
         return true;
@@ -38,23 +37,34 @@ public class OvenStation extends Station {
 
     @Override
     public Item RetrieveItem() {
-        if (item != null) {
-            returnItem = item;
-            deleteItem();
-            currentRecipe = null;
-            return returnItem;
-        }
-        return null;
+        returnItem = item;
+        deleteItem();
+        currentRecipe = null;
+        return returnItem;
     }
 
 
+    @Override
     public boolean CanRetrieve() {
-        return true;
+        return item != null;
     }
 
 
+    @Override
     public boolean CanGive() {
-        return true;
+        return item == null;
+    }
+
+
+    @Override
+    public boolean CanInteract(){
+        return false;
+    }
+
+
+    @Override
+    public boolean Interact() {
+        return false;
     }
 
 
@@ -68,10 +78,23 @@ public class OvenStation extends Station {
 
     public void Cook(float dt) {
         ready = currentRecipe.RecipeSteps.get(item.step).timeStep(item, dt, interacted, maxProgress);
-
         if (ready) {
             changeItem(new Item(currentRecipe.endItem));
             checkItem();
+        }
+    }
+
+
+    public void ProgressBar() {
+        progress = item.progress / maxProgress;
+    }
+
+
+    @Override
+    public void Update(float dt) {
+        if (currentRecipe != null) {
+            Cook(dt);
+            ProgressBar();
         }
     }
 }

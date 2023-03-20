@@ -30,8 +30,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Customer extends PathfindingAgent implements Person {
 
-  private final float waitHeight;
-  private final float waitWidth;
+  Sprite sprite;
+  private float waitHeight, waitWidth;
   private int currentSpriteAnimation;
   private final int MAX_ANIMATION = 4;
   private TextureAtlas customerAtlas;
@@ -39,8 +39,8 @@ public class Customer extends PathfindingAgent implements Person {
 
   private int size;
   private String spriteOrientation, spriteState;
-  private final String lastOrientation;
-  private final int customerNumber;
+  private String lastOrientation;
+  private int customerNumber;
   private boolean idle;   // customer will be invisible during idle because out of map
   private boolean waitingAtCounter;   // customer will be waiting at the counter for their dish
   private boolean eaten;
@@ -90,7 +90,7 @@ public class Customer extends PathfindingAgent implements Person {
   }
 
   /**
-   * Updates the sprite to follow the correct animation
+   * Updates the sprite to follow the correct animation.
    */
   @Override
   public void updateSpriteFromInput(String newOrientation) {
@@ -133,7 +133,7 @@ public class Customer extends PathfindingAgent implements Person {
   }
 
   /**
-   * Sets the customer texture for each customer
+   * Sets the customer texture for each customer.
    */
   @Override
   public void setTexture(String texture) {
@@ -147,7 +147,7 @@ public class Customer extends PathfindingAgent implements Person {
   }
 
   /**
-   * Gets the move of the customer and direction and sets the animations accordingly
+   * Gets the move of the customer and direction and sets the animations accordingly.
    *
    * @return currentDirection direction of the customer
    */
@@ -180,7 +180,7 @@ public class Customer extends PathfindingAgent implements Person {
 
 
   /**
-   * Returns the x of the customer
+   * Returns the x of the customer.
    *
    * @return int posX the x position of the customer
    */
@@ -217,7 +217,7 @@ public class Customer extends PathfindingAgent implements Person {
     if (choice) {
       return "burger";
     } else {
-      return "burger";
+      return "salad";
     }
   }
 

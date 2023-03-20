@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.4">
+<file name="C:\Users\Jacka\Triple10-X-BlackCatStudios\game\tests\src\Main.java">
+<error line="1" column="1" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocTypeCheck"/>
+</file>
+<file name="C:\Users\Jacka\Triple10-X-BlackCatStudios\game\tests\src\piazzapanictests\AssetTests.java">
+</file>
+<file name="C:\Users\Jacka\Triple10-X-BlackCatStudios\game\tests\src\piazzapanictests\GdxTestRunner.java">
+<error line="3" severity="warning" message="Empty line should be followed by &lt;p&gt; tag on the next line." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck"/>
+<error line="7" severity="warning" message="Empty line should be followed by &lt;p&gt; tag on the next line." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck"/>
+<error line="9" severity="warning" message="Empty line should be followed by &lt;p&gt; tag on the next line." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocParagraphCheck"/>
+<error line="22" column="1" severity="warning" message="Extra separation in import group before &apos;org.junit.runner.notification.RunNotifier&apos;" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="27" column="1" severity="warning" message="Extra separation in import group before &apos;com.badlogic.gdx.Gdx&apos;" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="27" column="1" severity="warning" message="Wrong lexicographical order for &apos;com.badlogic.gdx.Gdx&apos; import. Should be before &apos;org.junit.runners.model.InitializationError&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" column="1" severity="warning" message="Wrong lexicographical order for &apos;com.badlogic.gdx.graphics.GL20&apos; import. Should be before &apos;org.junit.runners.model.InitializationError&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="30" column="1" severity="warning" message="Import statement for &apos;org.mockito.Mockito.mock&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="32" column="1" severity="warning" message="Extra separation in import group before &apos;com.badlogic.gdx.ApplicationListener&apos;" source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="32" column="1" severity="warning" message="Wrong lexicographical order for &apos;com.badlogic.gdx.ApplicationListener&apos; import. Should be before &apos;org.junit.runners.model.InitializationError&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="33" column="1" severity="warning" message="Wrong lexicographical order for &apos;com.badlogic.gdx.backends.headless.HeadlessApplication&apos; import. Should be before &apos;org.junit.runners.model.InitializationError&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="34" column="1" severity="warning" message="Wrong lexicographical order for &apos;com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration&apos; import. Should be before &apos;org.junit.runners.model.InitializationError&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="36" column="1" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocTypeCheck"/>
+<error line="38" severity="warning" message="Line is longer than 100 characters (found 105)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="40" column="3" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+</file>
+</checkstyle>
