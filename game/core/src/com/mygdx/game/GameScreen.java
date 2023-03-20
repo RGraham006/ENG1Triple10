@@ -340,7 +340,7 @@ public class GameScreen implements Screen {
   void CreateCustomerCounters(Rectangle rect) {
     GameObject Cust = new GameObject(null);
     Cust.setPosition(rect.getX(), rect.getY());
-    CustomerCounters CC = new CustomerCounters();
+    CustomerCounters CC = new CustomerCounters((Item a) -> (customerController.tryGiveFood(a)));
     Cust.attachScript(CC);
     customerCounters.add(Cust);
     Stations.add(Cust);

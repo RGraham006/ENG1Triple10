@@ -2,12 +2,16 @@ package com.mygdx.game.Stations;
 
 import com.mygdx.game.Items.Item;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 
 public class CustomerCounters extends Station{
 
+    Function<Item, Boolean> script;
 
-    public CustomerCounters(){
-
+    public CustomerCounters(Function<Item, Boolean> script){
+        this.script = script;
     }
 
 
@@ -53,7 +57,9 @@ public class CustomerCounters extends Station{
 
 
     public void GiveFood(){
-
+        boolean answer = script.apply(item);
+        if(answer)
+            deleteItem();
     }
 
     @Override
