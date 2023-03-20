@@ -14,6 +14,7 @@ public class CustomerCounters extends Station{
     @Override
     public boolean GiveItem(Item item){
         changeItem(item);
+        GiveFood();
         return true;
     }
 
@@ -50,6 +51,10 @@ public class CustomerCounters extends Station{
         return false;
     }
 
+
+    public void GiveFood(){
+
+    }
 
     @Override
     public void Update(float dt) {
