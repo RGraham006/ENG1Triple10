@@ -1,10 +1,306 @@
 package com.mygdx.game.Core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.mygdx.game.Core.Customers.CustomerGroups;
+import com.mygdx.game.Core.Customers.OrderMenu;
+import com.mygdx.game.Core.Customers.Randomisation;
+import com.mygdx.game.Core.Customers.Table;
+import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
+import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
+import com.mygdx.game.Customer;
+import com.mygdx.game.Items.Item;
+import java.util.LinkedList;
+import java.util.List;
+import com.badlogic.gdx.math.Vector2;
+import java.util.Random;
+import java.util.function.Consumer;
+
 public class CustomerController extends Scriptable
 {
+  CustomerGroups currentWaiting = null;
+  List<CustomerGroups> SittingCustomers = new LinkedList<>();
+  List<CustomerGroups> WalkingBackCustomers = new LinkedList<>();
+  Pathfinding pathfinding;
+  List<Table> tables;
+  Consumer<EndOfGameValues> CallEndGame;
+
+  public int Reputation;
+  public int Money;
+  int MaxMoney;
+  int MaxReputation;
+  int MoneyPerCustomer;
+
+  int Waves = -1;
+  OrderMenu menu;
+  int currentCustomer = 0;
+  int currentWave = 0;
+  private float EatingTime = 7;
+
+  Random rand = new Random();
+
+  private Vector2 groupSize = new Vector2(2,4);
+  float NextToLeave = EatingTime;
+
+
+  Consumer<CustomerGroups> FrustrationCallBack;
+
+  Vector2 DoorTarget;
+  Vector2 OrderAreaTarget;
+  private int CustomerFrustrationStart = 80;
+
+  public CustomerController(Vector2 DoorPosition, Vector2 OrderArea, Pathfinding path,
+      Consumer<EndOfGameValues> CallUpGameFinish, CustomerControllerParams params, Vector2... TablePositions){
+    tables = new LinkedList<>();
+    FrustrationCallBack = (CustomerGroups a)   -> FrustrationLeave(a);
+    MoneyPerCustomer = params.MoneyPerCustomer;
+    Money = params.MoneyStart;
+    MaxMoney = params.MaxMoney;
+    Reputation = params.Reputation;
+    MaxReputation = params.Reputation;
+
+    for (Vector2 pos: TablePositions
+    ) {
+      tables.add(new Table(pos,30));
+    }
+
+    pathfinding = path;
+    OrderAreaTarget = OrderArea;
+    DoorTarget = DoorPosition;
+
+
+    menu = new OrderMenu(10,7,3);
+  }
+
+  /***
+   * Set the maximum number of waves to do, exclusively. Resets currentWave to 0
+   * @param amount
+   */
+  public void SetWaveAmount(int amount){
+    Waves = amount;
+    currentWave = 0;
+  }
+
+  public void UpdateCustomerMovements(List<CustomerGroups> customers){
+    for (int i = 0; i < customers.size(); i++) {
+      customers.get(i).updateSpriteFromInput();
+    }
+  }
+
+
+  public void ModifyReputation(int DR){
+
+    Reputation += DR;
+    Reputation = Math.min(Reputation,MaxReputation);
+
+    if(Reputation<=0)
+      EndGame();
+  }
+
+
+  public boolean ChangeMoney(float DM){
+    if(DM>=0)
+    {
+      Money += DM;
+      Money = Math.min(MaxMoney,Money);
+      return true;
+    }
+
+    if(Money-DM>=0){
+      Money  += DM;
+      return true;
+    }
+
+    return false;
+
+
+  }
+
+
+  @Override
+  public void Update(float dt) {
+    super.Update(dt);
+
+    if(currentWaiting!=null)
+    currentWaiting.updateSpriteFromInput();
+    UpdateCustomerMovements(SittingCustomers);
+    UpdateCustomerMovements(WalkingBackCustomers);
+
+
+    FrustrationCheck(dt);
+
+    RemoveCustomerTest();
+      SeeIfCustomersShouldLeave(dt);
+    CanAcceptNewCustomer();
 
 
 
+  }
+
+  public Table GetTable(){
+    for (Table option:tables
+    ) {
+        if(option.isFree())
+          return option;
+    }
+
+    return null;
+  }
+  private void FrustrationCheck(float dt){
+    if(currentWaiting == null)
+      return;
+    currentWaiting.CheckFrustration(dt,FrustrationCallBack);
+  }
+  public void SeeIfCustomersShouldLeave(float dt){
+    if(SittingCustomers.size()>0)
+      NextToLeave -= dt;
+
+    if(NextToLeave <= 0)
+      RemoveCurrentlySeatedCustomers();
+
+    TryDeleteCustomers();
+
+  }
+
+  void RemoveCurrentlySeatedCustomers(){
+      CustomerGroups groups = SittingCustomers.get(0);
+      groups.table.relinquish();
+      WalkingBackCustomers.add(groups);
+      SittingCustomers.remove(0);
+
+      SetCustomerGroupTarget(groups,DoorTarget);
+
+      NextToLeave = EatingTime;
+
+  }
+
+  void TryDeleteCustomers(){
+    List<Integer> removals = new LinkedList<>();
+    int r =0;
+    for (CustomerGroups group: WalkingBackCustomers
+    ) {
+
+      for (int i = group.Members.size()-1; i >= 0 ; i--) {
+
+          if(group.Members.get(i).gameObject.position.dst(DoorTarget.x,DoorTarget.y)<1) {
+            group.Members.get(i).gameObject.Destroy();
+            group.Members.remove(i);
+          }
+
+      }
+
+      if(group.Members.size()==0)
+        removals.add(r);
+
+      r++;
+
+    }
+    for (Integer i: removals
+    ) {
+      WalkingBackCustomers.remove(i);
+    }
+  }
+
+  void CreateNewCustomer(){
+    Table table = GetTable();
+    int rnd = rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;
+    currentWaiting = new CustomerGroups(rnd,currentCustomer, DoorTarget, CustomerFrustrationStart, menu.CreateNewOrder(rnd, Randomisation.Normalised));
+    currentCustomer += rnd;
+
+    currentWaiting.table= table;
+    table.DesignateSeating(rnd,rand);
+
+    SetWaitingForOrderTarget();
+  }
+
+  void SetWaitingForOrderTarget(){
+    for (int i = 0; i < currentWaiting.MembersInLine.size(); i++) {
+        SetCustomerTarget(currentWaiting.MembersInLine.get(i),new Vector2(0,40*i).add(OrderAreaTarget));
+    }
+  }
+
+  void CanAcceptNewCustomer(){
+    if(DoSatisfactionCheck())
+    {
+      SittingCustomers.add(currentWaiting);
+      currentWaiting = null;
+    }
+
+    if(currentWaiting == null && SittingCustomers.size() < tables.size())
+    {
+      if(Waves != currentWave++) //if not the max number of waves increment
+      CreateNewCustomer();
+      else
+        EndGame();
+
+
+    }
+
+
+
+  }
+
+  public void FrustrationLeave(CustomerGroups group){
+    SetCustomerGroupTarget(group,DoorTarget);
+    group.table.relinquish();
+    currentWaiting = null;
+    WalkingBackCustomers.add(group);
+    ModifyReputation(-1);
+  }
+
+  public void SetCustomerGroupTarget(CustomerGroups group, Vector2 target){
+    for (Customer customer: group.Members
+    ) {
+        SetCustomerTarget(customer,target);
+    }
+  }
+
+  public void SetCustomerTarget(Customer customer, Vector2 target){
+    customer.GivePath(pathfinding.FindPath((int) customer.gameObject.position.x,
+        (int) customer.gameObject.position.y, (int) target.x, (int) target.y,DistanceTest.Manhatten));
+
+  }
+
+
+  void RemoveCustomerTest(){
+    if(Gdx.input.isKeyJustPressed(
+        Keys.S )&& currentWaiting != null){
+
+      Customer customer = currentWaiting.RemoveFirstCustomer();
+      SetCustomerTarget(customer,currentWaiting.table.GetNextSeat());
+      ChangeMoney(MoneyPerCustomer);
+
+      SetWaitingForOrderTarget();
+    }
+
+  }
+  private void EndGame(){
+    //calculate win or loss
+
+    //Calculate points
+    EndOfGameValues values = new EndOfGameValues();
+    values.score = 0;
+    values.Won  = true;
+    CallEndGame.accept(values);
+  }
+  public boolean tryGiveFood(Item item){
+    boolean success = currentWaiting.TryRemoveCustomer(item);
+
+
+
+
+
+    if(success) {
+      SetCustomerTarget(currentWaiting.MembersSeatedOrWalking.get(currentWaiting.MembersSeatedOrWalking.size()-1),currentWaiting.table.GetNextSeat());
+      SetWaitingForOrderTarget();
+      ChangeMoney(MoneyPerCustomer);
+    }
+    return success;
+  }
+
+  boolean DoSatisfactionCheck(){
+    return currentWaiting != null && currentWaiting.MembersInLine.size()==0 ;
+  }
 
 
 

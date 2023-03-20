@@ -7,6 +7,7 @@ public abstract class Renderable {
   public int layer;
 
   public abstract void Render(SpriteBatch batch, float x, float y);
+  public abstract void Destroy();
 
   public abstract void setSize(int x, int y);
 

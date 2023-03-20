@@ -73,9 +73,8 @@ public class GameObject {
   }
 
   public void render(SpriteBatch batch) {
-    if(image == null)
-      return;
-    if(!isVisible)
+
+    if(!isVisible || destroyed)
       return;
 
 
@@ -109,5 +108,10 @@ public class GameObject {
       }
     }
     return false;
+  }
+
+  public void Destroy(){
+    GameObjectManager.objManager.DestroyGameObject(this);
+    image.Destroy();
   }
 }

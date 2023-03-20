@@ -73,6 +73,12 @@ public class BlackTexture extends Renderable {
     batch.draw(textureRegion, x, y, width, height);
   }
 
+  @Override
+  public void Destroy() {
+    texture = null;
+    textureRegion = null;
+  }
+
   public int GetWidth()
   {
     return width;
