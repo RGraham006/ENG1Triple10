@@ -18,6 +18,11 @@ public class BlackSprite extends Renderable {
 
   }
 
+  @Override
+  public void Destroy() {
+    sprite = null;
+  }
+
 
   @Override
   public void setSize(int x,int y) {
