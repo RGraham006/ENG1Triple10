@@ -7,6 +7,7 @@ public enum ItemEnum
   CutLettuce,
   Tomato,
   CutTomato,
+  TomSauce,
   Onion,
   CutOnion,
   LettuceTomatoSalad,

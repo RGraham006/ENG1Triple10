@@ -19,14 +19,16 @@ public class Interaction {
   {
     List<Scriptable> interactables = GameObjectManager.objManager.returnObjectsWithInterface(Interactable.class);
 
-    float distance = maxRange*maxRange;
+    float distance = maxRange*maxRange*maxRange;
     float dst2 = 0;
     Scriptable currentClosestScript = null;
     Vector2 temp = Vector2.Zero;
+    Vector2 ScriptPos;
     for (Scriptable script: interactables
     ) {
       temp.set(pos);
-      dst2 = (temp.sub(script.gameObject.position).dot(temp));
+      ScriptPos = script.gameObject.position;
+      dst2 = (temp.sub(ScriptPos).dot(temp));
 
 
       if(type == InteractionType.Fetch)
@@ -40,11 +42,13 @@ public class Interaction {
         if(!((Interactable)script).CanInteract())
           continue;
       }
-      if(dst2 < distance)
-      {
-        distance = dst2;
-        currentClosestScript = script;
-
+      if((pos.x + maxRange) > ScriptPos.x && (pos.x - maxRange) < ScriptPos.x + script.gameObject.getWidth()){
+        if((pos.y + maxRange) > ScriptPos.y && (pos.y - maxRange) < ScriptPos.y + script.gameObject.getHeight()){
+          if(dst2 < distance){
+            distance = dst2;
+            currentClosestScript = script;
+          }
+        }
       }
 
     }

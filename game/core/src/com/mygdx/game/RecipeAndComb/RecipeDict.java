@@ -33,6 +33,8 @@ public class RecipeDict {
         //Dough -> PizzaBase
         RecipeMap.put(ItemEnum.Dough, new Recipe(ItemEnum.PizzaBase, steps));
 
+        //CutTomato -> TomSauce
+        RecipeMap.put(ItemEnum.CutTomato, new Recipe(ItemEnum.TomSauce, steps));
 
         //Oven Recipes
 

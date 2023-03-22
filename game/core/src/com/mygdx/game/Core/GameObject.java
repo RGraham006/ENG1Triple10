@@ -19,6 +19,10 @@ public class GameObject {
   public Vector2 position;
   public Boolean destroyed = false;
 
+  public float PhysicalWidth;
+
+  public float PhysicalHeight;
+
   public Boolean isVisible = true;
   private Integer UID;
   List<Scriptable> Scripts = new LinkedList<>();
@@ -31,6 +35,8 @@ public class GameObject {
       GameObjectManager.objManager.SubmitGameObject(this);
     }
     position = new Vector2();
+    PhysicalWidth = -1;
+    PhysicalHeight = -1;
 
   }
 
@@ -111,6 +117,23 @@ public class GameObject {
       }
     }
     return false;
+  }
+
+  public void setWidthAndHeight(float width, float height){
+    PhysicalWidth = width;
+    PhysicalHeight = height;
+  }
+
+  public float getWidth(){
+    if(PhysicalWidth == -1)
+      return image.GetWidth();
+    return PhysicalWidth;
+  }
+
+  public float getHeight(){
+    if(PhysicalHeight == -1)
+      return image.GetHeight();
+    return PhysicalHeight;
   }
 
   public void Destroy(){

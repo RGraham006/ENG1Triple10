@@ -283,6 +283,7 @@ public class GameScreen implements Screen {
   void CreateBin(Rectangle rect) {
     GameObject Bin = new GameObject(null);
     Bin.setPosition(rect.getX(), rect.getY());
+    Bin.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     TrashCan TC = new TrashCan();
     Bin.attachScript(TC);
     Stations.add(Bin);
@@ -291,6 +292,7 @@ public class GameScreen implements Screen {
   void CreateHobs(Rectangle rect) {
     GameObject Hob = new GameObject(null);
     Hob.setPosition(rect.getX(), rect.getY());
+    Hob.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     HobStation HS = new HobStation();
     Hob.attachScript(HS);
     Stations.add(Hob);
@@ -299,6 +301,7 @@ public class GameScreen implements Screen {
   void CreateToaster(Rectangle rect) {
     GameObject Toast = new GameObject(null);
     Toast.setPosition(rect.getX(), rect.getY());
+    Toast.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     ToasterStation TS = new ToasterStation();
     Toast.attachScript(TS);
     Stations.add(Toast);
@@ -307,6 +310,7 @@ public class GameScreen implements Screen {
   void CreateChopping(Rectangle rect) {
     GameObject Chop = new GameObject(null);
     Chop.setPosition(rect.getX(), rect.getY());
+    Chop.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     ChopStation CS = new ChopStation();
     Chop.attachScript(CS);
     Stations.add(Chop);
@@ -315,6 +319,7 @@ public class GameScreen implements Screen {
   void CreateOven(Rectangle rect) {
     GameObject Oven = new GameObject(null);
     Oven.setPosition(rect.getX(), rect.getY());
+    Oven.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     OvenStation OS = new OvenStation();
     Oven.attachScript(OS);
     Stations.add(Oven);
@@ -323,6 +328,7 @@ public class GameScreen implements Screen {
   void CreateFoodCrates(Rectangle rect, ItemEnum item) {
     GameObject Crate = new GameObject(null);
     Crate.setPosition(rect.getX(), rect.getY());
+    Crate.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     FoodCrate FC = new FoodCrate(item);
     Crate.attachScript(FC);
     Stations.add(Crate);
@@ -331,6 +337,7 @@ public class GameScreen implements Screen {
   void CreateAssembly(Rectangle rect) {
     GameObject Ass = new GameObject(null);
     Ass.setPosition(rect.getX(), rect.getY());
+    Ass.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     AssemblyStation AS = new AssemblyStation();
     Ass.attachScript(AS);
     assemblyStations.add(Ass);
@@ -340,6 +347,7 @@ public class GameScreen implements Screen {
   void CreateCustomerCounters(Rectangle rect) {
     GameObject Cust = new GameObject(null);
     Cust.setPosition(rect.getX(), rect.getY());
+    Cust.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     CustomerCounters CC = new CustomerCounters((Item a) -> (customerController.tryGiveFood(a)));
     Cust.attachScript(CC);
     customerCounters.add(Cust);
