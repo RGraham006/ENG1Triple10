@@ -21,7 +21,7 @@ public class ChopStation extends Station{
         maxProgress = 5;
         if(ItemWhiteList == null)
             ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Lettuce, ItemEnum.Tomato,
-            ItemEnum.Onion, ItemEnum.Mince));
+            ItemEnum.Onion, ItemEnum.Mince, ItemEnum.CutTomato, ItemEnum.Dough));
     }
 
 
