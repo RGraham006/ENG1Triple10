@@ -114,6 +114,7 @@ public class AssemblyStation extends Station{
         return false;
       }
       tempIngredients.set(x+1, temp);
+      Collections.sort(tempIngredients);
     }
     setDish(tempIngredients.get(tempIngredients.size()-1));
     clearIngredients();

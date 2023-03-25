@@ -57,13 +57,13 @@
   <object id="113" x="867.5" y="248" width="47" height="57.5"/>
  </objectgroup>
  <objectgroup id="49" name="customer counter">
-  <object id="81" x="402.5" y="159.5" width="26" height="33.5"/>
-  <object id="120" x="403.5" y="193.75" width="26" height="29.5"/>
-  <object id="121" x="403.5" y="224.75" width="26" height="30.5"/>
-  <object id="122" x="402.5" y="255.25" width="26" height="32"/>
-  <object id="123" x="403.5" y="287.5" width="26" height="32"/>
-  <object id="125" x="403.5" y="320" width="26" height="32"/>
-  <object id="126" x="404" y="352" width="26" height="32"/>
+  <object id="81" x="402.5" y="159.5" width="28" height="33.5"/>
+  <object id="120" x="403.5" y="193.75" width="26.6667" height="29.5"/>
+  <object id="121" x="403.5" y="224.75" width="27.3333" height="30.5"/>
+  <object id="122" x="402.5" y="255.25" width="28" height="32"/>
+  <object id="123" x="403.5" y="287.5" width="28" height="32"/>
+  <object id="125" x="403.5" y="320" width="27.3333" height="32"/>
+  <object id="126" x="404" y="352" width="26.6667" height="32"/>
  </objectgroup>
  <objectgroup id="24" name="tomato">
   <object id="11" x="574" y="122" width="34" height="56"/>
