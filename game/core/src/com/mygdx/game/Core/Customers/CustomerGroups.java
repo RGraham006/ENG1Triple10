@@ -50,7 +50,7 @@ public class CustomerGroups {
     for (int i = 0; i < MembersInLine.size(); i++) {
         if(MembersInLine.get(i).dish == item.name)
         {
-          MembersInLine.remove(i);
+          MembersSeatedOrWalking.add(MembersInLine.remove(i));
           Frustration += RecoveryValue;
           return true;
         }
