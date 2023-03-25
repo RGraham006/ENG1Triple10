@@ -103,6 +103,9 @@ public class Pathfinding
   public List<Vector2> FindPath(int x, int y, int goalX, int goalY, final DistanceTest distanceTest) {
     HashMap<Integer, PathfindingCell> ReachedCells = new HashMap<>();
 
+    if(x == goalX && y == goalY)
+      return new LinkedList<>();
+
     int _x = x;
     int _y = y;
     x = x / gridSize;
