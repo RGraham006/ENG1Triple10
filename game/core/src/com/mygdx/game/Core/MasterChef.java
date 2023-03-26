@@ -44,7 +44,7 @@ public class MasterChef extends Scriptable {
   }
 
   /**
-   * Generates a chef array which can be used to get random chef sprites from the chef class
+   * Generates a chef array which can be used to get random chef sprites from the chef class.
    */
   public void generateChefArray() {
     String filename;
