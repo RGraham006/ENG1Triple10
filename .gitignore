@@ -1,2 +1,6 @@
 /game/core/build/
 /game/.gradle/
+/game/tests/build/classes/java/main/piazzapanictests/tests/ChefTests.class
+/game/tests/build/classes/java/test/piazzapanictests/tests/ChefTests.class
+/game/tests/build/tmp/test/jar_extract_119360971529968645_tmp
+/game/tests/build/

@@ -105,23 +105,24 @@ public class Chef extends PathfindingAgent implements Person {
     timerAtlas = new TextureAtlas("Timer/timer.txt");
     timerSprite = timerAtlas.createSprite("01");
 
-    for (int i = 0; i < CarryCapacity; i++)
-    {
-      HeldItemGameObjects.add(new GameObject( new BlackTexture(Item.GetItemPath(ItemEnum.Buns))));
+    for (int i = 0; i < CarryCapacity; i++) {
+      HeldItemGameObjects.add(new GameObject(new BlackTexture(Item.GetItemPath(ItemEnum.Buns))));
       HeldItemGameObjects.get(i).isVisible = false;
 
     }
 
   }
 
-  public void MoveAlongPath(){
-    if(path.size()<=0)
+  public void MoveAlongPath() {
+    if (path.size() <= 0) {
       return;
+    }
 
-    gameObject.position.set(path.get(0));
-    b2body.setTransform(gameObject.position.x,gameObject.position.y,b2body.getAngle());
+    gameObject.position.set(
+        path.get(0)); // set the position of the chef to the first position in the path
+    b2body.setTransform(gameObject.position.x, gameObject.position.y, b2body.getAngle());
     path.remove(0);
-
+//    path.remove(0);
 
   }
 
@@ -153,55 +154,53 @@ public class Chef extends PathfindingAgent implements Person {
   }
 
 
+  void changeItemVisibilities() {
 
-  void changeItemVisibilities(){
-
-  int i = -1;
-    for (Item item:heldItems
+    int i = -1;
+    for (Item item : heldItems
     ) {
-    i++;
+      i++;
 
-    GameObject obj = HeldItemGameObjects.get(i);
-    if(!obj.isVisible)
-      obj.image = item.tex;
+      GameObject obj = HeldItemGameObjects.get(i);
+      if (!obj.isVisible) {
+        obj.image = item.tex;
+      }
 
       obj.isVisible = true;
     }
 
-    for (int j = i+1; j < CarryCapacity; j++) {
+    for (int j = i + 1; j < CarryCapacity; j++) {
       GameObject obj = HeldItemGameObjects.get(j);
-    obj.isVisible = false;
+      obj.isVisible = false;
     }
 
     for (int j = 0; j < CarryCapacity; j++) {
       GameObject obj = HeldItemGameObjects.get(j);
-      obj.position.x = gameObject.position.x ;
-      obj.position.y = gameObject.position.y+j*5;
-      obj.image.layer = 1+j;
+      obj.position.x = gameObject.position.x;
+      obj.position.y = gameObject.position.y + j * 5;
+      obj.image.layer = 1 + j;
 
-        //removed multiply by position bc lol whats going on with that
-        if( spriteOrientation.contains("north")) {
-          obj.position.y += obj.image.GetHeight() / 2;
-          obj.image.layer -= CarryCapacity;
-        }
-        else
-        if( spriteOrientation.contains("south"))          obj.position.y -= obj.image.GetHeight()/2;
-else
-      if( spriteOrientation.contains("east"))          obj.position.x += obj.image.GetWidth()/2;
-else
-
-      if( spriteOrientation.contains("west"))          obj.position.x -=  obj.image.GetWidth()/2 + 5;
+      //removed multiply by position bc lol whats going on with that
+      if (spriteOrientation.contains("north")) {
+        obj.position.y += obj.image.GetHeight() / 2;
+        obj.image.layer -= CarryCapacity;
+      } else if (spriteOrientation.contains("south")) {
+        obj.position.y -= obj.image.GetHeight() / 2;
+      } else if (spriteOrientation.contains("east")) {
+        obj.position.x += obj.image.GetWidth() / 2;
+      } else if (spriteOrientation.contains("west")) {
+        obj.position.x -= obj.image.GetWidth() / 2 + 5;
+      }
 
 
     }
   }
 
-@Override
-public void OnRender()
-{
+  @Override
+  public void OnRender() {
 
-  changeItemVisibilities();
-}
+    changeItemVisibilities();
+  }
 
 
   /**
@@ -213,27 +212,29 @@ public void OnRender()
     Vector2 dir = GetMoveDir().nor();
 
     System.out.println(dir);
-    if(dir.dot(dir)<=0)
-      newOrientation = "idle" + spriteOrientation.replace("idle","");
-    else {
+    if (dir.dot(dir) <= 0) {
+      newOrientation = "idle" + spriteOrientation.replace("idle", "");
+    } else {
       if (Math.abs(dir.dot(new Vector2(1, 0))) < Math.abs(dir.dot(new Vector2(0, 1)))) {
         //North prefered
 
-        if (dir.dot(new Vector2(0, 1)) > 0)
+        if (dir.dot(new Vector2(0, 1)) > 0) {
           newOrientation = "north";
-        else
+        } else {
           newOrientation = "south";
+        }
 
 
       } else {
-        if (dir.dot(new Vector2(1, 0)) > 0)
+        if (dir.dot(new Vector2(1, 0)) > 0) {
           newOrientation = "east";
-        else
+        } else {
           newOrientation = "west";
+        }
       }
     }
 
-    System.out.println(newOrientation + " : "  + spriteOrientation + " : " + lastOrientation);
+    System.out.println(newOrientation + " : " + spriteOrientation + " : " + lastOrientation);
 
     if (newOrientation.contains("idle")) {
       spriteState = newOrientation;
@@ -280,9 +281,9 @@ public void OnRender()
         break;
     }
 
-   // b2body.setLinearVelocity(velx, vely);
+    // b2body.setLinearVelocity(velx, vely);
     //cant figure out how to speed the character up it doesnt want to function
-   // gameObject.position.x = (b2body.getPosition().x) - getWidth() / 2;
+    // gameObject.position.x = (b2body.getPosition().x) - getWidth() / 2;
     //gameObject.position.y = b2body.getPosition().y;
   }
 
@@ -433,28 +434,30 @@ public void OnRender()
   }
 
   public boolean CanFetchItem() {
-    if (heldItems.size() == 0)
+    if (heldItems.size() == 0) {
       return false;
+    }
 
     return true;
 
   }
 
-  public boolean CanGiveItem(){
+  public boolean CanGiveItem() {
     return heldItems.size() < CarryCapacity;
 
   }
-  public Optional<Item> FetchItem(){
 
-    if(!CanFetchItem())
+  public Optional<Item> FetchItem() {
+
+    if (!CanFetchItem()) {
       return Optional.empty();
+    }
 
     return Optional.ofNullable(heldItems.pop());
   }
 
-  public Boolean GiveItem(Item item){
-    if(CanGiveItem())
-    {
+  public Boolean GiveItem(Item item) {
+    if (CanGiveItem()) {
       heldItems.add(item);
       return true;
     }
@@ -462,9 +465,12 @@ public void OnRender()
     return false;
   }
 
-  public void DropItem(){
-    heldItems.pop();
+  public void DropItem() {
+    if (heldItems.size() != 0) {
+      heldItems.pop();
+    }
   }
+
   /**
    * Draws the timer onto the screen and runs the animation for the set time Then unfreezes the chef
    * after timer is finished.

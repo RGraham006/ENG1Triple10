@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MasterChef extends Scriptable
-{
+public class MasterChef extends Scriptable {
 
   public float maxRange = 25;
   public int currentControlledChef = 0;
@@ -31,7 +30,7 @@ public class MasterChef extends Scriptable
   private Pathfinding pathfind;
 
 
-  public int returnChefCount(){
+  public int returnChefCount() {
     return chefs.length;
   }
 
@@ -39,10 +38,9 @@ public class MasterChef extends Scriptable
     return chefs[i];
   }
 
-  public Chef getCurrentChef()
-  {
+  public Chef getCurrentChef() {
 
-    return  chefs[currentControlledChef];
+    return chefs[currentControlledChef];
   }
 
   /**
@@ -68,7 +66,7 @@ public class MasterChef extends Scriptable
   }
 
 
-  public MasterChef(int count, World world, Camera camera, Pathfinding pathfinding){
+  public MasterChef(int count, World world, Camera camera, Pathfinding pathfinding) {
 
     chefAtlasArray = new ArrayList<TextureAtlas>();
     this.pathfind = pathfinding;
@@ -77,11 +75,10 @@ public class MasterChef extends Scriptable
 
     this.camera = camera;
 
-
     for (int i = 0; i < chefs.length; i++) {
       GameObject chefsGameObject = new GameObject(
           new BlackSprite());//passing in null since chef will define it later
-      chefs[i] = new Chef(world, i,chefAtlasArray.get(i));
+      chefs[i] = new Chef(world, i, chefAtlasArray.get(i));
       chefsGameObject.attachScript(chefs[i]);
       chefsGameObject.image.setSize(18, 40);
 
@@ -91,61 +88,67 @@ public class MasterChef extends Scriptable
   }
 
 
-  void SelectChef(int i)
-  {
+  void SelectChef(int i) {
     currentControlledChef = i;
 
   }
 
 
-  public void GiveItem()
-  {
+  public void GiveItem() {
 
-    if(!chefs[currentControlledChef].CanFetchItem())
+    if (!chefs[currentControlledChef].CanFetchItem()) {
       return;
+    }
 
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Give, maxRange);
+    Scriptable script = Interaction.FindClosetInteractable(
+        chefs[currentControlledChef].gameObject.position, InteractionType.Give, maxRange);
 
-    if(script == null)
+    if (script == null) {
       return;
+    }
 
     Optional<Item> itemToGive = chefs[currentControlledChef].FetchItem();
 
-
-    if(!itemToGive.isPresent())
+    if (!itemToGive.isPresent()) {
       return;
+    }
 
-    ((Interactable)script).GiveItem(itemToGive.get());
+    ((Interactable) script).GiveItem(itemToGive.get());
   }
 
-  public void FetchItem(){
+  public void FetchItem() {
 
-    if(!chefs[currentControlledChef].CanGiveItem())
+    if (!chefs[currentControlledChef].CanGiveItem()) {
       return;
+    }
 
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position,InteractionType.Fetch, maxRange);
+    Scriptable script = Interaction.FindClosetInteractable(
+        chefs[currentControlledChef].gameObject.position, InteractionType.Fetch, maxRange);
 
-    if(script == null)
+    if (script == null) {
       return;
+    }
 
-    Item itemToGive = ((Interactable)script).RetrieveItem();
+    Item itemToGive = ((Interactable) script).RetrieveItem();
 
-    if(itemToGive == null)
+    if (itemToGive == null) {
       return;
-
+    }
 
     chefs[currentControlledChef].GiveItem(itemToGive);
 
 
   }
 
-  public void Interact(){
-    Scriptable script = Interaction.FindClosetInteractable(chefs[currentControlledChef].gameObject.position, InteractionType.Interact, maxRange);
+  public void Interact() {
+    Scriptable script = Interaction.FindClosetInteractable(
+        chefs[currentControlledChef].gameObject.position, InteractionType.Interact, maxRange);
 
-    if(script == null)
+    if (script == null) {
       return;
+    }
 
-    ((Interactable)script).Interact();
+    ((Interactable) script).Interact();
   }
 
   void selectChef() {
@@ -155,7 +158,7 @@ public class MasterChef extends Scriptable
       {
         SelectChef(i);
 
-        for (Chef c:chefs
+        for (Chef c : chefs
         ) {
           c.stop();
         }
@@ -166,31 +169,41 @@ public class MasterChef extends Scriptable
   }
 
   @Override
-  public void Update(float dt){
+  public void Update(float dt) {
     selectChef();
 
     chefs[currentControlledChef].updateSpriteFromInput(chefs[currentControlledChef].getMove());
 
-    if(Gdx.input.isKeyJustPressed(Inputs.GIVE_ITEM))
+    if (Gdx.input.isKeyJustPressed(Inputs.GIVE_ITEM)) {
       GiveItem();
-    if(Gdx.input.isKeyJustPressed(Inputs.FETCH_ITEM))
+    }
+    if (Gdx.input.isKeyJustPressed(Inputs.FETCH_ITEM)) {
       FetchItem();
-    if(Gdx.input.isKeyJustPressed(Inputs.INTERACT))
+    }
+    if (Gdx.input.isKeyJustPressed(Inputs.INTERACT)) {
       Interact();
+    }
 
-    if( Gdx.input.isButtonJustPressed(0)) {
+    if (Gdx.input.isKeyJustPressed((Inputs.DROP_ITEM))) {
+      chefs[currentControlledChef].DropItem();
+    }
+
+    if (Gdx.input.isButtonJustPressed(0)) {
       Vector3 touchpos = new Vector3();
-      touchpos.set(Gdx.input.getX(), Gdx.input.getY(),0);
+      touchpos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
       touchpos = camera.unproject(touchpos);
 
-      List<Vector2> path = pathfind.FindPath((int)getCurrentChef().gameObject.position.x,(int)getCurrentChef().gameObject.position.y,(int)touchpos.x,(int)touchpos.y,DistanceTest.Euclidean);
+      List<Vector2> path = pathfind.FindPath((int) getCurrentChef().gameObject.position.x,
+          (int) getCurrentChef().gameObject.position.y, (int) touchpos.x, (int) touchpos.y,
+          DistanceTest.Euclidean);
       System.out.println(path);
       getCurrentChef().GivePath(path);
     }
 
-    if(Gdx.input.isKeyJustPressed(Keys.B))
+    if (Gdx.input.isKeyJustPressed(Keys.B)) {
       getCurrentChef().MoveAlongPath();
-
     }
+
+  }
 
 }
