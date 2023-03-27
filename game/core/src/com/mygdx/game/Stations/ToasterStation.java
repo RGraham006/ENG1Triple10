@@ -87,6 +87,10 @@ public class ToasterStation extends Station{
         progress = item.progress / maxProgress;
     }
 
+    @Override
+    public void updatePictures() {
+        return;
+    }
 
     @Override
     public void Update(float dt) {

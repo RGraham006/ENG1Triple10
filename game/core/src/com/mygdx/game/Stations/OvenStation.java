@@ -91,6 +91,11 @@ public class OvenStation extends Station {
 
 
     @Override
+    public void updatePictures() {
+        return;
+    }
+
+    @Override
     public void Update(float dt) {
         if (currentRecipe != null) {
             Cook(dt);

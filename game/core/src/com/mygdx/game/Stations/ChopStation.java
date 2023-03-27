@@ -1,5 +1,7 @@
 package com.mygdx.game.Stations;
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 
@@ -9,21 +11,21 @@ import java.util.Arrays;
 public class ChopStation extends Station {
 
 
-  boolean interacted;
-  boolean ready;
-  public static ArrayList<ItemEnum> ItemWhiteList;
-  public float progress;
-  public float maxProgress;
+    boolean interacted;
+    boolean ready;
+    public static ArrayList<ItemEnum> ItemWhiteList;
+    public float progress;
+    public float maxProgress;
+    public int imageSize = 18;
 
-  public ChopStation() {
-    interacted = false;
-    ready = false;
-    maxProgress = 5;
-      if (ItemWhiteList == null) {
-          ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Lettuce, ItemEnum.Tomato,
-              ItemEnum.Onion, ItemEnum.Mince, ItemEnum.CutTomato, ItemEnum.Dough));
-      }
-  }
+    public ChopStation() {
+        interacted = false;
+        ready = false;
+        maxProgress = 5;
+        if(ItemWhiteList == null)
+            ItemWhiteList = new ArrayList<>(Arrays.asList(ItemEnum.Lettuce, ItemEnum.Tomato,
+            ItemEnum.Onion, ItemEnum.Mince, ItemEnum.CutTomato, ItemEnum.Dough));
+    }
 
 
   @Override
@@ -66,13 +68,12 @@ public class ChopStation extends Station {
     return currentRecipe != null;
   }
 
-  public void checkItem() {
-      if (ItemWhiteList.contains(item.name)) {
-          currentRecipe = recipes.RecipeMap.get(item.name);
-      } else {
-          currentRecipe = null;
-      }
-  }
+    public void checkItem(){
+        if(ItemWhiteList.contains(item.name))
+            currentRecipe = recipes.RecipeMap.get(item.name);
+        else
+            currentRecipe = null;
+    }
 
 
   @Override
@@ -92,6 +93,25 @@ public class ChopStation extends Station {
     progress = item.progress / maxProgress;
   }
 
+    @Override
+    public void updatePictures() {
+        if(item == null) {
+            if(heldItem == null)
+                return;
+            heldItem.Destroy();
+            heldItem = null;
+            return;
+        }
+        if(heldItem == null){
+            heldItem = new GameObject( new BlackTexture(Item.GetItemPath(item.name)));
+            heldItem.image.setSize(imageSize, imageSize);
+            heldItem.setPosition(gameObject.position.x + (gameObject.PhysicalWidth/2)-12, gameObject.position.y + (gameObject.getHeight()/2) + 5);
+        }
+        else {
+            heldItem.image = new BlackTexture(Item.GetItemPath(item.name));
+            heldItem.image.setSize(imageSize, imageSize);
+        }
+    }
 
   @Override
   public void Update(float dt) {
