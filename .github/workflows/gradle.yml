@@ -30,18 +30,15 @@ jobs: # what to do
         run: chmod +x ./game/gradlew
       - name: Run tests
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
-        if: startsWith(matrix.os, 'windows')
+        if: startsWith(matrix.os, 'ubuntu')
         with:
-          gradle-version: 7.5.1
           arguments: :tests:test --tests "piazzapanictests.tests.*"
           build-root-directory: game
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.4.0
         with:
-          gradle-version: 7.5.1
           arguments: build
           build-root-directory: game
-          gradle-executable: game/gradlew
       - name: Create executable JAR
         uses: gradle/gradle-build-action@v2.4.0
         if: startsWith(matrix.os, 'ubuntu')
