@@ -30,24 +30,20 @@ public class ChopStation extends Station {
 
   @Override
   public boolean GiveItem(Item item) {
-    if (this.item == null) {
-      changeItem(item);
-      checkItem();
-      return true;
-    }
-    return false;
+    bubble.isVisible = true;
+    changeItem(item);
+    checkItem();
+    return true;
   }
 
 
   @Override
   public Item RetrieveItem() {
-    if (item != null) {
-      returnItem = item;
-      deleteItem();
-      currentRecipe = null;
-      return returnItem;
-    }
-    return null;
+    bubble.isVisible = false;
+    returnItem = item;
+    deleteItem();
+    currentRecipe = null;
+    return returnItem;
   }
 
 
@@ -86,12 +82,22 @@ public class ChopStation extends Station {
     if (ready) {
       changeItem(new Item(currentRecipe.endItem));
       checkItem();
+      return;
     }
+    progressBar();
   }
 
-  public void ProgressBar() {
-    progress = item.progress / maxProgress;
+
+  public void progressBar(){
+    bubble.image = new BlackTexture("Timer/0"+getProgress()+".png");
   }
+
+
+  public int getProgress() {
+    progress = item.progress / maxProgress;
+    return (int) (progress/0.125) + 1;
+  }
+
 
     @Override
     public void updatePictures() {
@@ -117,7 +123,6 @@ public class ChopStation extends Station {
   public void Update(float dt) {
     if (currentRecipe != null) {
       Cut(dt);
-      ProgressBar();
     }
 
   }

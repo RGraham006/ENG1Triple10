@@ -1,5 +1,6 @@
 package com.mygdx.game.Stations;
 
+import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 
@@ -26,6 +27,7 @@ public class ToasterStation extends Station{
 
     @Override
     public boolean GiveItem(Item item) {
+        bubble.isVisible = true;
         changeItem(item);
         checkItem();
         return true;
@@ -37,6 +39,7 @@ public class ToasterStation extends Station{
         returnItem = item;
         deleteItem();
         currentRecipe = null;
+        bubble.isVisible = false;
         return returnItem;
     }
 
@@ -79,12 +82,20 @@ public class ToasterStation extends Station{
         if (ready) {
             changeItem(new Item(currentRecipe.endItem));
             checkItem();
+            return;
         }
+        progressBar();
     }
 
 
-    public void ProgressBar() {
+    public void progressBar(){
+        bubble.image = new BlackTexture("Timer/0"+getProgress()+".png");
+    }
+
+
+    public int getProgress() {
         progress = item.progress / maxProgress;
+        return (int) (progress/0.125) + 1;
     }
 
     @Override
@@ -96,7 +107,6 @@ public class ToasterStation extends Station{
     public void Update(float dt) {
         if (currentRecipe != null) {
             Cook(dt);
-            ProgressBar();
         }
 
     }
