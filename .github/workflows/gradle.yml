@@ -32,7 +32,7 @@ jobs: # what to do
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
         if: startsWith(matrix.os, 'ubuntu')
         with:
-          arguments: :tests:test --tests "piazzapanictests.tests.*"
+          arguments: test
           build-root-directory: game
       - name: Build with Gradle
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
