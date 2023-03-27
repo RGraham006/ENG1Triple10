@@ -36,13 +36,13 @@ jobs: # what to do
           arguments: :tests:test --tests "piazzapanictests.tests.*"
           build-root-directory: game
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        uses: gradle/gradle-build-action@v2.4.0
         with:
           gradle-version: 7.5.1
           arguments: build
           build-root-directory: game
       - name: Create executable JAR
-        uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        uses: gradle/gradle-build-action@v2.4.0
         if: startsWith(matrix.os, 'ubuntu')
         with:
           arguments: desktop:dist
