@@ -586,8 +586,6 @@ public class GameScreen implements Screen {
           boolean isShift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
           boolean isSpace = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
           boolean isR = Gdx.input.isKeyPressed(Input.Keys.R);
-          boolean invFull;
-          invFull = masterChef.getCurrentChef().getInventory().getName() != "none";
 
         }
       }

@@ -7,46 +7,46 @@ import com.mygdx.game.Items.ItemEnum;
 
 public class FoodCrate extends Scriptable implements Interactable {
 
-    private ItemEnum ingredient;
+  private ItemEnum ingredient;
 
 
-    public FoodCrate(ItemEnum ingredient){
-        this.ingredient = ingredient;
-    }
+  public FoodCrate(ItemEnum ingredient) {
+    this.ingredient = ingredient;
+  }
 
 
-    @Override
-    public boolean GiveItem(Item item){
-        return false;
-    }
+  @Override
+  public boolean GiveItem(Item item) {
+    return false;
+  }
 
 
-    @Override
-    public Item RetrieveItem(){
-        return new Item(ingredient);
-    }
+  @Override
+  public Item RetrieveItem() {
+    return new Item(ingredient);
+  }
 
 
-    @Override
-    public boolean CanRetrieve(){
-        return true;
-    }
+  @Override
+  public boolean CanRetrieve() {
+    return true;
+  }
 
 
-    @Override
-    public boolean CanGive(){
-        return false;
-    }
+  @Override
+  public boolean CanGive() {
+    return false;
+  }
 
 
-    @Override
-    public boolean CanInteract(){
-        return false;
-    }
+  @Override
+  public boolean CanInteract() {
+    return false;
+  }
 
 
-    @Override
-    public boolean Interact(){
-        return false;
-    }
+  @Override
+  public boolean Interact() {
+    return false;
+  }
 }

@@ -8,7 +8,7 @@ import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ChopStation extends Station{
+public class ChopStation extends Station {
 
 
     boolean interacted;
@@ -18,7 +18,7 @@ public class ChopStation extends Station{
     public float maxProgress;
     public int imageSize = 18;
 
-    public ChopStation(){
+    public ChopStation() {
         interacted = false;
         ready = false;
         maxProgress = 5;
@@ -28,45 +28,45 @@ public class ChopStation extends Station{
     }
 
 
-    @Override
-    public boolean GiveItem(Item item){
-        if(this.item == null) {
-            changeItem(item);
-            checkItem();
-            return true;
-        }
-        return false;
+  @Override
+  public boolean GiveItem(Item item) {
+    if (this.item == null) {
+      changeItem(item);
+      checkItem();
+      return true;
     }
+    return false;
+  }
 
 
-    @Override
-    public Item RetrieveItem(){
-        if(item!=null){
-            returnItem = item;
-            deleteItem();
-            currentRecipe = null;
-            return returnItem;
-        }
-        return null;
+  @Override
+  public Item RetrieveItem() {
+    if (item != null) {
+      returnItem = item;
+      deleteItem();
+      currentRecipe = null;
+      return returnItem;
     }
+    return null;
+  }
 
 
-    @Override
-    public boolean CanRetrieve(){
-        return item != null;
-    }
+  @Override
+  public boolean CanRetrieve() {
+    return item != null;
+  }
 
 
-    @Override
-    public boolean CanGive(){
-        return item == null;
-    }
+  @Override
+  public boolean CanGive() {
+    return item == null;
+  }
 
 
-    @Override
-    public boolean CanInteract() {
-        return currentRecipe != null;
-    }
+  @Override
+  public boolean CanInteract() {
+    return currentRecipe != null;
+  }
 
     public void checkItem(){
         if(ItemWhiteList.contains(item.name))
@@ -76,22 +76,22 @@ public class ChopStation extends Station{
     }
 
 
-    @Override
-    public boolean Interact(){
-        return interacted = true;
-    }
+  @Override
+  public boolean Interact() {
+    return interacted = true;
+  }
 
-    public void Cut(float dt){
-        ready = currentRecipe.RecipeSteps.get(item.step).timeStep(item, dt, interacted, maxProgress);
-        if(ready){
-            changeItem(new Item(currentRecipe.endItem));
-            checkItem();
-        }
+  public void Cut(float dt) {
+    ready = currentRecipe.RecipeSteps.get(item.step).timeStep(item, dt, interacted, maxProgress);
+    if (ready) {
+      changeItem(new Item(currentRecipe.endItem));
+      checkItem();
     }
+  }
 
-    public void ProgressBar() {
-        progress = item.progress / maxProgress;
-    }
+  public void ProgressBar() {
+    progress = item.progress / maxProgress;
+  }
 
     @Override
     public void updatePictures() {
@@ -113,12 +113,12 @@ public class ChopStation extends Station{
         }
     }
 
-    @Override
-    public void Update(float dt) {
-        if (currentRecipe != null) {
-            Cut(dt);
-            ProgressBar();
-        }
-
+  @Override
+  public void Update(float dt) {
+    if (currentRecipe != null) {
+      Cut(dt);
+      ProgressBar();
     }
+
+  }
 }
