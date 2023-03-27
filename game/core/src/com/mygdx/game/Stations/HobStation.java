@@ -1,6 +1,8 @@
 package com.mygdx.game.Stations;
 
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 
@@ -14,6 +16,7 @@ public class HobStation extends Station{
     public static ArrayList<ItemEnum> ItemWhiteList;
     public float progress;
     public float maxProgress;
+    public int imageSize = 14;
 
     public HobStation(){
         interacted = false;
@@ -100,6 +103,26 @@ public class HobStation extends Station{
 
     public void ProgressBar() {
         progress = item.progress / maxProgress;
+    }
+    
+    public void updatePictures(){
+        if(item == null) {
+            if(heldItem == null)
+                return;
+            heldItem.Destroy();
+            heldItem = null;
+            return;
+        }
+        if(heldItem == null){
+            heldItem = new GameObject( new BlackTexture(Item.GetItemPath(item.name)));
+            heldItem.image.setSize(imageSize, imageSize);
+            heldItem.setPosition(gameObject.position.x + 4, gameObject.position.y + (gameObject.getHeight()/2) + 2);
+        }
+        else {
+            heldItem.image = new BlackTexture(Item.GetItemPath(item.name));
+            heldItem.image.setSize(imageSize, imageSize);
+        }
+
     }
 
 

@@ -1,5 +1,7 @@
 package com.mygdx.game.Stations;
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 
@@ -14,6 +16,7 @@ public class ChopStation extends Station{
     public static ArrayList<ItemEnum> ItemWhiteList;
     public float progress;
     public float maxProgress;
+    public int imageSize = 18;
 
     public ChopStation(){
         interacted = false;
@@ -90,6 +93,25 @@ public class ChopStation extends Station{
         progress = item.progress / maxProgress;
     }
 
+    @Override
+    public void updatePictures() {
+        if(item == null) {
+            if(heldItem == null)
+                return;
+            heldItem.Destroy();
+            heldItem = null;
+            return;
+        }
+        if(heldItem == null){
+            heldItem = new GameObject( new BlackTexture(Item.GetItemPath(item.name)));
+            heldItem.image.setSize(imageSize, imageSize);
+            heldItem.setPosition(gameObject.position.x + (gameObject.PhysicalWidth/2)-12, gameObject.position.y + (gameObject.getHeight()/2) + 5);
+        }
+        else {
+            heldItem.image = new BlackTexture(Item.GetItemPath(item.name));
+            heldItem.image.setSize(imageSize, imageSize);
+        }
+    }
 
     @Override
     public void Update(float dt) {

@@ -1,5 +1,6 @@
 package com.mygdx.game.Stations;
 
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
@@ -22,6 +23,8 @@ public abstract class Station extends Scriptable implements Interactable {
   public CombinationDict combinations;
   private boolean locked;
   public Recipe currentRecipe;
+  GameObject heldItem;
+  public int imageSize = 18;
 
   public Station() {
     item = null;
@@ -46,6 +49,8 @@ public abstract class Station extends Scriptable implements Interactable {
    */
   public abstract Item RetrieveItem();
 
+  public abstract void updatePictures();
+
   /**
    * Sets the station to a "locked" state
    *
@@ -66,10 +71,12 @@ public abstract class Station extends Scriptable implements Interactable {
 
   public void changeItem(Item item){
     this.item = item;
+    updatePictures();
   }
 
   public void deleteItem(){
     item = null;
+    updatePictures();
   }
 
 
