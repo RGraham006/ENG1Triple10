@@ -198,7 +198,6 @@ public class ChefTests {
     assertEquals("The chef should have mince at the top of their inventory stack",
         new Item(ItemEnum.Mince),
         chef[0].getInventory().peek());
-
   }
 
   /**
