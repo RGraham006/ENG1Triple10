@@ -102,7 +102,7 @@ public class Chef extends PathfindingAgent implements Person {
 
     defineChef();
     ingredient = new Ingredient("none");
-    timerAtlas = new TextureAtlas("Timer/timer.txt");
+    timerAtlas = new TextureAtlas(Gdx.files.internal("Timer/timer.txt"));
     timerSprite = timerAtlas.createSprite("01");
 
     for (int i = 0; i < CarryCapacity; i++) {
