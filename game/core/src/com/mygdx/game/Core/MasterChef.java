@@ -51,7 +51,7 @@ public class MasterChef extends Scriptable {
     TextureAtlas chefAtlas;
     for (int i = 1; i < 4; i++) {
       filename = "Chefs/Chef" + i + "/chef" + i + ".txt";
-      chefAtlas = new TextureAtlas(filename);
+      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));
       chefAtlasArray.add(chefAtlas);
     }
   }
