@@ -16,6 +16,9 @@ buildscript {
 
 plugins {
     id 'checkstyle'
+    // Apply the java-library plugin for API and implementation separation.
+    id 'java-library'
+    // Apply the jacoco plugin to add coverage reports
     id 'jacoco'
 }
 
