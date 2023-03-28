@@ -25,7 +25,6 @@ plugins {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "checkstyle"
-    apply plugin: "jacoco"
     version = '1.0'
     ext {
         appName = "PiazzaPanic"
@@ -61,13 +60,6 @@ allprojects {
 
     }
 
-    test {
-        finalizedBy jacocoTestReport // report is always generated after tests run
-    }
-    jacocoTestReport {
-        dependsOn test // tests are required to run before generating the report
-    }
-
 
     checkstyle {
         toolVersion = "${checkstyleVersion}"
@@ -91,7 +83,6 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java-library"
-
 
     dependencies {
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

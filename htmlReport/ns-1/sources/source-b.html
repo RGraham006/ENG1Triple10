@@ -1,0 +1,270 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > soundFrame</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game</a>
+</div>
+
+<h1>Coverage Summary for Class: soundFrame (com.mygdx.game)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">soundFrame</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">soundFrame$soundsEnum</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/34)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game;
+&nbsp;
+&nbsp;import com.badlogic.gdx.Gdx;
+&nbsp;import com.badlogic.gdx.Gdx;
+&nbsp;import com.badlogic.gdx.audio.Sound;
+&nbsp;import java.lang.reflect.Array;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.LinkedList;
+&nbsp;
+<b class="nc">&nbsp;public class soundFrame {</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Uses an enum containing all the names of the sound effects Uses an array of all the sounds,
+&nbsp;   * must have the same index as the enum Uses a hashmap to store the IDs for each sound
+&nbsp;   */
+<b class="nc">&nbsp;  enum soundsEnum {</b>
+<b class="nc">&nbsp;    end;</b>
+&nbsp;  }
+&nbsp;
+<b class="nc">&nbsp;  Sound[] Sounds = new Sound[soundsEnum.end.ordinal() - 1];</b>
+&nbsp;
+<b class="nc">&nbsp;  HashMap&lt;soundsEnum, LinkedList&lt;Long&gt;&gt; soundIDsMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;  float currentSystemVolume = 1.0f;</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param rinh - Enum value as the name of the sound
+&nbsp;   * @return Returns the ID given when a sound is played Retrieves the sound from the array based on
+&nbsp;   * the enum Plays the sound getting the ID If the sound already has previous IDs, add the ID to
+&nbsp;   * the list If the sound doesnt already have IDs then create a new list and add that to the
+&nbsp;   * hashmap under an enum key
+&nbsp;   */
+&nbsp;  public long playSound(soundsEnum rinh) {
+<b class="nc">&nbsp;    Sound toPlay = Sounds[rinh.ordinal()];</b>
+<b class="nc">&nbsp;    long soundID = toPlay.play();</b>
+<b class="nc">&nbsp;    LinkedList&lt;Long&gt; soundIDs = new LinkedList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;    if (soundIDsMap.get(rinh) == null) {</b>
+<b class="nc">&nbsp;      soundIDs.push(soundID);</b>
+<b class="nc">&nbsp;      soundIDsMap.put(rinh, soundIDs);</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      soundIDs = soundIDsMap.get(rinh);</b>
+<b class="nc">&nbsp;      soundIDs.push(soundID);</b>
+<b class="nc">&nbsp;      soundIDsMap.put(rinh, soundIDs);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return soundID;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param rinh - Enum value of the name of the sound
+&nbsp;   * @param ID   - The ID required to interact with the sound instance
+&nbsp;   *             &lt;p&gt;
+&nbsp;   *             Find the sound from the enum, and pause it using the sound instance ID
+&nbsp;   */
+&nbsp;  public void pauseSound(soundsEnum rinh, long ID) {
+<b class="nc">&nbsp;    Sounds[rinh.ordinal()].pause(ID);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param rinh - Enum value of the name of the sound
+&nbsp;   * @param ID   - The ID required to interact with the sound instance
+&nbsp;   *             &lt;p&gt;
+&nbsp;   *             Find the sound from the enum, and resume it using the sound instance ID
+&nbsp;   */
+&nbsp;
+&nbsp;  public void resumeSound(soundsEnum rinh, long ID) {
+<b class="nc">&nbsp;    Sounds[rinh.ordinal()].resume(ID);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param rinh - Enum value of the name of the sound
+&nbsp;   * @param ID   - The ID required to interact with the sound instance
+&nbsp;   *             &lt;p&gt;
+&nbsp;   *             Find the sound from the enum, and set it to loop using the sound instance ID
+&nbsp;   */
+&nbsp;  public void setLooping(soundsEnum rinh, long ID) {
+<b class="nc">&nbsp;    Sounds[rinh.ordinal()].setLooping(ID, true);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param filepath - The filepath of the sound wanted to be played
+&nbsp;   * @param rinh     - Enum value of the name of the sound
+&nbsp;   *                 &lt;p&gt;
+&nbsp;   *                 Checks if the sound doesnt exist in the Sound array If it doesnt, create a
+&nbsp;   *                 sound and add it to the array
+&nbsp;   */
+&nbsp;  public void addSound(String filepath, soundsEnum rinh) {
+<b class="nc">&nbsp;    if (Sounds[rinh.ordinal()] == null) {</b>
+<b class="nc">&nbsp;      Sound effect = Gdx.audio.newSound(Gdx.files.internal(filepath));</b>
+<b class="nc">&nbsp;      Sounds[rinh.ordinal()] = effect;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * @param rinh - Enum value of the name of the sound
+&nbsp;   *
+&nbsp;   *             Removes the sound from the Sound array in the position of the enum value
+&nbsp;   */
+&nbsp;  public void removeSound(soundsEnum rinh) {
+<b class="nc">&nbsp;    if (Sounds[rinh.ordinal()] != null) {</b>
+<b class="nc">&nbsp;      Sounds[rinh.ordinal()] = null;</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setSystemVolume(float volume) {
+&nbsp;    /**
+&nbsp;     * @param volume - The volume wanted to set all the sounds to
+&nbsp;     *
+&nbsp;     * Sets the current system volume variable to the volume set
+&nbsp;     * Iterate through all the sounds, and get the sound
+&nbsp;     * Iterate through all the IDs of each sound, and set each instace of each sound to the required volume
+&nbsp;     */
+<b class="nc">&nbsp;    if (volume != 0.0f) {</b>
+<b class="nc">&nbsp;      currentSystemVolume = volume;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    for (soundsEnum key : soundIDsMap.keySet()) {</b>
+<b class="nc">&nbsp;      LinkedList&lt;Long&gt; value = soundIDsMap.get(key);</b>
+<b class="nc">&nbsp;      Sound currentSound = Sounds[key.ordinal()];</b>
+<b class="nc">&nbsp;      for (int i = 0; i &lt; value.size(); i++) {</b>
+<b class="nc">&nbsp;        currentSound.setVolume(value.get(i), volume);</b>
+&nbsp;      }
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Runs setSystemVolume with a sound of 0
+&nbsp;   */
+&nbsp;  public void muteSound() {
+<b class="nc">&nbsp;    setSystemVolume(0.0f);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Sets the volume back to the volume previous to mute, allows return to previous volume after a
+&nbsp;   * mute
+&nbsp;   */
+&nbsp;  public void unmuteSound() {
+<b class="nc">&nbsp;    setSystemVolume(currentSystemVolume);</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-28 22:13</div>
+</div>
+</body>
+</html>

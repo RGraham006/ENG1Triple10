@@ -1,0 +1,411 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CustomerController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerController (com.mygdx.game.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/124)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Core;
+&nbsp;
+&nbsp;import com.badlogic.gdx.Gdx;
+&nbsp;import com.badlogic.gdx.Input.Keys;
+&nbsp;import com.mygdx.game.Core.Customers.CustomerGroups;
+&nbsp;import com.mygdx.game.Core.Customers.OrderMenu;
+&nbsp;import com.mygdx.game.Core.Customers.Randomisation;
+&nbsp;import com.mygdx.game.Core.Customers.Table;
+&nbsp;import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
+&nbsp;import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
+&nbsp;import com.mygdx.game.Customer;
+&nbsp;import com.mygdx.game.Items.Item;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;import com.badlogic.gdx.math.Vector2;
+&nbsp;import java.util.Random;
+&nbsp;import java.util.function.Consumer;
+&nbsp;
+&nbsp;public class CustomerController extends Scriptable
+&nbsp;{
+<b class="nc">&nbsp;  CustomerGroups currentWaiting = null;</b>
+<b class="nc">&nbsp;  List&lt;CustomerGroups&gt; SittingCustomers = new LinkedList&lt;&gt;();</b>
+<b class="nc">&nbsp;  List&lt;CustomerGroups&gt; WalkingBackCustomers = new LinkedList&lt;&gt;();</b>
+&nbsp;  Pathfinding pathfinding;
+&nbsp;  List&lt;Table&gt; tables;
+&nbsp;  Consumer&lt;EndOfGameValues&gt; CallEndGame;
+&nbsp;
+&nbsp;  public int Reputation;
+&nbsp;  public int Money;
+&nbsp;  int MaxMoney;
+&nbsp;  int MaxReputation;
+&nbsp;  int MoneyPerCustomer;
+&nbsp;
+<b class="nc">&nbsp;  int Waves = -1;</b>
+&nbsp;  OrderMenu menu;
+<b class="nc">&nbsp;  int currentCustomer = 0;</b>
+<b class="nc">&nbsp;  int currentWave = 0;</b>
+<b class="nc">&nbsp;  private float EatingTime = 7;</b>
+&nbsp;
+<b class="nc">&nbsp;  Random rand = new Random();</b>
+&nbsp;
+<b class="nc">&nbsp;  private Vector2 groupSize = new Vector2(2,4);</b>
+<b class="nc">&nbsp;  float NextToLeave = EatingTime;</b>
+&nbsp;
+&nbsp;
+&nbsp;  Consumer&lt;CustomerGroups&gt; FrustrationCallBack;
+&nbsp;
+&nbsp;  Vector2 DoorTarget;
+&nbsp;  Vector2 OrderAreaTarget;
+<b class="nc">&nbsp;  private int CustomerFrustrationStart = 80;</b>
+&nbsp;
+&nbsp;  public CustomerController(Vector2 DoorPosition, Vector2 OrderArea, Pathfinding path,
+<b class="nc">&nbsp;      Consumer&lt;EndOfGameValues&gt; CallUpGameFinish, CustomerControllerParams params, Vector2... TablePositions){</b>
+<b class="nc">&nbsp;    tables = new LinkedList&lt;&gt;();</b>
+<b class="nc">&nbsp;    FrustrationCallBack = (CustomerGroups a)   -&gt; FrustrationLeave(a);</b>
+<b class="nc">&nbsp;    MoneyPerCustomer = params.MoneyPerCustomer;</b>
+<b class="nc">&nbsp;    CallEndGame = CallUpGameFinish;</b>
+<b class="nc">&nbsp;    Money = params.MoneyStart;</b>
+<b class="nc">&nbsp;    MaxMoney = params.MaxMoney;</b>
+<b class="nc">&nbsp;    Reputation = params.Reputation;</b>
+<b class="nc">&nbsp;    MaxReputation = params.Reputation;</b>
+&nbsp;
+<b class="nc">&nbsp;    for (Vector2 pos: TablePositions</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      tables.add(new Table(pos,30));</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    pathfinding = path;</b>
+<b class="nc">&nbsp;    OrderAreaTarget = OrderArea;</b>
+<b class="nc">&nbsp;    DoorTarget = DoorPosition;</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    menu = new OrderMenu(10,7,3);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /***
+&nbsp;   * Set the maximum number of waves to do, exclusively. Resets currentWave to 0
+&nbsp;   * @param amount
+&nbsp;   */
+&nbsp;  public void SetWaveAmount(int amount){
+<b class="nc">&nbsp;    Waves = amount;</b>
+<b class="nc">&nbsp;    currentWave = 0;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void UpdateCustomerMovements(List&lt;CustomerGroups&gt; customers){
+<b class="nc">&nbsp;    for (int i = 0; i &lt; customers.size(); i++) {</b>
+<b class="nc">&nbsp;      customers.get(i).updateSpriteFromInput();</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  public void ModifyReputation(int DR){
+&nbsp;
+<b class="nc">&nbsp;    Reputation += DR;</b>
+<b class="nc">&nbsp;    Reputation = Math.min(Reputation,MaxReputation);</b>
+&nbsp;
+<b class="nc">&nbsp;    if(Reputation&lt;=0)</b>
+<b class="nc">&nbsp;      EndGame();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  public boolean ChangeMoney(float DM){
+<b class="nc">&nbsp;    if(DM&gt;=0)</b>
+&nbsp;    {
+<b class="nc">&nbsp;      Money += DM;</b>
+<b class="nc">&nbsp;      Money = Math.min(MaxMoney,Money);</b>
+<b class="nc">&nbsp;      return true;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if(Money-DM&gt;=0){</b>
+<b class="nc">&nbsp;      Money  += DM;</b>
+<b class="nc">&nbsp;      return true;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    return false;</b>
+&nbsp;
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void Update(float dt) {
+<b class="nc">&nbsp;    super.Update(dt);</b>
+&nbsp;
+<b class="nc">&nbsp;    if(currentWaiting!=null)</b>
+<b class="nc">&nbsp;    currentWaiting.updateSpriteFromInput();</b>
+<b class="nc">&nbsp;    UpdateCustomerMovements(SittingCustomers);</b>
+<b class="nc">&nbsp;    UpdateCustomerMovements(WalkingBackCustomers);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    FrustrationCheck(dt);</b>
+&nbsp;
+<b class="nc">&nbsp;    RemoveCustomerTest();</b>
+<b class="nc">&nbsp;      SeeIfCustomersShouldLeave(dt);</b>
+<b class="nc">&nbsp;    CanAcceptNewCustomer();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  public Table GetTable(){
+<b class="nc">&nbsp;    for (Table option:tables</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;        if(option.isFree())</b>
+<b class="nc">&nbsp;          return option;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    return null;</b>
+&nbsp;  }
+&nbsp;  private void FrustrationCheck(float dt){
+<b class="nc">&nbsp;    if(currentWaiting == null)</b>
+&nbsp;      return;
+<b class="nc">&nbsp;    currentWaiting.CheckFrustration(dt,FrustrationCallBack);</b>
+&nbsp;  }
+&nbsp;  public void SeeIfCustomersShouldLeave(float dt){
+<b class="nc">&nbsp;    if(SittingCustomers.size()&gt;0)</b>
+<b class="nc">&nbsp;      NextToLeave -= dt;</b>
+&nbsp;
+<b class="nc">&nbsp;    if(NextToLeave &lt;= 0)</b>
+<b class="nc">&nbsp;      RemoveCurrentlySeatedCustomers();</b>
+&nbsp;
+<b class="nc">&nbsp;    TryDeleteCustomers();</b>
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  void RemoveCurrentlySeatedCustomers(){
+<b class="nc">&nbsp;      CustomerGroups groups = SittingCustomers.get(0);</b>
+<b class="nc">&nbsp;      groups.table.relinquish();</b>
+<b class="nc">&nbsp;      WalkingBackCustomers.add(groups);</b>
+<b class="nc">&nbsp;      SittingCustomers.remove(0);</b>
+&nbsp;
+<b class="nc">&nbsp;      SetCustomerGroupTarget(groups,DoorTarget);</b>
+&nbsp;
+<b class="nc">&nbsp;      NextToLeave = EatingTime;</b>
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  void TryDeleteCustomers(){
+<b class="nc">&nbsp;    List&lt;Integer&gt; removals = new LinkedList&lt;&gt;();</b>
+<b class="nc">&nbsp;    int r =0;</b>
+<b class="nc">&nbsp;    for (CustomerGroups group: WalkingBackCustomers</b>
+&nbsp;    ) {
+&nbsp;
+<b class="nc">&nbsp;      for (int i = group.Members.size()-1; i &gt;= 0 ; i--) {</b>
+&nbsp;
+<b class="nc">&nbsp;          if(group.Members.get(i).gameObject.position.dst(DoorTarget.x,DoorTarget.y)&lt;1) {</b>
+<b class="nc">&nbsp;            group.Members.get(i).gameObject.Destroy();</b>
+<b class="nc">&nbsp;            group.Members.remove(i);</b>
+&nbsp;          }
+&nbsp;
+&nbsp;      }
+&nbsp;
+<b class="nc">&nbsp;      if(group.Members.size()==0)</b>
+<b class="nc">&nbsp;        removals.add(r);</b>
+&nbsp;
+<b class="nc">&nbsp;      r++;</b>
+&nbsp;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    for (Integer i: removals</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      WalkingBackCustomers.remove(i);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  void CreateNewCustomer(){
+<b class="nc">&nbsp;    Table table = GetTable();</b>
+<b class="nc">&nbsp;    int rnd = rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;</b>
+<b class="nc">&nbsp;    currentWaiting = new CustomerGroups(rnd,currentCustomer, DoorTarget, CustomerFrustrationStart, menu.CreateNewOrder(rnd, Randomisation.Normalised));</b>
+<b class="nc">&nbsp;    currentCustomer += rnd;</b>
+&nbsp;
+<b class="nc">&nbsp;    currentWaiting.table= table;</b>
+<b class="nc">&nbsp;    table.DesignateSeating(rnd,rand);</b>
+&nbsp;
+<b class="nc">&nbsp;    SetWaitingForOrderTarget();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  void SetWaitingForOrderTarget(){
+<b class="nc">&nbsp;    for (int i = 0; i &lt; currentWaiting.MembersInLine.size(); i++) {</b>
+<b class="nc">&nbsp;        SetCustomerTarget(currentWaiting.MembersInLine.get(i),new Vector2(0,40*i).add(OrderAreaTarget));</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  void CanAcceptNewCustomer(){
+<b class="nc">&nbsp;    if(DoSatisfactionCheck())</b>
+&nbsp;    {
+<b class="nc">&nbsp;      SittingCustomers.add(currentWaiting);</b>
+<b class="nc">&nbsp;      currentWaiting = null;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if(currentWaiting == null &amp;&amp; SittingCustomers.size() &lt; tables.size())</b>
+&nbsp;    {
+<b class="nc">&nbsp;      if(Waves != currentWave++) //if not the max number of waves increment</b>
+<b class="nc">&nbsp;      CreateNewCustomer();</b>
+&nbsp;      else
+<b class="nc">&nbsp;        EndGame();</b>
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  public void FrustrationLeave(CustomerGroups group){
+<b class="nc">&nbsp;    SetCustomerGroupTarget(group,DoorTarget);</b>
+<b class="nc">&nbsp;    group.table.relinquish();</b>
+<b class="nc">&nbsp;    currentWaiting = null;</b>
+<b class="nc">&nbsp;    WalkingBackCustomers.add(group);</b>
+<b class="nc">&nbsp;    ModifyReputation(-1);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void SetCustomerGroupTarget(CustomerGroups group, Vector2 target){
+<b class="nc">&nbsp;    for (Customer customer: group.Members</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;        SetCustomerTarget(customer,target);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void SetCustomerTarget(Customer customer, Vector2 target){
+<b class="nc">&nbsp;    customer.GivePath(pathfinding.FindPath((int) customer.gameObject.position.x,</b>
+&nbsp;        (int) customer.gameObject.position.y, (int) target.x, (int) target.y,DistanceTest.Manhatten));
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  void RemoveCustomerTest(){
+<b class="nc">&nbsp;    if(Gdx.input.isKeyJustPressed(</b>
+&nbsp;        Keys.S )&amp;&amp; currentWaiting != null){
+&nbsp;
+<b class="nc">&nbsp;      Customer customer = currentWaiting.RemoveFirstCustomer();</b>
+<b class="nc">&nbsp;      SetCustomerTarget(customer,currentWaiting.table.GetNextSeat());</b>
+<b class="nc">&nbsp;      ChangeMoney(MoneyPerCustomer);</b>
+&nbsp;
+<b class="nc">&nbsp;      SetWaitingForOrderTarget();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;  }
+&nbsp;  private void EndGame(){
+&nbsp;    //calculate win or loss
+&nbsp;
+&nbsp;    //Calculate points
+<b class="nc">&nbsp;    EndOfGameValues values = new EndOfGameValues();</b>
+<b class="nc">&nbsp;    values.score = Money;</b>
+<b class="nc">&nbsp;    values.Won  = Reputation&gt;0;</b>
+<b class="nc">&nbsp;    CallEndGame.accept(values);</b>
+&nbsp;  }
+&nbsp;  public boolean tryGiveFood(Item item){
+<b class="nc">&nbsp;    boolean success = currentWaiting.TryRemoveCustomer(item);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    if(success) {</b>
+<b class="nc">&nbsp;      SetCustomerTarget(currentWaiting.MembersSeatedOrWalking.get(currentWaiting.MembersSeatedOrWalking.size()-1),currentWaiting.table.GetNextSeat());</b>
+<b class="nc">&nbsp;      SetWaitingForOrderTarget();</b>
+<b class="nc">&nbsp;      ChangeMoney(MoneyPerCustomer);</b>
+&nbsp;    }
+<b class="nc">&nbsp;    return success;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  boolean DoSatisfactionCheck(){
+<b class="nc">&nbsp;    return currentWaiting != null &amp;&amp; currentWaiting.MembersInLine.size()==0 ;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-28 22:13</div>
+</div>
+</body>
+</html>

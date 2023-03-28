@@ -1,0 +1,237 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameObjectManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: GameObjectManager (com.mygdx.game.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameObjectManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/57)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Core;
+&nbsp;
+&nbsp;import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class GameObjectManager {
+&nbsp;
+<b class="nc">&nbsp;  public Hashtable&lt;Integer, GameObject&gt; GameObjects = new Hashtable&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;  public List&lt;Scriptable&gt; LooseScripts = new LinkedList&lt;&gt;();</b>
+&nbsp;  public static GameObjectManager objManager;
+&nbsp;  Random rand;
+&nbsp;
+&nbsp;
+&nbsp;  public void AppendLooseScript(Scriptable scriptable){
+<b class="nc">&nbsp;    LooseScripts.add(scriptable);</b>
+<b class="nc">&nbsp;    scriptable.Start();</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public List&lt;Scriptable&gt; returnObjectsWithInterface(Class&lt;?&gt; scriptType){
+<b class="nc">&nbsp;    List&lt;Scriptable&gt; scripts = new LinkedList&lt;&gt;();</b>
+<b class="nc">&nbsp;    for (GameObject obj: GameObjects.values()</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      for (Scriptable script: obj.Scripts</b>
+&nbsp;      ) {
+&nbsp;
+<b class="nc">&nbsp;        Class&lt;?&gt;[] a = script.getClass().getInterfaces();</b>
+<b class="nc">&nbsp;        for (Class&lt;?&gt; interf:a</b>
+&nbsp;             ) {
+<b class="nc">&nbsp;          if(scriptType == interf) {</b>
+<b class="nc">&nbsp;            scripts.add(script);</b>
+<b class="nc">&nbsp;            break;</b>
+&nbsp;          }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if(script.getClass().getSuperclass() != null) {</b>
+<b class="nc">&nbsp;          Class&lt;?&gt;[] b = script.getClass().getSuperclass().getInterfaces();</b>
+&nbsp;
+<b class="nc">&nbsp;          for (Class&lt;?&gt; interf:b</b>
+&nbsp;          ) {
+<b class="nc">&nbsp;            if(scriptType == interf) {</b>
+<b class="nc">&nbsp;              scripts.add(script);</b>
+<b class="nc">&nbsp;              break;</b>
+&nbsp;            }
+&nbsp;          }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;      }</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    return scripts;</b>
+&nbsp;  }
+<b class="nc">&nbsp;  public GameObjectManager() {</b>
+<b class="nc">&nbsp;    if (objManager != null) {</b>
+<b class="nc">&nbsp;      throw new IllegalArgumentException(&quot;This cannot be created more than once&quot;);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    objManager = this;</b>
+<b class="nc">&nbsp;    rand = new Random();</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;
+&nbsp;  public void SubmitGameObject(GameObject obj) {
+&nbsp;
+<b class="nc">&nbsp;    int UID = CreateUID();</b>
+&nbsp;
+<b class="nc">&nbsp;    GameObjects.put(UID, obj);</b>
+&nbsp;
+<b class="nc">&nbsp;    obj.setUID(UID);</b>
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;
+&nbsp;  public void doUpdate(float dt) {
+&nbsp;
+<b class="nc">&nbsp;    for (Scriptable scr : LooseScripts)</b>
+&nbsp;    {
+<b class="nc">&nbsp;      scr.Update(dt);</b>
+&nbsp;
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;    for (GameObject obj : GameObjects.values()</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      obj.doUpdate(dt);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public void doFixedUpdate(float dt) {
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    for (Scriptable scr : LooseScripts)</b>
+&nbsp;    {
+<b class="nc">&nbsp;      scr.FixedUpdate(dt);</b>
+&nbsp;
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    for (GameObject obj : GameObjects.values()</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      obj.doFixedUpdate(dt);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;
+&nbsp;  public void render(SpriteBatch batch) {
+&nbsp;
+&nbsp;    for (GameObject obj :
+<b class="nc">&nbsp;        GameObjects.values()) {</b>
+<b class="nc">&nbsp;      obj.render(batch);</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public void DestroyGameObject(GameObject obj) {
+<b class="nc">&nbsp;    obj.destroyed = true;</b>
+&nbsp;
+<b class="nc">&nbsp;    GameObjects.remove(obj.getUID());</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public int CreateUID() {
+<b class="nc">&nbsp;    int UID = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;    while (GameObjects.containsKey(UID)) {</b>
+<b class="nc">&nbsp;      UID = rand.nextInt();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    return UID;</b>
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-28 22:13</div>
+</div>
+</body>
+</html>

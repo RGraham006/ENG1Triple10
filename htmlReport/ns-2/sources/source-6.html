@@ -1,0 +1,246 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameObject</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: GameObject (com.mygdx.game.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameObject</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    18.8%
+  </span>
+  <span class="absValue">
+    (3/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.8%
+  </span>
+  <span class="absValue">
+    (15/63)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Core;
+&nbsp;
+&nbsp;import com.badlogic.gdx.Gdx;
+&nbsp;import com.badlogic.gdx.Input;
+&nbsp;import com.badlogic.gdx.graphics.OrthographicCamera;
+&nbsp;import com.badlogic.gdx.graphics.g2d.Sprite;
+&nbsp;import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+&nbsp;import com.badlogic.gdx.math.Vector2;
+&nbsp;import com.badlogic.gdx.math.Vector3;
+&nbsp;import com.mygdx.game.GameScreen;
+&nbsp;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class GameObject {
+&nbsp;
+&nbsp;  public Renderable image;
+&nbsp;
+&nbsp;  public Vector2 position;
+<b class="fc">&nbsp;  public Boolean destroyed = false;</b>
+&nbsp;
+&nbsp;  public float PhysicalWidth;
+&nbsp;
+&nbsp;  public float PhysicalHeight;
+&nbsp;
+<b class="fc">&nbsp;  public Boolean isVisible = true;</b>
+&nbsp;  private Integer UID;
+<b class="fc">&nbsp;  List&lt;Scriptable&gt; Scripts = new LinkedList&lt;&gt;();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;  public GameObject(Renderable renderable) {</b>
+&nbsp;
+<b class="fc">&nbsp;    image = renderable;</b>
+<b class="fc">&nbsp;    if (GameObjectManager.objManager != null) {</b>
+<b class="nc">&nbsp;      GameObjectManager.objManager.SubmitGameObject(this);</b>
+&nbsp;    }
+<b class="fc">&nbsp;    position = new Vector2();</b>
+<b class="fc">&nbsp;    PhysicalWidth = -1;</b>
+<b class="fc">&nbsp;    PhysicalHeight = -1;</b>
+&nbsp;
+<b class="fc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public void attachScript(Scriptable script) {
+<b class="fc">&nbsp;    Scripts.add(script);</b>
+<b class="fc">&nbsp;    script.setGameObject(this);</b>
+<b class="fc">&nbsp;    script.Start();</b>
+<b class="fc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public Integer getUID() {
+<b class="nc">&nbsp;    return UID;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setUID(int ID) {
+<b class="nc">&nbsp;    if (UID != null) {</b>
+<b class="nc">&nbsp;      throw new IllegalArgumentException(&quot;You cannot change the UID&quot;);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    UID = ID;</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public void doUpdate(float dt) {
+<b class="nc">&nbsp;    for (Scriptable script : Scripts</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      script.Update(dt);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public void doFixedUpdate(float dt) {
+<b class="nc">&nbsp;    for (Scriptable script : Scripts</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      script.FixedUpdate(dt);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;  public void doOnRenderUpdate() {
+<b class="nc">&nbsp;    for (Scriptable script : Scripts</b>
+&nbsp;    ) {
+<b class="nc">&nbsp;      script.OnRender();</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public void render(SpriteBatch batch) {
+&nbsp;
+<b class="nc">&nbsp;    if(!isVisible || destroyed)</b>
+<b class="nc">&nbsp;      return;</b>
+<b class="nc">&nbsp;    if(image == null)</b>
+<b class="nc">&nbsp;      return;</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    doOnRenderUpdate();</b>
+&nbsp;
+<b class="nc">&nbsp;    image.Render(batch, position.x, position.y);</b>
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;
+&nbsp;  public BlackSprite getSprite() {
+<b class="fc">&nbsp;    return ((BlackSprite) image);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public BlackTexture getBlackTexture() {
+<b class="nc">&nbsp;    return (BlackTexture) image;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setPosition(float x, float y) {
+<b class="nc">&nbsp;    position.set(x, y);</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;  public boolean isClicked(OrthographicCamera camera){
+<b class="nc">&nbsp;    Vector3 touchPos = new Vector3();</b>
+<b class="nc">&nbsp;    if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){</b>
+<b class="nc">&nbsp;      touchPos.set(Gdx.input.getX(), Gdx.input.getY(),0);</b>
+<b class="nc">&nbsp;      touchPos = camera.unproject(touchPos);</b>
+<b class="nc">&nbsp;      if (touchPos.x &gt; position.x &amp;&amp; touchPos.x &lt; position.x + image.GetWidth()) {</b>
+<b class="nc">&nbsp;        if (touchPos.y &gt; position.y &amp;&amp; touchPos.y &lt; position.y + image.GetHeight()) {</b>
+<b class="nc">&nbsp;          return true;</b>
+&nbsp;        }
+&nbsp;      }
+&nbsp;    }
+<b class="nc">&nbsp;    return false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setWidthAndHeight(float width, float height){
+<b class="nc">&nbsp;    PhysicalWidth = width;</b>
+<b class="nc">&nbsp;    PhysicalHeight = height;</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  public float getWidth(){
+<b class="nc">&nbsp;    if(PhysicalWidth == -1)</b>
+<b class="nc">&nbsp;      return image.GetWidth();</b>
+<b class="nc">&nbsp;    return PhysicalWidth;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public float getHeight(){
+<b class="nc">&nbsp;    if(PhysicalHeight == -1)</b>
+<b class="nc">&nbsp;      return image.GetHeight();</b>
+<b class="nc">&nbsp;    return PhysicalHeight;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void Destroy(){
+<b class="nc">&nbsp;    GameObjectManager.objManager.DestroyGameObject(this);</b>
+<b class="nc">&nbsp;    image.Destroy();</b>
+<b class="nc">&nbsp;  }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-28 22:13</div>
+</div>
+</body>
+</html>
