@@ -37,7 +37,7 @@ jobs: # what to do
       - name: Build with Gradle
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
         with:
-          arguments: build
+          arguments: build jacocoTestReport
           build-root-directory: game
       - name: Create executable JAR
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
