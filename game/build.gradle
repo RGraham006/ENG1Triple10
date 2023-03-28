@@ -60,6 +60,12 @@ allprojects {
 
     }
 
+    test {
+        // Use JUnit Platform for unit tests.
+        useJUnitPlatform()
+    }
+
+
     checkstyle {
         toolVersion = "${checkstyleVersion}"
         config = resources.text.fromArchiveEntry(configurations.checkstyleRules, 'google_checks.xml')
