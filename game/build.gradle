@@ -25,6 +25,7 @@ plugins {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "checkstyle"
+    apply plugin: "jacoco"
     version = '1.0'
     ext {
         appName = "PiazzaPanic"
@@ -61,8 +62,10 @@ allprojects {
     }
 
     test {
-        // Use JUnit Platform for unit tests.
-        useJUnitPlatform()
+        finalizedBy jacocoTestReport // report is always generated after tests run
+    }
+    jacocoTestReport {
+        dependsOn test // tests are required to run before generating the report
     }
 
 
