@@ -3,6 +3,7 @@ package piazzapanictests.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -65,7 +66,7 @@ public class ChefTests {
     TextureAtlas chefAtlas;
     for (int i = 1; i < 4; i++) {
       filename = "Chefs/Chef" + i + "/chef" + i + ".txt";
-      chefAtlas = new TextureAtlas(filename);
+      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));
       chefAtlasArray.add(chefAtlas);
     }
   }
