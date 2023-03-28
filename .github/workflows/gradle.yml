@@ -12,7 +12,7 @@ jobs: # what to do
     build:
       strategy:
         matrix:
-          os: [windows-2022, macos-12, ubuntu-latest]
+          os: [windows-2022, macos-12, ubuntu-22.04]
       runs-on: ${{ matrix.os }}
       
       
@@ -29,11 +29,12 @@ jobs: # what to do
       - name: Run chmod to make gradlew executable
         run: chmod +x ./game/gradlew
       - name: Run tests
-        uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
-        if: startsWith(matrix.os, 'windows')
-        with:
-          arguments: test
-          build-root-directory: game
+        # uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ./gradlew :tests:test --tests "piazzapanictests.tests.*"
+        # with:
+        #  arguments: test
+        #  build-root-directory: game
       - name: Build with Gradle
         uses: gradle/gradle-build-action@6095a76664413da4c8c134ee32e8a8ae900f0f1f
         with:
