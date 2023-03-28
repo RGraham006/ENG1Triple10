@@ -16,6 +16,7 @@ buildscript {
 
 plugins {
     id 'checkstyle'
+    id 'jacoco'
 }
 
 allprojects {
