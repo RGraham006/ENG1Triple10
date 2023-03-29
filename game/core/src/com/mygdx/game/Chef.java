@@ -405,6 +405,7 @@ public class Chef extends PathfindingAgent implements Person {
    * Gets the inventory of the chef, so the item they are currently holding.
    *
    * @return Ingredient ingredient
+   * @author Jack Vickers
    */
   public Stack<Item> getInventory() {
     return heldItems;
@@ -417,6 +418,15 @@ public class Chef extends PathfindingAgent implements Person {
    */
   public int getInventoryCount() {
     return heldItems.size();
+  }
+
+  /**
+   * Gets the inventory of the chef, so the item they are currently holding.
+   *
+   * @return Ingredient ingredient
+   */
+  public int getCarryCapacity() {
+    return CarryCapacity;
   }
 
   /**

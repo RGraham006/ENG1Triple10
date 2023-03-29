@@ -17,6 +17,7 @@ import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import com.mygdx.game.Stations.FoodCrate;
 import java.util.ArrayList;
+import java.util.Stack;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -185,7 +186,46 @@ public class ChefTests {
   }
 
   /**
-   * Tests that the chef can pick up minced meat the pantry.
+   * Tests that the chef can pick up an item.
+   *
+   * @author Jack Vickers
+   * @date 26/03/2023
+   */
+  @Test
+  public void testPickupItem() {
+    instantiateWorldAndChefs();
+    Item itemToGive = new Item(ItemEnum.Mince);
+    chef[0].GiveItem(itemToGive);
+    assertEquals("The chef should have mince at the top of their inventory stack",
+        new Item(ItemEnum.Mince),
+        chef[0].getInventory().peek());
+  }
+
+  /**
+   * Tests that the chef can't pick up an item if their inventory is full.
+   *
+   * @author Jack Vickers
+   * @date 26/03/2023
+   */
+  @Test
+  public void testPickupFullInventory() {
+    instantiateWorldAndChefs();
+    Item item1 = new Item(ItemEnum.Mince);
+    Item item2 = new Item(ItemEnum.Lettuce);
+    chef[0].GiveItem(item1);
+    chef[0].GiveItem(item1);
+    chef[0].GiveItem(item1);
+    chef[0].GiveItem(item2);
+    Stack<Item> Items = new Stack<Item>();
+    Items.push(item1);
+    Items.push(item1);
+    Items.push(item1);
+    assertTrue("The chef inventory should contain the first 3 items given to it and not the 4th",
+        chef[0].getInventory().equals(Items));
+  }
+
+  /**
+   * Tests that the chef can pick up minced meat from the pantry.
    *
    * @author Jack Vickers
    * @date 26/03/2023
@@ -319,5 +359,6 @@ public class ChefTests {
         new Item(ItemEnum.Dough),
         chef[0].getInventory().peek());
   }
+
 
 }
