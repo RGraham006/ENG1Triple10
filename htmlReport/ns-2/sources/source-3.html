@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    27.3%
+    36.4%
   </span>
   <span class="absValue">
-    (3/11)
+    (4/11)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    45.2%
+    59.1%
   </span>
   <span class="absValue">
-    (14/31)
+    (13/22)
   </span>
 </td>
 </tr>
@@ -90,12 +90,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;  public BlackTexture(String tex) {</b>
 &nbsp;
 <b class="fc">&nbsp;    changeTextureFromPath(tex);</b>
-<b class="fc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public void changeTexture(Texture tex){
 <b class="nc">&nbsp;    texture = tex;</b>
 <b class="nc">&nbsp;    textureRegion.setTexture(texture);</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  public void changeTextureFromPath(String path){
@@ -114,20 +114,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;    if(textureRegion == null)</b>
 <b class="fc">&nbsp;      textureRegion = new TextureRegion(texture,width,height);</b>
 &nbsp;
-<b class="fc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  public void setImageSize(int _w,int  _h) {
 <b class="nc">&nbsp;    ImageWidth = _w;</b>
 <b class="nc">&nbsp;    ImageHeight = _h;</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public void setSize(int  _w, int  _h) {
 <b class="fc">&nbsp;    width = _w;</b>
 <b class="fc">&nbsp;    height = _h;</b>
 &nbsp;
 &nbsp;
-<b class="fc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  /**
 &nbsp;   * Sets wraps
@@ -138,22 +138,22 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  public void setWrap(Texture.TextureWrap U, Texture.TextureWrap V) {
 &nbsp;
 <b class="nc">&nbsp;    texture.setWrap(U, V);</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public void setWrap(Texture.TextureWrap UV) {
 <b class="nc">&nbsp;    setWrap(UV, UV);</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  @Override
 &nbsp;  public void Render(SpriteBatch batch, float x, float y) {
 <b class="nc">&nbsp;    batch.draw(textureRegion, x, y, width, height);</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  @Override
 &nbsp;  public void Destroy() {
-<b class="nc">&nbsp;    texture = null;</b>
-<b class="nc">&nbsp;    textureRegion = null;</b>
-<b class="nc">&nbsp;  }</b>
+<b class="fc">&nbsp;    texture = null;</b>
+<b class="fc">&nbsp;    textureRegion = null;</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public int GetWidth()
 &nbsp;  {
@@ -189,7 +189,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-28 22:13</div>
+    <div style="float:right;">generated on 2023-03-30 21:18</div>
 </div>
 </body>
 </html>

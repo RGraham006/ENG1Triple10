@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">ChopStation</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    46.2%
   </span>
   <span class="absValue">
-    (0/12)
+    (6/13)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    62.2%
   </span>
   <span class="absValue">
-    (0/43)
+    (28/45)
   </span>
 </td>
 </tr>
@@ -80,36 +80,38 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import com.mygdx.game.Core.GameObject;
 &nbsp;import com.mygdx.game.Items.Item;
 &nbsp;import com.mygdx.game.Items.ItemEnum;
-&nbsp;
+&nbsp;import com.mygdx.game.RecipeAndComb.CombinationDict;
+&nbsp;import com.mygdx.game.RecipeAndComb.RecipeDict;
 &nbsp;import java.util.ArrayList;
 &nbsp;import java.util.Arrays;
 &nbsp;
 &nbsp;public class ChopStation extends Station {
 &nbsp;
 &nbsp;
-&nbsp;    boolean interacted;
-&nbsp;    boolean ready;
-&nbsp;    public static ArrayList&lt;ItemEnum&gt; ItemWhiteList;
-&nbsp;    public float progress;
-&nbsp;    public float maxProgress;
-<b class="nc">&nbsp;    public int imageSize = 18;</b>
+&nbsp;  boolean interacted;
+&nbsp;  boolean ready;
+&nbsp;  public static ArrayList&lt;ItemEnum&gt; ItemWhiteList;
+&nbsp;  public float progress;
+&nbsp;  public float maxProgress;
+<b class="fc">&nbsp;  public int imageSize = 18;</b>
 &nbsp;
-<b class="nc">&nbsp;    public ChopStation() {</b>
-<b class="nc">&nbsp;        interacted = false;</b>
-<b class="nc">&nbsp;        ready = false;</b>
-<b class="nc">&nbsp;        maxProgress = 5;</b>
-<b class="nc">&nbsp;        if(ItemWhiteList == null)</b>
-<b class="nc">&nbsp;            ItemWhiteList = new ArrayList&lt;&gt;(Arrays.asList(ItemEnum.Lettuce, ItemEnum.Tomato,</b>
-&nbsp;            ItemEnum.Onion, ItemEnum.Mince, ItemEnum.CutTomato, ItemEnum.Dough));
+<b class="fc">&nbsp;  public ChopStation() {</b>
+<b class="fc">&nbsp;    interacted = false;</b>
+<b class="fc">&nbsp;    ready = false;</b>
+<b class="fc">&nbsp;    maxProgress = 5;</b>
+<b class="fc">&nbsp;    if (ItemWhiteList == null) {</b>
+<b class="fc">&nbsp;      ItemWhiteList = new ArrayList&lt;&gt;(Arrays.asList(ItemEnum.Lettuce, ItemEnum.Tomato,</b>
+&nbsp;          ItemEnum.Onion, ItemEnum.Mince, ItemEnum.CutTomato, ItemEnum.Dough));
 &nbsp;    }
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  @Override
 &nbsp;  public boolean GiveItem(Item item) {
-<b class="nc">&nbsp;    if (this.item == null) {</b>
-<b class="nc">&nbsp;      changeItem(item);</b>
-<b class="nc">&nbsp;      checkItem();</b>
-<b class="nc">&nbsp;      return true;</b>
+<b class="fc">&nbsp;    if (this.item == null) {</b>
+<b class="fc">&nbsp;      changeItem(item);</b>
+<b class="fc">&nbsp;      checkItem();</b>
+<b class="fc">&nbsp;      return true;</b>
 &nbsp;    }
 <b class="nc">&nbsp;    return false;</b>
 &nbsp;  }
@@ -117,11 +119,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  @Override
 &nbsp;  public Item RetrieveItem() {
-<b class="nc">&nbsp;    if (item != null) {</b>
-<b class="nc">&nbsp;      returnItem = item;</b>
-<b class="nc">&nbsp;      deleteItem();</b>
-<b class="nc">&nbsp;      currentRecipe = null;</b>
-<b class="nc">&nbsp;      return returnItem;</b>
+<b class="fc">&nbsp;    if (item != null) {</b>
+<b class="fc">&nbsp;      returnItem = item;</b>
+<b class="fc">&nbsp;      deleteItem();</b>
+<b class="fc">&nbsp;      currentRecipe = null;</b>
+<b class="fc">&nbsp;      return returnItem;</b>
 &nbsp;    }
 <b class="nc">&nbsp;    return null;</b>
 &nbsp;  }
@@ -144,12 +146,23 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    return currentRecipe != null;</b>
 &nbsp;  }
 &nbsp;
-&nbsp;    public void checkItem(){
-<b class="nc">&nbsp;        if(ItemWhiteList.contains(item.name))</b>
-<b class="nc">&nbsp;            currentRecipe = recipes.RecipeMap.get(item.name);</b>
-&nbsp;        else
-<b class="nc">&nbsp;            currentRecipe = null;</b>
+&nbsp;  public void checkItem() {
+<b class="fc">&nbsp;    if (ItemWhiteList.contains(item.name)) {</b>
+<b class="fc">&nbsp;      currentRecipe = RecipeDict.recipes.RecipeMap.get(item.name);</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      currentRecipe = null;</b>
 &nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Returns the item in the station.
+&nbsp;   *
+&nbsp;   * @return The item in the station.
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  public Item returnItem() {
+<b class="fc">&nbsp;    return item;</b>
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  @Override
@@ -169,25 +182,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    progress = item.progress / maxProgress;</b>
 &nbsp;  }
 &nbsp;
-&nbsp;    @Override
-&nbsp;    public void updatePictures() {
-<b class="nc">&nbsp;        if(item == null) {</b>
-<b class="nc">&nbsp;            if(heldItem == null)</b>
-&nbsp;                return;
-<b class="nc">&nbsp;            heldItem.Destroy();</b>
-<b class="nc">&nbsp;            heldItem = null;</b>
-&nbsp;            return;
-&nbsp;        }
-<b class="nc">&nbsp;        if(heldItem == null){</b>
-<b class="nc">&nbsp;            heldItem = new GameObject( new BlackTexture(Item.GetItemPath(item.name)));</b>
-<b class="nc">&nbsp;            heldItem.image.setSize(imageSize, imageSize);</b>
-<b class="nc">&nbsp;            heldItem.setPosition(gameObject.position.x + (gameObject.PhysicalWidth/2)-12, gameObject.position.y + (gameObject.getHeight()/2) + 5);</b>
-&nbsp;        }
-&nbsp;        else {
-<b class="nc">&nbsp;            heldItem.image = new BlackTexture(Item.GetItemPath(item.name));</b>
-<b class="nc">&nbsp;            heldItem.image.setSize(imageSize, imageSize);</b>
-&nbsp;        }
+&nbsp;  @Override
+&nbsp;  public void updatePictures() {
+<b class="fc">&nbsp;    if (item == null) {</b>
+<b class="fc">&nbsp;      if (heldItem == null) {</b>
+&nbsp;        return;
+&nbsp;      }
+<b class="fc">&nbsp;      heldItem.Destroy();</b>
+<b class="fc">&nbsp;      heldItem = null;</b>
+&nbsp;      return;
 &nbsp;    }
+<b class="fc">&nbsp;    if (heldItem == null) {</b>
+<b class="fc">&nbsp;      heldItem = new GameObject(new BlackTexture(Item.GetItemPath(item.name)));</b>
+<b class="fc">&nbsp;      heldItem.image.setSize(imageSize, imageSize);</b>
+<b class="fc">&nbsp;      heldItem.setPosition(gameObject.position.x + (gameObject.PhysicalWidth / 2) - 12,</b>
+<b class="fc">&nbsp;          gameObject.position.y + (gameObject.getHeight() / 2) + 5);</b>
+&nbsp;    } else {
+<b class="nc">&nbsp;      heldItem.image = new BlackTexture(Item.GetItemPath(item.name));</b>
+<b class="nc">&nbsp;      heldItem.image.setSize(imageSize, imageSize);</b>
+&nbsp;    }
+&nbsp;  }
 &nbsp;
 &nbsp;  @Override
 &nbsp;  public void Update(float dt) {
@@ -221,7 +235,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-28 22:13</div>
+    <div style="float:right;">generated on 2023-03-30 21:18</div>
 </div>
 </body>
 </html>

@@ -29,6 +29,7 @@ import com.mygdx.game.Stations.FoodCrate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 import com.mygdx.game.Core.GameObjectManager;
 import org.junit.Test;
@@ -49,6 +50,7 @@ public class ChopStationTests {
   public World world;
   public List<GameObject> Stations;
   public ChopStation chopStation;
+  boolean instantiated = false;
 
   /**
    * Instantiates the world and chefs so that these can be used in the tests.
@@ -99,8 +101,10 @@ public class ChopStationTests {
   /**
    * Creates the world and chopping station. Also creates the recipe dictionary and
    * gameobjectmanager.
+   * @author Jack Vickers
    */
-  private void createChopping() {
+  private void instantiateWorldAndChoppingStation() {
+//    instantiated = true;
     world = new World(new Vector2(0, 0), true); // creates world
     TiledMap map;
     map = new TmxMapLoader().load("PiazzaPanicMap.tmx"); // loads map
@@ -122,9 +126,6 @@ public class ChopStationTests {
 //    Stations.add(Chop);
     new RecipeDict(); // creates recipe dictionary
     RecipeDict.recipes.implementRecipes(); // implements recipes
-
-    // creates game object manager which makes sure that the game object manager is not null when it is needed
-    new GameObjectManager();
   }
 
   /**
@@ -134,7 +135,12 @@ public class ChopStationTests {
    */
   @Test
   public void testRemoveItemWhileNotChopping() {
-    createChopping(); // creates chopping station
+    if (GameObjectManager.objManager == null) {
+      instantiated = true;
+      // creates game object manager which makes sure that the game object manager is not null when it is needed
+      new GameObjectManager();
+    }
+    instantiateWorldAndChoppingStation(); // creates chopping station
     chopStation.GiveItem(new Item(ItemEnum.Lettuce)); // gives lettuce to chopping station
     chopStation.RetrieveItem(); // attempts to retrieve item from chopping station
     assertNull("There should be no item on the chopping station", chopStation.returnItem());

@@ -11,6 +11,7 @@ import java.util.Collections;
  * Assembly station for assembling our ingredients into a final dish
  *
  * @author Robin Graham
+ * @author Jack Hinton
  */
 public class AssemblyStation extends Station {
 
@@ -25,8 +26,9 @@ public class AssemblyStation extends Station {
 
 
   public AssemblyStation() {
-    if (ingredients == null)
+    if (ingredients == null) {
       ingredients = new ArrayList<Item>();
+    }
 
     tempIngredients = new ArrayList<ItemEnum>();
     assembled = false;
@@ -35,29 +37,41 @@ public class AssemblyStation extends Station {
 
   @Override
   public boolean GiveItem(Item item) {
-    if (assembled) {
-      ingredients.add(getDish());
+    if (CanGive()) {
+      if (assembled) {
+//        ingredients.add(getDish());
+        ingredients.add(item);
+        assembled = false;
+        updatePictures();
+        return true;
+      }
       ingredients.add(item);
       updatePictures();
       return true;
     }
-    ingredients.add(item);
-    updatePictures();
-    return true;
+    return false;
   }
 
 
   @Override
-  public Item RetrieveItem(){
-    if(assembled) {
-      tempDish = getDish();
+  public Item RetrieveItem() {
+    if (assembled) {
+      tempDish = ingredients.get(ingredients.size() - 1);
+      assembled = false;
       heldItem.Destroy();
       heldItem = null;
+      heldItems.remove(heldItems.size() - 1);
+      ingredients.remove(ingredients.size() - 1);
       return tempDish;
     }
-    if(ingredients.isEmpty())
+    if (ingredients.isEmpty()) {
       return null;
+    }
     int index = ingredients.size() - 1;
+    if (heldItem != null) {
+      heldItem.Destroy();
+    }
+    heldItem = null;
     heldItems.get(index).Destroy();
     heldItems.remove(index);
     return ingredients.remove(index);
@@ -97,6 +111,26 @@ public class AssemblyStation extends Station {
     return this.ingredients;
   }
 
+  /**
+   * Returns the gameobjects which are on the assembly station.
+   *
+   * @return ArrayList of gameobjects
+   * @author Jack Vickers
+   */
+  public ArrayList<GameObject> getHeldItems() {
+    return this.heldItems;
+  }
+
+  /**
+   * Returns the gameobject.
+   *
+   * @return GameObject heldItem.
+   * @author Jack Vickers
+   */
+  public GameObject getHeldItem() {
+    return this.heldItem;
+  }
+
 
   /**
    * removes all ingredients from the arraylist which means a successfull dish or simply ingredients
@@ -121,7 +155,7 @@ public class AssemblyStation extends Station {
     Collections.sort(tempIngredients);
     for (int x = 0; x < tempIngredients.size() - 1; x++) {
       temp = combinations.CombinationMap.get(
-          tempIngredients.get(x).name() + tempIngredients.get(x + 1).name());
+          tempIngredients.get(x).name() + " " + tempIngredients.get(x + 1).name());
       if (temp == null) {
         clearTempIngredients();
         return false;
@@ -134,6 +168,7 @@ public class AssemblyStation extends Station {
     clearTempIngredients();
     assembled = true;
     updatePictures();
+    ingredients.add(getDish());
     return assembled;
   }
 
@@ -141,7 +176,7 @@ public class AssemblyStation extends Station {
    * Gets the current dish
    */
   public Item getDish() {
-    assembled = false;
+//    assembled = false;
     Item tempDish = dish;
     dish = null;
     return tempDish;
@@ -158,31 +193,38 @@ public class AssemblyStation extends Station {
 
   @Override
   public void updatePictures() {
-    if(ingredients.isEmpty()) {
-      for(int x = 0; x < heldItems.size(); x++){
+    if (ingredients.isEmpty()) {
+      for (int x = 0; x < heldItems.size(); x++) {
         heldItems.get(x).Destroy();
       }
       heldItems = new ArrayList<>();
     }
 
-    if(assembled){
+    if (assembled) {
       heldItem = new GameObject(new BlackTexture(Item.GetItemPath(dish.name)));
       heldItem.image.setSize(imageSize, imageSize);
-      heldItem.setPosition(gameObject.position.x + (gameObject.getWidth()/2) - 9, gameObject.position.y + gameObject.getHeight() - imageSize - 2);
+      heldItem.setPosition(gameObject.position.x + (gameObject.getWidth() / 2) - 9,
+          gameObject.position.y + gameObject.getHeight() - imageSize - 2);
+      heldItems.add(heldItem);
       return;
     }
 
     int index = ingredients.size();
-    heldItem = new GameObject(new BlackTexture(Item.GetItemPath(ingredients.get(index-1).name)));
+    heldItem = new GameObject(new BlackTexture(Item.GetItemPath(ingredients.get(index - 1).name)));
     heldItem.image.setSize(ingredientSize, ingredientSize);
-    if(index == 1)
-      heldItem.setPosition(gameObject.position.x + 2, gameObject.position.y + gameObject.getHeight() - ingredientSize - 2);
-    else if (index == 2)
-      heldItem.setPosition(gameObject.position.x + gameObject.getWidth() - ingredientSize - 2, gameObject.position.y + gameObject.getHeight() - ingredientSize - 2);
-    else if (index == 3)
-      heldItem.setPosition(gameObject.position.x + 2, gameObject.position.y + gameObject.getHeight() - (2 * ingredientSize) - 4);
-    else
-      heldItem.setPosition(gameObject.position.x + gameObject.getWidth() - ingredientSize - 2, gameObject.position.y + gameObject.getHeight() - (2 * ingredientSize) - 4);
+    if (index == 1) {
+      heldItem.setPosition(gameObject.position.x + 2,
+          gameObject.position.y + gameObject.getHeight() - ingredientSize - 2);
+    } else if (index == 2) {
+      heldItem.setPosition(gameObject.position.x + gameObject.getWidth() - ingredientSize - 2,
+          gameObject.position.y + gameObject.getHeight() - ingredientSize - 2);
+    } else if (index == 3) {
+      heldItem.setPosition(gameObject.position.x + 2,
+          gameObject.position.y + gameObject.getHeight() - (2 * ingredientSize) - 4);
+    } else {
+      heldItem.setPosition(gameObject.position.x + gameObject.getWidth() - ingredientSize - 2,
+          gameObject.position.y + gameObject.getHeight() - (2 * ingredientSize) - 4);
+    }
     heldItems.add(heldItem);
 
   }

@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">RecipeDict</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/27)
+    (27/27)
   </span>
 </td>
 </tr>
@@ -85,100 +85,96 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;public class RecipeDict {
 &nbsp;
-&nbsp;    public static RecipeDict recipes;
-<b class="nc">&nbsp;    public Map&lt;ItemEnum, Recipe&gt; RecipeMap = new HashMap&lt;&gt;();</b>
+&nbsp;  public static RecipeDict recipes;
+<b class="fc">&nbsp;  public Map&lt;ItemEnum, Recipe&gt; RecipeMap = new HashMap&lt;&gt;();</b>
 &nbsp;
-&nbsp;    public void implementRecipes(){
-&nbsp;        ArrayList&lt;Step&gt; steps;
+&nbsp;  public void implementRecipes() {
+&nbsp;    ArrayList&lt;Step&gt; steps;
 &nbsp;
-&nbsp;        //Chopping Board Recipes
+&nbsp;    //Chopping Board Recipes
 &nbsp;
-&nbsp;        //Lettuce -&gt; CutLettuce
-<b class="nc">&nbsp;        steps = new ArrayList&lt;Step&gt;(Arrays.asList(new TimeStep()));</b>
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Lettuce, new Recipe(ItemEnum.CutLettuce, steps));</b>
+&nbsp;    //Lettuce -&gt; CutLettuce
+<b class="fc">&nbsp;    steps = new ArrayList&lt;Step&gt;(Arrays.asList(new TimeStep()));</b>
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Lettuce, new Recipe(ItemEnum.CutLettuce, steps));</b>
 &nbsp;
-&nbsp;        //Tomato -&gt; CutTomato
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Tomato, new Recipe(ItemEnum.CutTomato, steps));</b>
+&nbsp;    //Tomato -&gt; CutTomato
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Tomato, new Recipe(ItemEnum.CutTomato, steps));</b>
 &nbsp;
-&nbsp;        //Onion -&gt; CutOnion
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Onion, new Recipe(ItemEnum.CutOnion, steps));</b>
+&nbsp;    //Onion -&gt; CutOnion
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Onion, new Recipe(ItemEnum.CutOnion, steps));</b>
 &nbsp;
-&nbsp;        //Mince -&gt; RawPatty
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Mince, new Recipe(ItemEnum.RawPatty, steps));</b>
+&nbsp;    //Mince -&gt; RawPatty
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Mince, new Recipe(ItemEnum.RawPatty, steps));</b>
 &nbsp;
-&nbsp;        //Dough -&gt; PizzaBase
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Dough, new Recipe(ItemEnum.PizzaBase, steps));</b>
+&nbsp;    //Dough -&gt; PizzaBase
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Dough, new Recipe(ItemEnum.PizzaBase, steps));</b>
 &nbsp;
-&nbsp;        //CutTomato -&gt; TomSauce
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.CutTomato, new Recipe(ItemEnum.TomSauce, steps));</b>
+&nbsp;    //CutTomato -&gt; TomSauce
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.CutTomato, new Recipe(ItemEnum.TomSauce, steps));</b>
 &nbsp;
-&nbsp;        //Oven Recipes
+&nbsp;    //Oven Recipes
 &nbsp;
-&nbsp;        //CheesePizza -&gt; CheesePizzaCooked
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.CheesePizza, new Recipe(ItemEnum.CheesePizzaCooked, steps));</b>
+&nbsp;    //CheesePizza -&gt; CheesePizzaCooked
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.CheesePizza, new Recipe(ItemEnum.CheesePizzaCooked, steps));</b>
 &nbsp;
-&nbsp;        //MeatPizza -&gt; MeatPizzaCooked
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.MeatPizza, new Recipe(ItemEnum.MeatPizzaCooked, steps));</b>
+&nbsp;    //MeatPizza -&gt; MeatPizzaCooked
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.MeatPizza, new Recipe(ItemEnum.MeatPizzaCooked, steps));</b>
 &nbsp;
-&nbsp;        //VegPizza -&gt; VegPizzaCooked
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.VegPizza, new Recipe(ItemEnum.VegPizzaCooked, steps));</b>
+&nbsp;    //VegPizza -&gt; VegPizzaCooked
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.VegPizza, new Recipe(ItemEnum.VegPizzaCooked, steps));</b>
 &nbsp;
-&nbsp;        //Potato -&gt; BakedPotato
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Potato, new Recipe(ItemEnum.BakedPotato, steps));</b>
+&nbsp;    //Potato -&gt; BakedPotato
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Potato, new Recipe(ItemEnum.BakedPotato, steps));</b>
 &nbsp;
-&nbsp;        //CheesePotato -&gt; CheeseBake
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.CheesePotato, new Recipe(ItemEnum.CheeseBake, steps));</b>
+&nbsp;    //CheesePotato -&gt; CheeseBake
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.CheesePotato, new Recipe(ItemEnum.CheeseBake, steps));</b>
 &nbsp;
-&nbsp;        //MeatPotato -&gt; MeatBake
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.MeatPotato, new Recipe(ItemEnum.MeatBake, steps));</b>
+&nbsp;    //MeatPotato -&gt; MeatBake
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.MeatPotato, new Recipe(ItemEnum.MeatBake, steps));</b>
 &nbsp;
+&nbsp;    //Toaster Recipe
 &nbsp;
-&nbsp;        //Toaster Recipe
+&nbsp;    //Buns -&gt; ToastedBuns;
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.Buns, new Recipe(ItemEnum.ToastedBuns, steps));</b>
 &nbsp;
-&nbsp;        //Buns -&gt; ToastedBuns;
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.Buns, new Recipe(ItemEnum.ToastedBuns, steps));</b>
+&nbsp;    //Burning Recipes
 &nbsp;
+&nbsp;    //CookedPatty
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.CookedPatty, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //Burning Recipes
+&nbsp;    //CheesePizzaCooked
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.CheesePizzaCooked, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //CookedPatty
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.CookedPatty, new Recipe(ItemEnum.Cinder, steps));</b>
+&nbsp;    //MeatPizzaCooked
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.MeatPizzaCooked, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //CheesePizzaCooked
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.CheesePizzaCooked, new Recipe(ItemEnum.Cinder, steps));</b>
+&nbsp;    //VegPizzaCooked
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.VegPizzaCooked, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //MeatPizzaCooked
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.MeatPizzaCooked, new Recipe(ItemEnum.Cinder, steps));</b>
+&nbsp;    //BakedPotato
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.BakedPotato, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //VegPizzaCooked
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.VegPizzaCooked, new Recipe(ItemEnum.Cinder, steps));</b>
+&nbsp;    //CheeseBake
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.CheeseBake, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //BakedPotato
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.BakedPotato, new Recipe(ItemEnum.Cinder, steps));</b>
+&nbsp;    //MeatBake
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.MeatBake, new Recipe(ItemEnum.Cinder, steps));</b>
 &nbsp;
-&nbsp;        //CheeseBake
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.CheeseBake, new Recipe(ItemEnum.Cinder, steps));</b>
+&nbsp;    //Hob Recipes
 &nbsp;
-&nbsp;        //MeatBake
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.MeatBake, new Recipe(ItemEnum.Cinder, steps));</b>
-&nbsp;
-&nbsp;
-&nbsp;        //Hob Recipes
-&nbsp;
-&nbsp;        //RawPatty -&gt; CookedPatty
-<b class="nc">&nbsp;        steps = new ArrayList&lt;&gt;(Arrays.asList(new TimeStep(), new InteractionStep(), new TimeStep()));</b>
-<b class="nc">&nbsp;        RecipeMap.put(ItemEnum.RawPatty, new Recipe(ItemEnum.CookedPatty, steps));</b>
+&nbsp;    //RawPatty -&gt; CookedPatty
+<b class="fc">&nbsp;    steps = new ArrayList&lt;&gt;(Arrays.asList(new TimeStep(), new InteractionStep(), new TimeStep()));</b>
+<b class="fc">&nbsp;    RecipeMap.put(ItemEnum.RawPatty, new Recipe(ItemEnum.CookedPatty, steps));</b>
 &nbsp;
 &nbsp;
+&nbsp;  }
 &nbsp;
-&nbsp;
-&nbsp;    }
-&nbsp;
-<b class="nc">&nbsp;    public RecipeDict() {</b>
-<b class="nc">&nbsp;        if (recipes != null)</b>
-&nbsp;            return;
-<b class="nc">&nbsp;        recipes = this;</b>
-&nbsp;    }
+<b class="fc">&nbsp;  public RecipeDict() {</b>
+<b class="fc">&nbsp;      if (recipes != null) {</b>
+&nbsp;          return;
+&nbsp;      }
+<b class="fc">&nbsp;    recipes = this;;</b>
+&nbsp;  }
 &nbsp;
 &nbsp;}
 </code>
@@ -204,7 +200,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-28 22:13</div>
+    <div style="float:right;">generated on 2023-03-30 21:18</div>
 </div>
 </body>
 </html>

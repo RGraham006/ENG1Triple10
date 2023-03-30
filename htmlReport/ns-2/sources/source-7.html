@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">GameObjectManager</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    44.4%
   </span>
   <span class="absValue">
-    (0/9)
+    (4/9)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    30%
   </span>
   <span class="absValue">
-    (0/57)
+    (15/50)
   </span>
 </td>
 </tr>
@@ -82,9 +82,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;public class GameObjectManager {
 &nbsp;
-<b class="nc">&nbsp;  public Hashtable&lt;Integer, GameObject&gt; GameObjects = new Hashtable&lt;&gt;();</b>
+<b class="fc">&nbsp;  public Hashtable&lt;Integer, GameObject&gt; GameObjects = new Hashtable&lt;&gt;();</b>
 &nbsp;
-<b class="nc">&nbsp;  public List&lt;Scriptable&gt; LooseScripts = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;  public List&lt;Scriptable&gt; LooseScripts = new LinkedList&lt;&gt;();</b>
 &nbsp;  public static GameObjectManager objManager;
 &nbsp;  Random rand;
 &nbsp;
@@ -92,7 +92,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  public void AppendLooseScript(Scriptable scriptable){
 <b class="nc">&nbsp;    LooseScripts.add(scriptable);</b>
 <b class="nc">&nbsp;    scriptable.Start();</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public List&lt;Scriptable&gt; returnObjectsWithInterface(Class&lt;?&gt; scriptType){
 <b class="nc">&nbsp;    List&lt;Scriptable&gt; scripts = new LinkedList&lt;&gt;();</b>
@@ -127,27 +127,27 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    }</b>
 <b class="nc">&nbsp;    return scripts;</b>
 &nbsp;  }
-<b class="nc">&nbsp;  public GameObjectManager() {</b>
-<b class="nc">&nbsp;    if (objManager != null) {</b>
+<b class="fc">&nbsp;  public GameObjectManager() {</b>
+<b class="fc">&nbsp;    if (objManager != null) {</b>
 <b class="nc">&nbsp;      throw new IllegalArgumentException(&quot;This cannot be created more than once&quot;);</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    objManager = this;</b>
-<b class="nc">&nbsp;    rand = new Random();</b>
+<b class="fc">&nbsp;    objManager = this;</b>
+<b class="fc">&nbsp;    rand = new Random();</b>
 &nbsp;
 &nbsp;
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  public void SubmitGameObject(GameObject obj) {
 &nbsp;
-<b class="nc">&nbsp;    int UID = CreateUID();</b>
+<b class="fc">&nbsp;    int UID = CreateUID();</b>
 &nbsp;
-<b class="nc">&nbsp;    GameObjects.put(UID, obj);</b>
+<b class="fc">&nbsp;    GameObjects.put(UID, obj);</b>
 &nbsp;
-<b class="nc">&nbsp;    obj.setUID(UID);</b>
+<b class="fc">&nbsp;    obj.setUID(UID);</b>
 &nbsp;
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  public void doUpdate(float dt) {
@@ -161,7 +161,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    ) {
 <b class="nc">&nbsp;      obj.doUpdate(dt);</b>
 <b class="nc">&nbsp;    }</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public void doFixedUpdate(float dt) {
 &nbsp;
@@ -177,7 +177,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;      obj.doFixedUpdate(dt);</b>
 <b class="nc">&nbsp;    }</b>
 &nbsp;
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;
 &nbsp;  public void render(SpriteBatch batch) {
@@ -187,22 +187,22 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;      obj.render(batch);</b>
 <b class="nc">&nbsp;    }</b>
 &nbsp;
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public void DestroyGameObject(GameObject obj) {
-<b class="nc">&nbsp;    obj.destroyed = true;</b>
+<b class="fc">&nbsp;    obj.destroyed = true;</b>
 &nbsp;
-<b class="nc">&nbsp;    GameObjects.remove(obj.getUID());</b>
-<b class="nc">&nbsp;  }</b>
+<b class="fc">&nbsp;    GameObjects.remove(obj.getUID());</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  public int CreateUID() {
-<b class="nc">&nbsp;    int UID = 0;</b>
+<b class="fc">&nbsp;    int UID = 0;</b>
 &nbsp;
-<b class="nc">&nbsp;    while (GameObjects.containsKey(UID)) {</b>
-<b class="nc">&nbsp;      UID = rand.nextInt();</b>
+<b class="fc">&nbsp;    while (GameObjects.containsKey(UID)) {</b>
+<b class="fc">&nbsp;      UID = rand.nextInt();</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    return UID;</b>
+<b class="fc">&nbsp;    return UID;</b>
 &nbsp;
 &nbsp;  }
 &nbsp;
@@ -231,7 +231,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-28 22:13</div>
+    <div style="float:right;">generated on 2023-03-30 21:18</div>
 </div>
 </body>
 </html>

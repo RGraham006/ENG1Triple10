@@ -59,10 +59,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    14.3%
+    13.9%
   </span>
   <span class="absValue">
-    (6/42)
+    (5/36)
   </span>
 </td>
 </tr>
@@ -92,11 +92,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  public void GivePath(List&lt;Vector2&gt; newPath) {
 <b class="nc">&nbsp;    prev = new Vector2(gameObject.position);</b>
 <b class="nc">&nbsp;    path = newPath;</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 <b class="fc">&nbsp;  protected PathfindingAgent() {</b>
 <b class="fc">&nbsp;    path = new LinkedList&lt;&gt;();</b>
-<b class="fc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  /**
 &nbsp;   * Gets the nearest position on line from a 3D position
@@ -134,7 +134,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  void move(float dt) {
 &nbsp;
 <b class="nc">&nbsp;    if (path == null || path.size() == 0) {</b>
-<b class="nc">&nbsp;      return;</b>
+&nbsp;      return;
 &nbsp;    }
 &nbsp;
 <b class="nc">&nbsp;    Vector2 rayDir = GetMoveDir();</b>
@@ -152,7 +152,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 <b class="nc">&nbsp;    if (path == null || path.size() == 0) {</b>
-<b class="nc">&nbsp;      return;</b>
+&nbsp;      return;
 &nbsp;    }
 &nbsp;
 <b class="nc">&nbsp;    Vector2 Move = new Vector2(path.get(0));</b>
@@ -166,12 +166,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    gameObject.position.add(Move);</b>
 &nbsp;    // b2body.setTransform(gameObject.position.x,gameObject.position.y,b2body.getAngle());
 &nbsp;
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;  @Override
 &nbsp;  public void Update(float dt) {
 <b class="nc">&nbsp;    move(dt);</b>
-<b class="nc">&nbsp;  }</b>
+&nbsp;  }
 &nbsp;
 &nbsp;}
 </code>
@@ -197,7 +197,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-28 22:13</div>
+    <div style="float:right;">generated on 2023-03-30 21:18</div>
 </div>
 </body>
 </html>

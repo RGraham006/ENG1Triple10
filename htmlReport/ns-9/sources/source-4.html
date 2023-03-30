@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > UtilityTests</title>
+  <title>Coverage Report > ChopStationTests</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">piazzapanictests.tests</a>
 </div>
 
-<h1>Coverage Summary for Class: UtilityTests (piazzapanictests.tests)</h1>
+<h1>Coverage Summary for Class: ChopStationTests (piazzapanictests.tests)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -40,7 +40,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">UtilityTests</td>
+  <td class="name">ChopStationTests</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    62.5%
   </span>
   <span class="absValue">
-    (2/2)
+    (5/8)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    60.9%
   </span>
   <span class="absValue">
-    (3/3)
+    (28/46)
   </span>
 </td>
 </tr>
@@ -76,19 +76,164 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package piazzapanictests.tests;
 &nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;import static org.junit.Assert.assertNull;
 &nbsp;import static org.junit.Assert.assertTrue;
 &nbsp;
+&nbsp;import com.badlogic.gdx.Gdx;
+&nbsp;import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+&nbsp;import com.badlogic.gdx.maps.MapObject;
+&nbsp;import com.badlogic.gdx.maps.tiled.TiledMap;
+&nbsp;import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+&nbsp;import com.badlogic.gdx.math.Rectangle;
+&nbsp;import com.badlogic.gdx.maps.objects.RectangleMapObject;
+&nbsp;import com.badlogic.gdx.math.Vector2;
+&nbsp;import com.badlogic.gdx.physics.box2d.*;
+&nbsp;import com.mygdx.game.Chef;
+&nbsp;import com.badlogic.gdx.maps.MapLayer;
+&nbsp;import com.mygdx.game.Core.BlackSprite;
+&nbsp;import com.mygdx.game.Core.GameObject;
+&nbsp;import com.mygdx.game.Core.GameObjectManager;
+&nbsp;import com.mygdx.game.Core.Interactions.Interactable;
+&nbsp;import com.mygdx.game.Core.MasterChef;
+&nbsp;import com.mygdx.game.Items.Item;
+&nbsp;import com.mygdx.game.Items.ItemEnum;
+&nbsp;
+&nbsp;import com.mygdx.game.RecipeAndComb.RecipeDict;
+&nbsp;import com.mygdx.game.Stations.ChopStation;
+&nbsp;import com.mygdx.game.Stations.FoodCrate;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Objects;
+&nbsp;import java.util.Stack;
+&nbsp;import com.mygdx.game.Core.GameObjectManager;
 &nbsp;import org.junit.Test;
 &nbsp;import org.junit.runner.RunWith;
 &nbsp;
-&nbsp;
+&nbsp;/**
+&nbsp; * Tests for the chopping station.
+&nbsp; *
+&nbsp; * @author Jack Vickers
+&nbsp; * @author Azzam Amirul Bahri
+&nbsp; */
 &nbsp;@RunWith(GdxTestRunner.class)
-<b class="fc">&nbsp;public class UtilityTests {</b>
-&nbsp;  //pass
+<b class="fc">&nbsp;public class ChopStationTests {</b>
+&nbsp;
+&nbsp;  // Array of chefs
+<b class="fc">&nbsp;  private static ArrayList&lt;TextureAtlas&gt; chefAtlasArray = new ArrayList&lt;TextureAtlas&gt;();</b>
+&nbsp;  public Chef[] chef;
+&nbsp;  public World world;
+&nbsp;  public List&lt;GameObject&gt; Stations;
+&nbsp;  public ChopStation chopStation;
+<b class="fc">&nbsp;  boolean instantiated = false;</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Instantiates the world and chefs so that these can be used in the tests.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  private void instantiateWorldAndChefs() {
+<b class="nc">&nbsp;    world = new World(new Vector2(0, 0), true);</b>
+<b class="nc">&nbsp;    generateChefArray();</b>
+<b class="nc">&nbsp;    chef = new Chef[2];</b>
+<b class="nc">&nbsp;    int chefControl = 0;</b>
+<b class="nc">&nbsp;    for (int i = 0; i &lt; chef.length; i++) {</b>
+<b class="nc">&nbsp;      GameObject chefsGameObject = new GameObject(</b>
+&nbsp;          new BlackSprite()); // passing in null since chef will define it later
+<b class="nc">&nbsp;      chef[i] = new Chef(world, i, getChefAtlasArray().get(chefControl));</b>
+<b class="nc">&nbsp;      chefsGameObject.attachScript(chef[i]);</b>
+<b class="nc">&nbsp;      chefsGameObject.image.setSize(18, 40); // set size of sprite</b>
+<b class="nc">&nbsp;      chef[i].updateSpriteFromInput(&quot;idlesouth&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Generates a chef array which can be used to get random chef sprites from the chef class.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  private void generateChefArray() {
+&nbsp;    String filename;
+&nbsp;    TextureAtlas chefAtlas;
+<b class="nc">&nbsp;    for (int i = 1; i &lt; 4; i++) {</b>
+<b class="nc">&nbsp;      filename = &quot;Chefs/Chef&quot; + i + &quot;/chef&quot; + i + &quot;.txt&quot;;</b>
+<b class="nc">&nbsp;      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));</b>
+<b class="nc">&nbsp;      chefAtlasArray.add(chefAtlas);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Returns the chef atlas array.
+&nbsp;   *
+&nbsp;   * @return chefAtlasArray
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  private static ArrayList&lt;TextureAtlas&gt; getChefAtlasArray() {
+<b class="nc">&nbsp;    return chefAtlasArray;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Creates the world and chopping station. Also creates the recipe dictionary and
+&nbsp;   * gameobjectmanager.
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  private void instantiateWorldAndChoppingStation() {
+&nbsp;//    instantiated = true;
+<b class="fc">&nbsp;    world = new World(new Vector2(0, 0), true); // creates world</b>
+&nbsp;    TiledMap map;
+<b class="fc">&nbsp;    map = new TmxMapLoader().load(&quot;PiazzaPanicMap.tmx&quot;); // loads map</b>
+<b class="fc">&nbsp;    MapLayer chopping = map.getLayers().get(5); // gets chopping layer</b>
+<b class="fc">&nbsp;    MapObject object = chopping.getObjects().getByType(RectangleMapObject.class)</b>
+<b class="fc">&nbsp;        .get(0); // gets chopping object</b>
+<b class="fc">&nbsp;    Rectangle rect = ((RectangleMapObject) object).getRectangle(); // gets chopping rectangle</b>
+&nbsp;
+&nbsp;//    buildObject(world, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), &quot;Static&quot;,
+&nbsp;//        name);
+&nbsp;//    Stations = new LinkedList();
+<b class="fc">&nbsp;    GameObject Chop = new GameObject(null); // creates chopping game object</b>
+<b class="fc">&nbsp;    Chop.setPosition(rect.getX(),</b>
+<b class="fc">&nbsp;        rect.getY()); // sets chopping position (this must be done to avoid null pointer exception)</b>
+<b class="fc">&nbsp;    Chop.setWidthAndHeight(rect.getWidth(),</b>
+<b class="fc">&nbsp;        rect.getHeight()); // sets chopping width and height (this must be done to avoid null pointer exception)</b>
+<b class="fc">&nbsp;    chopStation = new ChopStation(); // creates chopping station</b>
+<b class="fc">&nbsp;    Chop.attachScript(chopStation); // attaches chopping station to chopping game object</b>
+&nbsp;//    Stations.add(Chop);
+<b class="fc">&nbsp;    new RecipeDict(); // creates recipe dictionary</b>
+<b class="fc">&nbsp;    RecipeDict.recipes.implementRecipes(); // implements recipes</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that an item can be removed from the chopping board when it is not being chopped.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
 &nbsp;  @Test
-&nbsp;  public void testPass() { // this will be replaced with a test that actually tests something
-<b class="fc">&nbsp;    assertTrue(true);</b>
-<b class="fc">&nbsp;  }</b>
+&nbsp;  public void testRemoveItemWhileNotChopping() {
+<b class="fc">&nbsp;    if (GameObjectManager.objManager == null) {</b>
+<b class="nc">&nbsp;      instantiated = true;</b>
+&nbsp;      // creates game object manager which makes sure that the game object manager is not null when it is needed
+<b class="nc">&nbsp;      new GameObjectManager();</b>
+&nbsp;    }
+<b class="fc">&nbsp;    instantiateWorldAndChoppingStation(); // creates chopping station</b>
+<b class="fc">&nbsp;    chopStation.GiveItem(new Item(ItemEnum.Lettuce)); // gives lettuce to chopping station</b>
+<b class="fc">&nbsp;    chopStation.RetrieveItem(); // attempts to retrieve item from chopping station</b>
+<b class="fc">&nbsp;    assertNull(&quot;There should be no item on the chopping station&quot;, chopStation.returnItem());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Test
+&nbsp;  public void testRemoveItemWhileChopping() {
+<b class="fc">&nbsp;    if (GameObjectManager.objManager == null) {</b>
+<b class="nc">&nbsp;      new GameObjectManager();</b>
+&nbsp;    }
+<b class="fc">&nbsp;    instantiateWorldAndChoppingStation(); // creates chopping station</b>
+<b class="fc">&nbsp;    chopStation.GiveItem(new Item(ItemEnum.Lettuce)); // gives lettuce to chopping station</b>
+&nbsp;
+<b class="fc">&nbsp;    chopStation.RetrieveItem(); // attempts to retrieve item from chopping station</b>
+<b class="fc">&nbsp;    assertNull(&quot;There should be no item on the chopping station&quot;, chopStation.returnItem());</b>
+&nbsp;  }
+&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -113,7 +258,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-28 22:13</div>
+    <div style="float:right;">generated on 2023-03-30 21:18</div>
 </div>
 </body>
 </html>
