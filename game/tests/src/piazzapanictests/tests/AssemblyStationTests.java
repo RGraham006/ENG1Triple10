@@ -36,33 +36,7 @@ import org.junit.runner.RunWith;
  * @author Jack Vickers
  */
 @RunWith(GdxTestRunner.class)
-public class AssemblyStationTests {
-
-  public World world;
-  public AssemblyStation assemblyStation;
-
-  /**
-   * Creates the world and assembly station. Also creates the recipe dictionary and
-   * gameobjectmanager.
-   *
-   * @author Jack Vickers
-   */
-  public void instantiateWorldAndAssemblyStation() {
-    world = new World(new Vector2(0, 0), true); // creates world
-    TiledMap map;
-    map = new TmxMapLoader().load("PiazzaPanicMap.tmx"); // loads map
-    MapLayer counter = map.getLayers().get(3); // gets counter layer
-    MapObject object = counter.getObjects().getByType(RectangleMapObject.class)
-        .get(0); // gets counter object
-    Rectangle rect = ((RectangleMapObject) object).getRectangle(); // gets chopping rectangle
-    GameObject Assemble = new GameObject(null);
-    Assemble.setPosition(rect.getX(), rect.getY());
-    Assemble.setWidthAndHeight(rect.getWidth(), rect.getHeight());
-    assemblyStation = new AssemblyStation();
-    Assemble.attachScript(assemblyStation);
-    new RecipeDict(); // creates recipe dictionary
-    RecipeDict.recipes.implementRecipes(); // implements recipes
-  }
+public class AssemblyStationTests extends MasterTestClass {
 
   /**
    * Tests that an item can be placed on an assembly station.

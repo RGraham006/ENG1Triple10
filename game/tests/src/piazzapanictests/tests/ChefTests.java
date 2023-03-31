@@ -3,20 +3,10 @@ package piazzapanictests.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.Chef;
-import com.mygdx.game.Core.BlackSprite;
-import com.mygdx.game.Core.GameObject;
-import com.mygdx.game.Core.GameObjectManager;
-import com.mygdx.game.Core.Interactions.Interactable;
-import com.mygdx.game.Core.MasterChef;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import com.mygdx.game.Stations.FoodCrate;
-import java.util.ArrayList;
+
 import java.util.Stack;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,58 +19,7 @@ import org.junit.runner.RunWith;
  * @author Azzam Amirul Bahri
  */
 @RunWith(GdxTestRunner.class)
-public class ChefTests {
-
-  // Array of chefs
-  private static ArrayList<TextureAtlas> chefAtlasArray = new ArrayList<TextureAtlas>();
-  public Chef[] chef;
-  public World world;
-
-  /**
-   * Instantiates the world and chefs so that these can be used in the tests.
-   *
-   * @author Jack Vickers
-   */
-  private void instantiateWorldAndChefs() {
-    world = new World(new Vector2(0, 0), true);
-    generateChefArray();
-    chef = new Chef[2];
-    int chefControl = 0;
-    for (int i = 0; i < chef.length; i++) {
-      GameObject chefsGameObject = new GameObject(
-          new BlackSprite()); // passing in null since chef will define it later
-      chef[i] = new Chef(world, i, getChefAtlasArray().get(chefControl));
-      chefsGameObject.attachScript(chef[i]);
-      chefsGameObject.image.setSize(18, 40); // set size of sprite
-      chef[i].updateSpriteFromInput("idlesouth");
-    }
-
-  }
-
-  /**
-   * Generates a chef array which can be used to get random chef sprites from the chef class.
-   *
-   * @author Jack Vickers
-   */
-  private void generateChefArray() {
-    String filename;
-    TextureAtlas chefAtlas;
-    for (int i = 1; i < 4; i++) {
-      filename = "Chefs/Chef" + i + "/chef" + i + ".txt";
-      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));
-      chefAtlasArray.add(chefAtlas);
-    }
-  }
-
-  /**
-   * Returns the chef atlas array.
-   *
-   * @return chefAtlasArray
-   * @author Jack Vickers
-   */
-  private static ArrayList<TextureAtlas> getChefAtlasArray() {
-    return chefAtlasArray;
-  }
+public class ChefTests extends MasterTestClass {
 
 //  /**
 //   * Tests that the chef can move up.
@@ -234,7 +173,7 @@ public class ChefTests {
   public void testPickUpPantryMince() {
     instantiateWorldAndChefs();
     Item itemToGive = new FoodCrate(
-        ItemEnum.Mince).RetrieveItem(); // Creates a mince food create and gets the mince from it
+        ItemEnum.Mince).RetrieveItem(); // Creates a mince food crate and gets the mince from it
     chef[0].GiveItem(itemToGive); // Gives the mince to the chef
     assertEquals("The chef should have mince at the top of their inventory stack",
         new Item(ItemEnum.Mince),
