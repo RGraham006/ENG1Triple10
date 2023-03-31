@@ -360,5 +360,20 @@ public class ChefTests {
         chef[0].getInventory().peek());
   }
 
+  /**
+   * Tests that the chef cannot pick up from an empty tile with no items present.
+   *
+   * @author Hubert Solecki
+   * @date 31/03/2023
+   */
+  @Test
+  public void testPickupEmptyTile() {
+    instantiateWorldAndChefs();
+    int chefInventoryCountBefore = chef[0].getInventoryCount();
+    chef[0].FetchItem();
+    int chefInventoryCountAfter = chef[0].getInventoryCount();
+    assertEquals("The chef's inventory is still empty after attempting to pick up an item from an empty tile",
+            chefInventoryCountBefore, chefInventoryCountAfter);
+  }
 
 }
