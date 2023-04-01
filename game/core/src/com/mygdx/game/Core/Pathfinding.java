@@ -20,22 +20,62 @@ public class Pathfinding {
   OccupationID[] Cells;
 
 
+  /**
+   * Transforms 2D space into linear
+   * @param x
+   * @param y
+   * @return
+   * @author Felix Seanor
+   */
   private int getIndex(int x, int y) {
     return x + y * GridX;
   }
 
+
+  /**
+   * Gets the current occupation the cell.
+   * @param x
+   * @param y
+   * @return
+   * @author Felix Seanor
+   */
   private OccupationID getOccupation(int x, int y) {
     return Cells[getIndex(x, y)];
   }
 
+  /**
+   *
+   * @param ix
+   * @param iy
+   * @param jx
+   * @param jy
+   * @return sqrt(I^2 - J^2)
+   */
   private float Euclidian(int ix, int iy, int jx, int jy) {
     return (float) Math.sqrt(Math.pow(jx - ix, 2) + Math.pow(jy - iy, 2));
   }
 
+  /**
+   * Returns manhatten distance
+   * @param ix
+   * @param iy
+   * @param jx
+   * @param jy
+   * @return |I-J|
+   * @author Felix Seanor
+   *
+   */
   private float Manhatten(int ix, int iy, int jx, int jy) {
     return Math.abs(ix - jx) + Math.abs(iy - jy);
   }
 
+  /**
+   * Creates a pathfinding module with given parameters
+   * @param gridSize size of each grid cell. Should be <= Pixel size
+   * @param GridX X dimensions size
+   * @param GridY Y dimensions size
+   * @author Felix Seanor
+   */
   public Pathfinding(int gridSize, int GridX, int GridY) {
 
     this.GridX = GridX / gridSize;
@@ -50,6 +90,16 @@ public class Pathfinding {
 
   }
 
+  /**
+   * returns the distance from i to j given a valid Distance equation.
+   * @param ix
+   * @param iy
+   * @param jx
+   * @param jy
+   * @param test
+   * @return distance
+   * @author Felix Seanor
+   */
   private float DistanceTesting(int ix, int iy, int jx, int jy, DistanceTest test) {
     if (test == DistanceTest.Euclidean) {
       return Euclidian(ix, iy, jx, jy);
@@ -85,6 +135,7 @@ public class Pathfinding {
    * @param y y coordinate
    * @param index index of the cell
    * @return true if legal, false if not
+   * @author Felix Seanor
    */
   private boolean LegalMove(int x, int y, int index) {
     if (!(x >= 0 && x < GridX)) {
@@ -280,7 +331,7 @@ public class Pathfinding {
 
       }
     }
-
+if(path.size()>1)
     path.remove(path.size() - 1);
     //path.add(new Vector2(_x, _y));
 

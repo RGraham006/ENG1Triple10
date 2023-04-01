@@ -16,6 +16,9 @@ public class Item {
    * Creates a new item.
    *
    * @param item The item to create.
+   * @author Felix Seanor
+   * @author Jack Hinton
+   * @author Jack Vickers
    */
   public Item(ItemEnum item) {
     name = item;
@@ -24,6 +27,7 @@ public class Item {
 
     tex.setSize(width, height);
   }
+
 
   public static String GetItemPath(ItemEnum name) {
     return "Items/" + name.name() + ".png";

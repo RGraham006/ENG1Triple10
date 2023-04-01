@@ -29,6 +29,7 @@ public class PathfindingAgent extends Scriptable {
    * @param lineDir - unit vector in direction of line, either direction works
    * @param pnt     - the point to find nearest on line for
    * @return
+   * @author Felix Seanor
    */
   public static RayPoint NearestPointOnLine(Vector2 linePnt, Vector2 lineDir, Vector2 pnt) {
 
@@ -44,6 +45,13 @@ public class PathfindingAgent extends Scriptable {
     return rayPoint;
   }
 
+  /**
+   * Get the current movement direction
+   * @return Movement direction
+   *
+   * @author Felix Seanor
+   * @author Jack Vickers
+   */
   protected Vector2 GetMoveDir() {
     if (path == null || path.size() == 0) {
       return new Vector2(0, 0);
@@ -55,6 +63,12 @@ public class PathfindingAgent extends Scriptable {
     return rayDir;
   }
 
+  /**
+   * Moves the chef to the next location
+   * @param dt
+   * @author Felix Seanor
+   * @author Jack Vickers
+   */
   void move(float dt) {
 
     if (path == null || path.size() == 0) {

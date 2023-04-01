@@ -11,7 +11,10 @@ public class RenderManager {
 
   public static RenderManager renderer;
 
-
+  /**
+   * Creates a render manager singleton
+   * @author Felix Seanor
+   */
   public RenderManager() {
     if (renderer != null) {
       throw new IllegalArgumentException("This cannot be created more than once");
@@ -21,7 +24,11 @@ public class RenderManager {
 
   }
 
-
+  /**
+   * Creates a render call for all gameobjects
+   * @param batch
+   * @author Felix Seanor
+   */
   public void onRender(SpriteBatch batch) {
     List<GameObject> LayerOrderedRenderables = new LinkedList<>();
 

@@ -1,10 +1,12 @@
 package com.mygdx.game.Core.Customers;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.Core.BlackSprite;
 import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Customer;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import com.badlogic.gdx.math.Vector2;
@@ -22,14 +24,24 @@ public class CustomerGroups {
   private float RecoveryValue;
   static float FrustrationRecovery = .1f;
 
-  public CustomerGroups(int MemberCount, int CustomerStart, Vector2 Spawn, int frustration, List<ItemEnum> OrderMenu){
+  /**
+   * Creates a customer group with given parameters
+   * @param MemberCount
+   * @param CustomerStart
+   * @param Spawn
+   * @param frustration
+   * @param OrderMenu food each member should order
+   * @author Felix Seanor
+   */
+  public CustomerGroups(int MemberCount, int CustomerStart, Vector2 Spawn, int frustration, List<ItemEnum> OrderMenu, ArrayList<TextureAtlas> customerAtlas){
     Orders = OrderMenu;
     Frustration = frustration;
     RecoveryValue =  FrustrationRecovery * Frustration;
     for (int i = 0; i < MemberCount; i++) {
       if(OrderMenu.size()<MemberCount)
          i = i;
-      Customer custLogic = new Customer(CustomerStart + i,OrderMenu.get(i));
+
+      Customer custLogic = new Customer(CustomerStart + i,OrderMenu.get(i), Customer.getCustomerAtlas(customerAtlas));
       GameObject customer = new GameObject(new BlackSprite());
       customer.position.set(Spawn);
       customer.attachScript(custLogic);
@@ -41,24 +53,44 @@ public class CustomerGroups {
 
   }
 
-
+  /**
+   * Removes the first customer from a member in line. CAN RETURN NULL
+   * @return Customer removed
+   * @author Felix Seanor
+   */
   public Customer RemoveFirstCustomer(){
     MembersSeatedOrWalking.add( MembersInLine.remove(0));
     return MembersSeatedOrWalking.get(MembersSeatedOrWalking.size()-1);
   }
-  public boolean TryRemoveCustomer(Item item){
+
+  /**
+   * Try and remove a customer given an item
+   * @param item
+   * @return if removal successful
+   * @author Felix Seanor
+   */
+
+  public boolean TryRemoveCustomer(ItemEnum item){
     for (int i = 0; i < MembersInLine.size(); i++) {
-        if(MembersInLine.get(i).dish == item.name)
-        {
-          MembersSeatedOrWalking.add(MembersInLine.remove(i));
-          Frustration += RecoveryValue;
-          return true;
-        }
+      if(MembersInLine.get(i).dish == item)
+      {
+        MembersSeatedOrWalking.add(MembersInLine.remove(i));
+        Frustration += RecoveryValue;
+        return true;
+      }
     }
 
     return false;
 
   }
+  public boolean TryRemoveCustomer(Item item){
+  return TryRemoveCustomer(item.name);
+  }
+
+  /**
+   * Updates animations of all customers
+   * @author Felix Seanor
+   */
   public void updateSpriteFromInput(){
     for (Customer customer : Members) {
      customer.updateSpriteFromInput(customer.getMove());
@@ -67,6 +99,13 @@ public class CustomerGroups {
 
   }
 
+  /**
+   * Changes frustration
+   * If too frustrated then leave
+   * @param dt
+   * @param CauseLeave Function causing this customer to leave
+   * @author Felix Seanor
+   */
   public void CheckFrustration(float dt, Consumer<CustomerGroups> CauseLeave){
         Frustration -= dt;
         if(Frustration<=0)

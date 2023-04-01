@@ -13,12 +13,23 @@ public class Scriptable {
   public void Start() {
   }
 
+  /**
+   * runs every frame
+   * @param dt
+   */
   public void Update(float dt) {
   }
 
+  /**
+   * runs every fixed frame
+   * @param dt
+   */
   public void FixedUpdate(float dt) {
   }
 
+  /**
+   * runs just before rendering
+   */
   public void OnRender(){
 
   }

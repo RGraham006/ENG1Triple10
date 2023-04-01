@@ -45,6 +45,7 @@ public class MasterChef extends Scriptable {
 
   /**
    * Generates a chef array which can be used to get random chef sprites from the chef class.
+   * @author Felix Seanor
    */
   public void generateChefArray() {
     String filename;
@@ -60,12 +61,20 @@ public class MasterChef extends Scriptable {
    * Returns the chef array that's been created
    *
    * @return ArrayList<TextureAtlas> chefAtlasArray;
+   * @author Felix Seanor
    */
   public static ArrayList<TextureAtlas> getChefAtlasArray() {
     return chefAtlasArray;
   }
 
-
+  /**
+   * Creates a Chef controller class, handling inputs
+   * @param count
+   * @param world
+   * @param camera
+   * @param pathfinding pathfinding module
+   * @author Felix Seanor
+   */
   public MasterChef(int count, World world, Camera camera, Pathfinding pathfinding) {
 
     chefAtlasArray = new ArrayList<TextureAtlas>();
@@ -93,7 +102,12 @@ public class MasterChef extends Scriptable {
 
   }
 
-
+  /**
+   * The chef tries to put down  an item onto a nearby surface
+   * @author Felix Seanor
+   * @author Jack Vickers
+   * @author Jack Hinton
+   */
   public void GiveItem() {
 
     if (!chefs[currentControlledChef].CanFetchItem()) {
@@ -116,6 +130,9 @@ public class MasterChef extends Scriptable {
     ((Interactable) script).GiveItem(itemToGive.get());
   }
 
+  /**
+   * The chef tries to pick up an item from a nearby surface.
+   */
   public void FetchItem() {
 
     if (!chefs[currentControlledChef].CanGiveItem()) {
@@ -140,6 +157,11 @@ public class MasterChef extends Scriptable {
 
   }
 
+  /**
+   * The chef attempts to interact with a nearby surface
+   * @author Jack Hinton
+   * @author Jack Vickers
+   */
   public void Interact() {
     Scriptable script = Interaction.FindClosetInteractable(
         chefs[currentControlledChef].gameObject.position, InteractionType.Interact, maxRange);
@@ -151,6 +173,9 @@ public class MasterChef extends Scriptable {
     ((Interactable) script).Interact();
   }
 
+  /**
+   * Select a chef from the number keys
+   */
   void selectChef() {
     for (int i = 0; i < chefs.length; i++) {
       if (Gdx.input.isKeyPressed(Input.Keys.NUM_1
@@ -168,6 +193,15 @@ public class MasterChef extends Scriptable {
     }
   }
 
+  /**
+   * Update method for this class
+   * @param dt
+   *
+   * @author Felix Seanor
+   * @author Jack Hinton
+   * @author Jack Vickers
+
+   */
   @Override
   public void Update(float dt) {
     selectChef();

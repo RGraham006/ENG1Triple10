@@ -1,44 +1,33 @@
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-	(0.0,0.0)
-	idlesouth : south : south
-	(0.0,0.0)
-	idlesouth : south : south
-
-(0.0,0.0)
-
-idlesouth : south : south
-
-(0.0,0.0)
-
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
-(0.0,0.0)
-idlesouth : south : south
+ customer 0: LettuceTomatoSalad
+customer 1: LettuceOnionSalad
+%customer 2: TomatoOnionLettuceSalad
+
+First: 0
+>com.mygdx.game.Core.PathfindingCell@2fbbc8bd : 3Empty : true
+=com.mygdx.game.Core.PathfindingCell@e652c19 : 2Empty : true
+=com.mygdx.game.Core.PathfindingCell@6364353 : 1Empty : true
+
+First: 0
+@com.mygdx.game.Core.PathfindingCell@5d0b4dc6 : 643Empty : true
+@com.mygdx.game.Core.PathfindingCell@2c0498fa : 642Empty : true
+?com.mygdx.game.Core.PathfindingCell@b266c87 : 641Empty : true
+@com.mygdx.game.Core.PathfindingCell@3fbe8a6b : 513Empty : true
+@com.mygdx.game.Core.PathfindingCell@38dc9527 : 385Empty : true
+@com.mygdx.game.Core.PathfindingCell@3097198e : 257Empty : true
+?com.mygdx.game.Core.PathfindingCell@86d194f : 129Empty : true
+>com.mygdx.game.Core.PathfindingCell@434b27fb : 1Empty : true
+
+First: 0
+Acom.mygdx.game.Core.PathfindingCell@17b1d603 : 1283Empty : true
+Acom.mygdx.game.Core.PathfindingCell@777612db : 1155Empty : true
+Acom.mygdx.game.Core.PathfindingCell@6d989731 : 1027Empty : true
+@com.mygdx.game.Core.PathfindingCell@654a77bd : 899Empty : true
+@com.mygdx.game.Core.PathfindingCell@7cd2a4d9 : 771Empty : true
+@com.mygdx.game.Core.PathfindingCell@3bf58152 : 770Empty : true
+@com.mygdx.game.Core.PathfindingCell@12fda802 : 769Empty : true
+@com.mygdx.game.Core.PathfindingCell@24bcd27f : 641Empty : true
+@com.mygdx.game.Core.PathfindingCell@4da14e5d : 513Empty : true
+@com.mygdx.game.Core.PathfindingCell@5a49b9aa : 385Empty : true
+@com.mygdx.game.Core.PathfindingCell@258ba759 : 257Empty : true
+@com.mygdx.game.Core.PathfindingCell@6766b6bd : 129Empty : true
+>com.mygdx.game.Core.PathfindingCell@2072cfaa : 1Empty : true
