@@ -55,13 +55,15 @@ public class MenuScreen implements Screen {
    */
   public MenuScreen(final MyGdxGame root) {
 
-    if(GameObjectManager.objManager == null)
-    new GameObjectManager();
-    else
+    if (GameObjectManager.objManager == null) {
+      new GameObjectManager();
+    } else {
       GameObjectManager.objManager.reset();
+    }
 
-    if(RenderManager.renderer == null)
-    new RenderManager();
+    if (RenderManager.renderer == null) {
+      new RenderManager();
+    }
 
     this.root = root;
     gameScreen = new GameScreen(root);
