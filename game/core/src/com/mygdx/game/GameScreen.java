@@ -266,6 +266,7 @@ public class GameScreen implements Screen {
     HobStation HS = new HobStation();
     Hob.attachScript(HS);
     Stations.add(Hob);
+    HS.init();
   }
 
   void CreateToaster(Rectangle rect) {
@@ -275,6 +276,7 @@ public class GameScreen implements Screen {
     ToasterStation TS = new ToasterStation();
     Toast.attachScript(TS);
     Stations.add(Toast);
+    TS.init();
   }
 
   void CreateChopping(Rectangle rect) {
@@ -284,6 +286,7 @@ public class GameScreen implements Screen {
     ChopStation CS = new ChopStation();
     Chop.attachScript(CS);
     Stations.add(Chop);
+    CS.init();
   }
 
   void CreateOven(Rectangle rect) {
@@ -293,6 +296,7 @@ public class GameScreen implements Screen {
     OvenStation OS = new OvenStation();
     Oven.attachScript(OS);
     Stations.add(Oven);
+    OS.init();
   }
 
   void CreateFoodCrates(Rectangle rect, ItemEnum item) {

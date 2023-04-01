@@ -1,5 +1,7 @@
 package com.mygdx.game.Stations;
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
@@ -22,6 +24,9 @@ public abstract class Station extends Scriptable implements Interactable {
   public CombinationDict combinations;
   private boolean locked;
   public Recipe currentRecipe;
+  GameObject heldItem;
+  public int imageSize = 18;
+  GameObject bubble;
 
   public Station() {
     item = null;
@@ -29,6 +34,12 @@ public abstract class Station extends Scriptable implements Interactable {
     recipes = RecipeDict.recipes;
     combinations = CombinationDict.combinations;
     currentRecipe = null;
+  }
+
+  public void init() {
+    bubble = new GameObject(new BlackTexture("Timer/01.png"));
+    bubble.setPosition(gameObject.position.x + (gameObject.getWidth()/2) - (bubble.getWidth()/2), gameObject.position.y + (gameObject.getHeight()) + 2);
+    bubble.isVisible = false;
   }
 
   /**
@@ -45,6 +56,8 @@ public abstract class Station extends Scriptable implements Interactable {
    * @return Item item
    */
   public abstract Item RetrieveItem();
+
+  public abstract void updatePictures();
 
   /**
    * Sets the station to a "locked" state
@@ -64,12 +77,15 @@ public abstract class Station extends Scriptable implements Interactable {
     return locked;
   }
 
+
   public void changeItem(Item item){
     this.item = item;
+    updatePictures();
   }
 
   public void deleteItem(){
     item = null;
+    updatePictures();
   }
 
 

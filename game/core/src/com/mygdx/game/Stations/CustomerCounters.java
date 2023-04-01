@@ -1,5 +1,7 @@
 package com.mygdx.game.Stations;
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Items.Item;
 
 import java.util.function.Consumer;
@@ -63,7 +65,27 @@ public class CustomerCounters extends Station {
     }
   }
 
-  @Override
-  public void Update(float dt) {
-  }
+    @Override
+    public void updatePictures() {
+        if(item == null) {
+            if(heldItem == null)
+                return;
+            heldItem.Destroy();
+            heldItem = null;
+            return;
+        }
+        if(heldItem == null){
+            heldItem = new GameObject( new BlackTexture(Item.GetItemPath(item.name)));
+            heldItem.image.setSize(imageSize, imageSize);
+            heldItem.setPosition(gameObject.position.x, gameObject.position.y+ ((gameObject.getHeight()/2)-10));
+        }
+        else {
+            heldItem.image = new BlackTexture(Item.GetItemPath(item.name));
+            heldItem.image.setSize(imageSize, imageSize);
+        }
+    }
+
+    @Override
+    public void Update(float dt) {
+    }
 }

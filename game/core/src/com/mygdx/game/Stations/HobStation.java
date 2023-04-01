@@ -1,6 +1,8 @@
 package com.mygdx.game.Stations;
 
 
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 
@@ -14,6 +16,7 @@ public class HobStation extends Station{
     public static ArrayList<ItemEnum> ItemWhiteList;
     public float progress;
     public float maxProgress;
+    public int imageSize = 14;
 
     public HobStation(){
         interacted = false;
@@ -26,23 +29,20 @@ public class HobStation extends Station{
 
     @Override
     public boolean GiveItem(Item item){
-        if(this.item != null)
-            return false;
         changeItem(item);
         checkItem();
+        bubble.isVisible = true;
         return true;
     }
 
 
     @Override
     public Item RetrieveItem(){
-        if(item!=null){
-            returnItem = item;
-            deleteItem();
-            currentRecipe = null;
-            return returnItem;
-        }
-        return null;
+        returnItem = item;
+        deleteItem();
+        currentRecipe = null;
+        bubble.isVisible = false;
+        return returnItem;
     }
 
 
@@ -95,11 +95,37 @@ public class HobStation extends Station{
         }
         if(ready)
             burnItem();
+        progressBar();
+    }
+
+    public void progressBar(){
+        bubble.image = new BlackTexture("Timer/0"+getProgress()+".png");
     }
 
 
-    public void ProgressBar() {
+    public int getProgress() {
         progress = item.progress / maxProgress;
+        return (int) (progress/0.125) + 1;
+    }
+    
+    public void updatePictures(){
+        if(item == null) {
+            if(heldItem == null)
+                return;
+            heldItem.Destroy();
+            heldItem = null;
+            return;
+        }
+        if(heldItem == null){
+            heldItem = new GameObject( new BlackTexture(Item.GetItemPath(item.name)));
+            heldItem.image.setSize(imageSize, imageSize);
+            heldItem.setPosition(gameObject.position.x + 4, gameObject.position.y + (gameObject.getHeight()/2) + 2);
+        }
+        else {
+            heldItem.image = new BlackTexture(Item.GetItemPath(item.name));
+            heldItem.image.setSize(imageSize, imageSize);
+        }
+
     }
 
 
@@ -107,7 +133,6 @@ public class HobStation extends Station{
     public void Update(float dt) {
         if (currentRecipe != null) {
             Cook(dt);
-            ProgressBar();
         }
 
         interacted = false;
