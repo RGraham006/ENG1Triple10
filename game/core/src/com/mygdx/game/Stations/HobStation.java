@@ -29,23 +29,20 @@ public class HobStation extends Station{
 
     @Override
     public boolean GiveItem(Item item){
-        if(this.item != null)
-            return false;
         changeItem(item);
         checkItem();
+        bubble.isVisible = true;
         return true;
     }
 
 
     @Override
     public Item RetrieveItem(){
-        if(item!=null){
-            returnItem = item;
-            deleteItem();
-            currentRecipe = null;
-            return returnItem;
-        }
-        return null;
+        returnItem = item;
+        deleteItem();
+        currentRecipe = null;
+        bubble.isVisible = false;
+        return returnItem;
     }
 
 
@@ -98,11 +95,17 @@ public class HobStation extends Station{
         }
         if(ready)
             burnItem();
+        progressBar();
+    }
+
+    public void progressBar(){
+        bubble.image = new BlackTexture("Timer/0"+getProgress()+".png");
     }
 
 
-    public void ProgressBar() {
+    public int getProgress() {
         progress = item.progress / maxProgress;
+        return (int) (progress/0.125) + 1;
     }
     
     public void updatePictures(){
@@ -130,7 +133,6 @@ public class HobStation extends Station{
     public void Update(float dt) {
         if (currentRecipe != null) {
             Cook(dt);
-            ProgressBar();
         }
 
         interacted = false;
