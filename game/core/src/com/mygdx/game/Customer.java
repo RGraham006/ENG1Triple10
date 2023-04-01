@@ -142,7 +142,7 @@ public class Customer extends PathfindingAgent implements Person {
       texture = texture.replace("idle", "");
       texture += "1";
     }
-    System.out.println(texture);
+//    System.out.println(texture);
     gameObject.getSprite().sprite.setRegion(customerAtlas.findRegion(texture));
   }
 
@@ -155,7 +155,7 @@ public class Customer extends PathfindingAgent implements Person {
   public String getMove() {
     Vector2 dir = GetMoveDir().nor();
     String newOrientation;
-    System.out.println(dir);
+//    System.out.println(dir);
     if(dir.dot(dir)<=0)
       newOrientation = "idle" + spriteOrientation.replace("idle","");
     else {

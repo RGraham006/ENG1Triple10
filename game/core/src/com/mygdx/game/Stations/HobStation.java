@@ -1,6 +1,7 @@
 package com.mygdx.game.Stations;
 
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Items.Item;
@@ -92,7 +93,7 @@ public class HobStation extends Station {
 
     if (ready && item.progress == 0) {
       item.step++;
-      System.out.println("PRESS SPACE");
+      System.out.println("PRESS SPACE TO FLIP BURGER");
       if (item.step == currentRecipe.RecipeSteps.size()) {
         changeItem(new Item(currentRecipe.endItem));
         checkItem();

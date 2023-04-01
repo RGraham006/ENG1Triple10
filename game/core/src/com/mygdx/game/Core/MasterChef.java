@@ -230,7 +230,7 @@ public class MasterChef extends Scriptable {
       List<Vector2> path = pathfind.FindPath((int) getCurrentChef().gameObject.position.x,
           (int) getCurrentChef().gameObject.position.y, (int) touchpos.x, (int) touchpos.y,
           DistanceTest.Euclidean);
-      System.out.println(path);
+//      System.out.println(path);
       getCurrentChef().GivePath(path);
     }
 
