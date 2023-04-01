@@ -55,7 +55,12 @@ public class MenuScreen implements Screen {
    */
   public MenuScreen(final MyGdxGame root) {
 
+    if(GameObjectManager.objManager == null)
     new GameObjectManager();
+    else
+      GameObjectManager.objManager.reset();
+
+    if(RenderManager.renderer == null)
     new RenderManager();
 
     this.root = root;
@@ -91,8 +96,8 @@ public class MenuScreen implements Screen {
     table.add(playbtn).width(250).height(50).padTop(75);
     table.row();
 
-    Button.ButtonStyle scenariobtnStyle = new Button.ButtonStyle();
     Button scenariobtn = new Button();
+    Button.ButtonStyle scenariobtnStyle = new Button.ButtonStyle();
     scenariobtn.setStyle(scenariobtnStyle);
     scenariobtnStyle.up = drawableScenariobtnUp;
     scenariobtnStyle.down = drawableScenariobtnDown;
@@ -199,7 +204,6 @@ public class MenuScreen implements Screen {
   @Override
   public void dispose() {
     stage.dispose();
-
   }
 
 

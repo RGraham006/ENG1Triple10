@@ -6,9 +6,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
 
 /**
  * This class creates and displays the victory screen
@@ -19,11 +29,15 @@ public class VictoryScreen implements Screen {
 
   final MyGdxGame root;
   GameScreen gameScreen;
+
   Texture victoryScreen;
   Stage stage;
   int timer;
   private final BitmapFont timerFont;
   private final Label timerLabel;
+  private final Label VictoryOrLoss;
+  private final Table table;
+
 
   /**
    * Assigns all the necessary variables needed for the victory screen and other objects such as the
@@ -32,8 +46,9 @@ public class VictoryScreen implements Screen {
    * @param root the base object to interact with
    * @param time the integer time value set for timer
    */
-  public VictoryScreen(final MyGdxGame root, GameScreen gscreen, int time) {
+  public VictoryScreen(final MyGdxGame root, GameScreen gscreen, int time, EndOfGameValues values) {
     this.root = root;
+
 
     //this might cause issues if so, change back to new GameScreen
     gameScreen = gscreen;
@@ -48,6 +63,48 @@ public class VictoryScreen implements Screen {
     timerFont = new BitmapFont();
     timerLabel = new Label("TIME: " + timer,
         new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+    String VL = (values.Won)? "won!" : "lost.";
+    VictoryOrLoss = new Label("You " + VL,
+        new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+
+    BlackTexture uptex = new BlackTexture("ExitUp.png");
+    BlackTexture downtex = new BlackTexture("ExitDown.png");
+
+
+
+    table = new Table();
+    table.setFillParent(true);
+    stage.addActor(table);
+
+    Drawable drawableScenariobtnUp = new TextureRegionDrawable(uptex.textureRegion);
+    Drawable drawableScenariobtnDown = new TextureRegionDrawable(downtex.textureRegion);
+
+
+    Button scenariobtn = new Button();
+    Button.ButtonStyle scenariobtnStyle = new Button.ButtonStyle();
+    scenariobtn.setStyle(scenariobtnStyle);
+    scenariobtnStyle.up = drawableScenariobtnUp;
+    scenariobtnStyle.down = drawableScenariobtnDown;
+
+    table.add(scenariobtn).width(250).height(50).pad(200,25,25,25);
+    table.row();
+
+
+
+    ChangeListener playbtnMouseListener = new ChangeListener() {
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+        root.setScreen(new MenuScreen(root));
+        dispose();
+      }
+    };
+
+    scenariobtn.addListener(playbtnMouseListener);
+
+
+
+
   }
 
   /**
@@ -63,10 +120,17 @@ public class VictoryScreen implements Screen {
    */
   public void displayTimer() {
     CharSequence str = "Final Time: " + timer;
-    timerFont.draw(root.batch, str, 200, 250);
+    timerFont.draw(root.batch, str, 400, 300);
     timerFont.getData().setScale(3f, 3f);
     timerLabel.setText(str);
   }
+
+
+  public void displayVictoryStatus() {
+    timerFont.draw(root.batch, VictoryOrLoss.getText(), 400, 400);
+    timerFont.getData().setScale(3f, 3f);
+  }
+
 
   /**
    * Renders the stage and assets
@@ -81,6 +145,7 @@ public class VictoryScreen implements Screen {
     stage.draw();
     root.batch.begin();
     displayTimer();
+    displayVictoryStatus();
     root.batch.end();
   }
 

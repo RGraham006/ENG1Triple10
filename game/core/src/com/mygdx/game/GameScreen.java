@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.Core.*;
 import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
@@ -67,8 +69,8 @@ public class GameScreen implements Screen {
   // camera
   private final OrthographicCamera camera;
   private Pathfinding pathfinding;
-  private final int TILE_WIDTH = 32;
-  private final int TILE_HEIGHT = 32;
+  public static final int TILE_WIDTH = 32;
+  public static final int TILE_HEIGHT = 32;
 
   // box2d
   static World world;
@@ -80,41 +82,16 @@ public class GameScreen implements Screen {
 
 
   // map
-  private final TiledMap map;
   private final TiledMapRenderer mapRenderer;
 
-  // character assets
-  private static ArrayList<TextureAtlas> customerAtlasArray;
-  private final Customer[] customers = new Customer[5];
-  private int chefControl;
-
   MasterChef masterChef;
-  Texture dish1, dish2;
   Texture spaceTexture, ctrlTexture, shiftTexture, rTexture, mTexture;
 
   List<GameObject> Stations = new LinkedList();
   List<GameObject> customerCounters = new LinkedList();
   List<GameObject> assemblyStations = new LinkedList();
 
-  public Texture menu = new Texture("recipeSheet.png");
-  private final int x = 3;
 
-
-
-
-  public Texture ingredientsSprites = new Texture("pixel_veggies1.png");
-  public TextureRegion tomatoUnchopped = new TextureRegion(ingredientsSprites, 224, 32, 32, 32);
-  public TextureRegion tomatoChopped = new TextureRegion(ingredientsSprites, 256, 32, 32, 32);
-  public TextureRegion lettuceUnchopped = new TextureRegion(ingredientsSprites, 256, 0, 32, 32);
-  public TextureRegion lettuceChopped = new TextureRegion(ingredientsSprites, 288, 0, 32, 32);
-  public TextureRegion onionUnchopped = new TextureRegion(ingredientsSprites, 0, 32, 32, 32);
-  public TextureRegion onionChopped = new TextureRegion(ingredientsSprites, 32, 32, 32, 32);
-  public Texture meatUncooked = new Texture("pattyUncooked.png");
-  public Texture meatCooked = new Texture("pattyCooked.png");
-  public Texture bunUntoasted = new Texture("bunUntoasted.png");
-  public Texture bunToasted = new Texture("bunToasted.png");
-  public Texture burger = new Texture("bourger_32x32.png");
-  public Texture salad = new Texture("Salad_32x32.png");
   public GameObject exitLogo = new GameObject(new BlackTexture("Exit.png"));
 
   // game timer and displayTimer
@@ -124,6 +101,9 @@ public class GameScreen implements Screen {
   private final Label moneyLabel;
   private final BitmapFont timerFont;
 
+
+ public static final int viewportWidth = 32 * TILE_WIDTH;
+  public static  final int viewportHeight = 18 * TILE_HEIGHT;
   Music gameMusic;
 
   public showRecipeInstructions recipeScreen = new showRecipeInstructions();
@@ -139,8 +119,6 @@ public class GameScreen implements Screen {
     camera = new OrthographicCamera();
     recipeScreen.showRecipeInstruction();
 
-    int viewportWidth = 32 * TILE_WIDTH;
-    int viewportHeight = 18 * TILE_HEIGHT;
     camera.setToOrtho(false, viewportWidth, viewportHeight);
     camera.update();
 
@@ -152,13 +130,6 @@ public class GameScreen implements Screen {
 
     recipeScreen.createInstructionPage("Empty");
 
-    dish1 = new Texture("speech_dish1.png");
-    dish2 = new Texture("speech_dish2.png");
-    spaceTexture = new Texture("space.png");
-    ctrlTexture = new Texture("ctrl.png");
-    shiftTexture = new Texture("shift.png");
-    mTexture = new Texture("m_key.png");
-    rTexture = new Texture("r_key.png");
     world = new World(new Vector2(0, 0), true);
     b2dr = new Box2DDebugRenderer();
     exitLogo.isVisible = false;
@@ -167,8 +138,7 @@ public class GameScreen implements Screen {
     exitLogo.position = new Vector2(713, 454);
 
     // add map
-    map = new TmxMapLoader().load("PiazzaPanicMap.tmx");
-    mapRenderer = new OrthogonalTiledMapRenderer(map);
+    mapRenderer = new OrthogonalTiledMapRenderer(game.map);
     mapRenderer.setView(camera);
 
     pathfinding = new Pathfinding(TILE_WIDTH/4,viewportWidth,viewportWidth);
@@ -182,7 +152,7 @@ public class GameScreen implements Screen {
     CCParams.Reputation = 3;
     CCParams.MoneyStart = 20;
     customerController = new CustomerController(new Vector2(200,100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
-    customerController.SetWaveAmount(5);//Demonstration on how to do waves, -1 for endless
+    customerController.SetWaveAmount(1);//Demonstration on how to do waves, -1 for endless
 
     GameObjectManager.objManager.AppendLooseScript(customerController);
 
@@ -192,8 +162,8 @@ public class GameScreen implements Screen {
     RecipeDict.recipes.implementRecipes();
 
     // generate customer sprites to be used by customer class
-    customerAtlasArray = new ArrayList<TextureAtlas>();
-    generateCustomerArray();
+    //customerAtlasArray = new ArrayList<TextureAtlas>();
+    //generateCustomerArray();
 //
 //    for (int i = 0; i < customers.length; i++) {
 //
@@ -210,7 +180,7 @@ public class GameScreen implements Screen {
 
     //Fixed the hideous mechanism for creating collidable objects
     for (int n = 0; n < 17; n++) {
-      MapLayer layer = map.getLayers().get(n);
+      MapLayer layer = game.map.getLayers().get(n);
       String name = layer.getName();
 
       for (MapObject object : layer.getObjects()
@@ -392,38 +362,16 @@ public class GameScreen implements Screen {
     body.createFixture(fdef);
   }
 
-  /**
-   * Generates a customer array which can be used to get random customer sprites from the customer
-   * class
-   */
-  public void generateCustomerArray() {
-    String filename;
-    TextureAtlas customerAtlas;
-
-    //The file path takes it to data for each animation
-    //The TextureAtlas creates a texture atlas where the you pass through the string of the number and it returns the image.
-    //Taking all pictures in the diretory of the file
-    for (int i = 1; i < 9; i++) {
-      filename = "Customers/Customer" + i + "/customer" + i + ".txt";
-      customerAtlas = new TextureAtlas(filename);
-      customerAtlasArray.add(customerAtlas);
-    }
-  }
 
 
   public void EndGame(EndOfGameValues values){
 
+    VictoryScreen screen = new VictoryScreen(game,this,timer,values);
+
+    game.setScreen(screen);
+
   }
 
-
-  /**
-   * Returns the customer array that's been created
-   *
-   * @return ArrayList<TextureAtlas> customerAtlasArray;
-   */
-  public static ArrayList<TextureAtlas> getCustomerAtlasArray() {
-    return customerAtlasArray;
-  }
 
   /**
    * Plays the game music
@@ -542,59 +490,17 @@ public class GameScreen implements Screen {
     }
 
     // Draws the instuctions and menu
-    game.batch.draw(spaceTexture, 160, 400, 130, 80);
+    /*game.batch.draw(spaceTexture, 160, 400, 130, 80);
     game.batch.draw(ctrlTexture, 280, 410, 90, 60);
     game.batch.draw(shiftTexture, 360, 415, 90, 50);
     game.batch.draw(rTexture, 450, 413, 90, 53);
     game.batch.draw(mTexture, 534, 413, 90, 53);
-    game.batch.draw(menu, 10, 405, 130, 70);
+    game.batch.draw(menu, 10, 405, 130, 70);*/
     game.batch.end();
 
-    // Runs the logic for the collisions between counters and chefs
-    gameLogic();
 
-    // Checks if all the customers have been fed and the game is over
-//    int fedCounter = 0;
-//    for (int i = 0; i < customers.length; i++) {
-//      if (customers[i].getFed()) {
-//        fedCounter++;
-//      }
-//    }
-//    if (fedCounter == 5) {
-//      game.setScreen(new VictoryScreen(game, this, timer));
-//    }
   }
 
-  /**
-   * Checks each chef, counter, station, and assembly station then draws the ingredient sprites on
-   * them
-   */
-
-  /**
-   * Gets all the collisions and checks if the input keys are pressed and then performs the actions
-   * as specified
-   */
-  public void gameLogic() {
-
-    // gets all the collisions and iterates through them
-    int numContacts = world.getContactCount();
-    if (numContacts > 0) {
-      for (Contact contact : world.getContactList()) {
-        Object objectA = contact.getFixtureA().getBody().getUserData();
-        Object objectB = contact.getFixtureB().getBody().getUserData();
-
-        // Checks if the object being interacted with is a chef
-        if (objectB.toString().contentEquals("Chef" + chefControl) || objectA.toString()
-            .contentEquals("Chef" + chefControl)) {
-
-          boolean isShift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-          boolean isSpace = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
-          boolean isR = Gdx.input.isKeyPressed(Input.Keys.R);
-
-        }
-      }
-    }
-  }
 
   /**
    * Finds all the collisions and assigns the names Also has a convenience function to disregard the

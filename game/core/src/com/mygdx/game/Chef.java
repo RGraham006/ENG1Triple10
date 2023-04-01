@@ -33,6 +33,7 @@ import java.util.Stack;
  * @author Amy Cross
  * @author Labib Zabeneh
  * @author Riko Puusepp
+ * @author Felix Seanor
  */
 public class Chef extends PathfindingAgent implements Person {
 

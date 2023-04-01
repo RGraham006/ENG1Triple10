@@ -56,7 +56,7 @@ public class Customer extends PathfindingAgent implements Person {
    *
    * @param customerNumber the ID of each individual customer which will be interacted with
    */
-  public Customer(int customerNumber, ItemEnum Order) {
+  public Customer(int customerNumber, ItemEnum Order, TextureAtlas texture) {
 
     dish = Order;
     currentSpriteAnimation = 1;
@@ -70,6 +70,7 @@ public class Customer extends PathfindingAgent implements Person {
     this.eaten = false;
     this.waitWidth = 235;
     this.waitHeight = 340 - customerNumber * 32;
+    this.customerAtlas = texture;
 
 
     System.out.println("customer " + customerNumber + ": " + dish);
@@ -80,7 +81,6 @@ public class Customer extends PathfindingAgent implements Person {
 
   @Override
   public void Start() {
-    customerAtlas = getCustomerAtlas(GameScreen.getCustomerAtlasArray());
     gameObject.getSprite().setSprite(customerAtlas.createSprite("north1"));
     gameObject.getSprite().layer = 2;
     gameObject.image.setSize(25,45);
@@ -227,7 +227,7 @@ public class Customer extends PathfindingAgent implements Person {
    * @param customerAtlasArray array of customer sprites
    * @return Atlas atlas of the customer object
    */
-  private TextureAtlas getCustomerAtlas(ArrayList<TextureAtlas> customerAtlasArray) {
+  public static TextureAtlas getCustomerAtlas(ArrayList<TextureAtlas> customerAtlasArray) {
     /*
           Currently can remove texture from array after each .get() to avoid repeats.
           If customers > number of sprites, then there will not be enough sprites available.
