@@ -12,12 +12,23 @@ public class GameObjectManager {
   public static GameObjectManager objManager;
   Random rand;
 
-
+  /**
+   * Attaches a script to the world update sequence.
+   * @param scriptable
+   * @author Felix Seanor
+   */
   public void AppendLooseScript(Scriptable scriptable){
     LooseScripts.add(scriptable);
     scriptable.Start();
   }
 
+  /**
+   * Returns objects with an interface. Limited to one superclass
+   * @param scriptType
+   * @return all valid objects
+   * @author Felix Seanor
+   * @author Jack Hinton
+   */
   public List<Scriptable> returnObjectsWithInterface(Class<?> scriptType){
     List<Scriptable> scripts = new LinkedList<>();
     for (GameObject obj: GameObjects.values()
@@ -51,6 +62,10 @@ public class GameObjectManager {
     }
     return scripts;
   }
+
+  /**
+   * Creates a singleton GameObject Manager
+   */
   public GameObjectManager() {
     if (objManager != null) {
       throw new IllegalArgumentException("This cannot be created more than once");
@@ -62,7 +77,10 @@ public class GameObjectManager {
 
   }
 
-
+  /**
+   * Submits a new gameobject to this manager
+   * @param obj
+   */
   public void SubmitGameObject(GameObject obj) {
 
     int UID = CreateUID();
@@ -73,7 +91,10 @@ public class GameObjectManager {
 
   }
 
-
+  /**
+   * run updates on objects
+   * @param dt
+   */
   public void doUpdate(float dt) {
 
     for (Scriptable scr : LooseScripts)
@@ -119,6 +140,11 @@ public class GameObjectManager {
     GameObjects.remove(obj.getUID());
   }
 
+  /**
+   * Creates a unique ID for an object
+   * @return
+   * @author Felix Seanor
+   */
   public int CreateUID() {
     int UID = 0;
 
@@ -130,5 +156,14 @@ public class GameObjectManager {
 
   }
 
+  public void reset(){
+    for (GameObject obj: GameObjects.values()
+    ){
+    obj.destroyed = true;
+    }
+
+    GameObjects.clear();
+    LooseScripts.clear();
+  }
 
 }

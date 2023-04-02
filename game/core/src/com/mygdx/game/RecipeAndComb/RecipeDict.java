@@ -97,7 +97,7 @@ public class RecipeDict {
       if (recipes != null) {
           return;
       }
-    recipes = this;;
+    recipes = this;
   }
 
 }

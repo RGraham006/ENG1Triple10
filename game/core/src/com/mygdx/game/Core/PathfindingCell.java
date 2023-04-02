@@ -21,6 +21,7 @@ public class PathfindingCell implements Comparable<PathfindingCell> {
    * @param index The index of the cell
    * @param heuristic The heuristic value of the cell
    * @param path The path cost of the cell
+   * @author Felix Seanor
    */
   public PathfindingCell(int x, int y, int index, float heuristic, float path) {
     this.x = x;

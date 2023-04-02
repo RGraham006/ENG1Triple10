@@ -33,6 +33,7 @@ import java.util.Stack;
  * @author Amy Cross
  * @author Labib Zabeneh
  * @author Riko Puusepp
+ * @author Felix Seanor
  */
 public class Chef extends PathfindingAgent implements Person {
 
@@ -211,7 +212,7 @@ public class Chef extends PathfindingAgent implements Person {
 
     Vector2 dir = GetMoveDir().nor();
 
-    System.out.println(dir);
+//    System.out.println(dir);
     if (dir.dot(dir) <= 0) {
       newOrientation = "idle" + spriteOrientation.replace("idle", "");
     } else {
@@ -234,7 +235,7 @@ public class Chef extends PathfindingAgent implements Person {
       }
     }
 
-    System.out.println(newOrientation + " : " + spriteOrientation + " : " + lastOrientation);
+//    System.out.println(newOrientation + " : " + spriteOrientation + " : " + lastOrientation);
 
     if (newOrientation.contains("idle")) {
       spriteState = newOrientation;
@@ -503,7 +504,7 @@ public class Chef extends PathfindingAgent implements Person {
     System.out.println("draw");
     timerSprite.setPosition(gameObject.position.x, gameObject.position.y + getHeight());
     if (currentTimerFrame <= 7) {
-      System.out.println(animationTime);
+//      System.out.println(animationTime);
       if (animationTime <= 0) {
         currentTimerFrame++;
         animationTime = frameTime;
@@ -512,7 +513,7 @@ public class Chef extends PathfindingAgent implements Person {
       }
       timerSprite.draw(batch);
       animationTime -= Gdx.graphics.getDeltaTime();
-      System.out.println(animationTime);
+//      System.out.println(animationTime);
     } else {
       unfreeze();
     }
