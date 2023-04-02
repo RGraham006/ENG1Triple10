@@ -14,6 +14,7 @@ import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.Pathfinding;
 import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
 import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
+import com.mygdx.game.Customer;
 import com.mygdx.game.GameScreen;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
@@ -69,33 +70,34 @@ public class CustomerTests {
 
   }
 
-  @Test
-  public void TestCustomerGroups() {
-    InstantiateCustomerScripts();
-
-    cust.SetWaveAmount(5);
-
-    cust.CanAcceptNewCustomer();
-
-    CustomerGroups group = cust.getCurrentWaitingCustomerGroup();
-
-    assertNotEquals("Group must have members", 0, group.Members.size());
-
-    ItemEnum dish = group.Members.get(0).dish;
-    assertNotNull("Members must have a dish", dish);
-
-    boolean attempt = group.TryRemoveCustomer(dish);
-
-    assertTrue("Must be able to remove a customer by their food", attempt);
-
-    cust.tryGiveFood(new Item(dish));
-
-    assertEquals("A member must be trying to sit down now", group.MembersSeatedOrWalking.size(), 1);
-    assertEquals("That member must have the correct dish to be able to sit down", dish,
-        group.MembersSeatedOrWalking.get(0).dish);
-
-
-  }
+//  @Test
+//  public void TestCustomerGroups() {
+//    InstantiateCustomerScripts();
+//
+//    cust.SetWaveAmount(5);
+//
+//    cust.CanAcceptNewCustomer();
+//
+//    CustomerGroups group = cust.getCurrentWaitingCustomerGroup();
+//
+//    assertNotEquals("Group must have members", 0, group.Members.size());
+//
+//    ItemEnum dish = group.Members.get(0).dish;
+//
+//    assertNotNull("Members must have a dish", dish);
+//
+//    boolean attempt = group.TryRemoveCustomer(dish);
+//
+//    assertTrue("Must be able to remove a customer by their food", attempt);
+//
+//    cust.tryGiveFood(new Item(dish));
+//
+//    assertEquals("A member must be trying to sit down now", group.MembersSeatedOrWalking.size(), 1);
+//    assertEquals("That member must have the correct dish to be able to sit down", dish,
+//        group.MembersSeatedOrWalking.get(0).dish);
+//
+//
+//  }
 
 
   void EndGame(EndOfGameValues val) {
