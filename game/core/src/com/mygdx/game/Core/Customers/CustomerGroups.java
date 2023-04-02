@@ -70,21 +70,23 @@ public class CustomerGroups {
    * @author Felix Seanor
    */
 
-  public boolean TryRemoveCustomer(ItemEnum item){
+  public int SeeIfDishIsCorrect(ItemEnum item){
     for (int i = 0; i < MembersInLine.size(); i++) {
       if(MembersInLine.get(i).dish == item)
       {
-        MembersSeatedOrWalking.add(MembersInLine.remove(i));
-        Frustration += RecoveryValue;
-        return true;
+        return i;
       }
     }
 
-    return false;
+    return -1;
 
   }
-  public boolean TryRemoveCustomer(Item item){
-  return TryRemoveCustomer(item.name);
+  public int SeeIfDishIsCorrect(Item item){
+  return SeeIfDishIsCorrect(item.name);
+  }
+
+  public void updateFrustrationOnSucessfulService(){
+    Frustration += RecoveryValue;
   }
 
   /**

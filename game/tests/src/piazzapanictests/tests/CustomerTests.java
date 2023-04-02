@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Core.CustomerController;
 import com.mygdx.game.Core.Customers.CustomerGroups;
@@ -81,7 +80,7 @@ public class CustomerTests {
     ItemEnum dish = group.Members.get(0).dish;
     assertNotNull("Members must have a dish", dish);
 
-    boolean attempt  = group.TryRemoveCustomer(dish);
+    boolean attempt  = group.SeeIfDishIsCorrect(dish) != -1;
 
     assertTrue("Must be able to remove a customer by their food",attempt);
 
