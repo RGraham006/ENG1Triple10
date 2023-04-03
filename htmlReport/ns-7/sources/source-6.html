@@ -80,17 +80,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;import static java.lang.Math.min;
 &nbsp;
-<b class="fc">&nbsp;public class TimeStep extends Step{</b>
+<b class="fc">&nbsp;public class TimeStep extends Step {</b>
 &nbsp;
-&nbsp;    public boolean timeStep(Item item, float dt, boolean Interacted, float MaxProgress){
+&nbsp;  public boolean timeStep(Item item, float dt, boolean Interacted, float MaxProgress) {
 &nbsp;
-<b class="nc">&nbsp;        item.progress = min(item.progress + dt, MaxProgress);</b>
-<b class="nc">&nbsp;        if(item.progress == MaxProgress){</b>
-<b class="nc">&nbsp;            item.progress = 0;</b>
-<b class="nc">&nbsp;            return true;</b>
-&nbsp;        }
-<b class="nc">&nbsp;        return false;</b>
+<b class="nc">&nbsp;    item.progress = min(item.progress + dt, MaxProgress);</b>
+<b class="nc">&nbsp;    if (item.progress == MaxProgress) {</b>
+<b class="nc">&nbsp;      item.progress = 0;</b>
+<b class="nc">&nbsp;      return true;</b>
 &nbsp;    }
+<b class="nc">&nbsp;    return false;</b>
+&nbsp;  }
 &nbsp;
 &nbsp;}
 </code>
@@ -116,7 +116,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-30 21:18</div>
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
 </div>
 </body>
 </html>

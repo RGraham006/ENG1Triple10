@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">CustomerController</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    60.9%
   </span>
   <span class="absValue">
-    (0/21)
+    (14/23)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    55.6%
   </span>
   <span class="absValue">
-    (0/124)
+    (74/133)
   </span>
 </td>
 </tr>
@@ -78,6 +78,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;import com.badlogic.gdx.Gdx;
 &nbsp;import com.badlogic.gdx.Input.Keys;
+&nbsp;import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 &nbsp;import com.mygdx.game.Core.Customers.CustomerGroups;
 &nbsp;import com.mygdx.game.Core.Customers.OrderMenu;
 &nbsp;import com.mygdx.game.Core.Customers.Randomisation;
@@ -86,17 +87,25 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
 &nbsp;import com.mygdx.game.Customer;
 &nbsp;import com.mygdx.game.Items.Item;
+&nbsp;import java.util.ArrayList;
 &nbsp;import java.util.LinkedList;
 &nbsp;import java.util.List;
 &nbsp;import com.badlogic.gdx.math.Vector2;
 &nbsp;import java.util.Random;
 &nbsp;import java.util.function.Consumer;
 &nbsp;
+&nbsp;/*
+&nbsp;  This script controls the customers and handles their logic through a veriaty of secondary scripts.
+&nbsp;  Also handles when the current game should end.
+&nbsp;
+&nbsp;  Last modified: 27/03/2023
+&nbsp; */
+&nbsp;
 &nbsp;public class CustomerController extends Scriptable
 &nbsp;{
-<b class="nc">&nbsp;  CustomerGroups currentWaiting = null;</b>
-<b class="nc">&nbsp;  List&lt;CustomerGroups&gt; SittingCustomers = new LinkedList&lt;&gt;();</b>
-<b class="nc">&nbsp;  List&lt;CustomerGroups&gt; WalkingBackCustomers = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;  CustomerGroups currentWaiting = null;</b>
+<b class="fc">&nbsp;  List&lt;CustomerGroups&gt; SittingCustomers = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;  List&lt;CustomerGroups&gt; WalkingBackCustomers = new LinkedList&lt;&gt;();</b>
 &nbsp;  Pathfinding pathfinding;
 &nbsp;  List&lt;Table&gt; tables;
 &nbsp;  Consumer&lt;EndOfGameValues&gt; CallEndGame;
@@ -107,80 +116,128 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  int MaxReputation;
 &nbsp;  int MoneyPerCustomer;
 &nbsp;
-<b class="nc">&nbsp;  int Waves = -1;</b>
+<b class="fc">&nbsp;  int Waves = -1;</b>
 &nbsp;  OrderMenu menu;
-<b class="nc">&nbsp;  int currentCustomer = 0;</b>
-<b class="nc">&nbsp;  int currentWave = 0;</b>
-<b class="nc">&nbsp;  private float EatingTime = 7;</b>
+<b class="fc">&nbsp;  int currentCustomer = 0;</b>
+<b class="fc">&nbsp;  int currentWave = 0;</b>
+<b class="fc">&nbsp;  private float EatingTime = 7;</b>
 &nbsp;
-<b class="nc">&nbsp;  Random rand = new Random();</b>
+<b class="fc">&nbsp;  Random rand = new Random();</b>
 &nbsp;
-<b class="nc">&nbsp;  private Vector2 groupSize = new Vector2(2,4);</b>
-<b class="nc">&nbsp;  float NextToLeave = EatingTime;</b>
+<b class="fc">&nbsp;  private Vector2 groupSize = new Vector2(2,4);</b>
+<b class="fc">&nbsp;  float NextToLeave = EatingTime;</b>
 &nbsp;
 &nbsp;
 &nbsp;  Consumer&lt;CustomerGroups&gt; FrustrationCallBack;
 &nbsp;
 &nbsp;  Vector2 DoorTarget;
 &nbsp;  Vector2 OrderAreaTarget;
-<b class="nc">&nbsp;  private int CustomerFrustrationStart = 80;</b>
 &nbsp;
+<b class="fc">&nbsp;  private ArrayList&lt;TextureAtlas&gt; CustomerAtlas = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;  private int CustomerFrustrationStart = 80;</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Creates the customer controller
+&nbsp;   * @param DoorPosition Customer spawn and exit.
+&nbsp;   * @param OrderArea First position in order line
+&nbsp;   * @param path    Pathfinding Module.
+&nbsp;   * @param CallUpGameFinish Game Finish Function.
+&nbsp;   * @param params Parameter class
+&nbsp;   * @param TablePositions Where the tables are, TEMPORARY
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public CustomerController(Vector2 DoorPosition, Vector2 OrderArea, Pathfinding path,
-<b class="nc">&nbsp;      Consumer&lt;EndOfGameValues&gt; CallUpGameFinish, CustomerControllerParams params, Vector2... TablePositions){</b>
-<b class="nc">&nbsp;    tables = new LinkedList&lt;&gt;();</b>
-<b class="nc">&nbsp;    FrustrationCallBack = (CustomerGroups a)   -&gt; FrustrationLeave(a);</b>
-<b class="nc">&nbsp;    MoneyPerCustomer = params.MoneyPerCustomer;</b>
-<b class="nc">&nbsp;    CallEndGame = CallUpGameFinish;</b>
-<b class="nc">&nbsp;    Money = params.MoneyStart;</b>
-<b class="nc">&nbsp;    MaxMoney = params.MaxMoney;</b>
-<b class="nc">&nbsp;    Reputation = params.Reputation;</b>
-<b class="nc">&nbsp;    MaxReputation = params.Reputation;</b>
+<b class="fc">&nbsp;      Consumer&lt;EndOfGameValues&gt; CallUpGameFinish, CustomerControllerParams params, Vector2... TablePositions){</b>
+<b class="fc">&nbsp;    tables = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;    FrustrationCallBack = (CustomerGroups a)   -&gt; FrustrationLeave(a);</b>
+<b class="fc">&nbsp;    MoneyPerCustomer = params.MoneyPerCustomer;</b>
+<b class="fc">&nbsp;    CallEndGame = CallUpGameFinish;</b>
+<b class="fc">&nbsp;    Money = params.MoneyStart;</b>
+<b class="fc">&nbsp;    MaxMoney = params.MaxMoney;</b>
+<b class="fc">&nbsp;    Reputation = params.Reputation;</b>
+<b class="fc">&nbsp;    MaxReputation = params.Reputation;</b>
 &nbsp;
-<b class="nc">&nbsp;    for (Vector2 pos: TablePositions</b>
+<b class="fc">&nbsp;    generateCustomerArray();</b>
+&nbsp;
+<b class="fc">&nbsp;    for (Vector2 pos: TablePositions</b>
 &nbsp;    ) {
-<b class="nc">&nbsp;      tables.add(new Table(pos,30));</b>
+<b class="fc">&nbsp;      tables.add(new Table(pos,30));</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    pathfinding = path;</b>
-<b class="nc">&nbsp;    OrderAreaTarget = OrderArea;</b>
-<b class="nc">&nbsp;    DoorTarget = DoorPosition;</b>
+<b class="fc">&nbsp;    pathfinding = path;</b>
+<b class="fc">&nbsp;    OrderAreaTarget = OrderArea;</b>
+<b class="fc">&nbsp;    DoorTarget = DoorPosition;</b>
 &nbsp;
 &nbsp;
-<b class="nc">&nbsp;    menu = new OrderMenu(10,7,3);</b>
+<b class="fc">&nbsp;    menu = new OrderMenu(10,7,3);</b>
 &nbsp;  }
 &nbsp;
 &nbsp;  /***
 &nbsp;   * Set the maximum number of waves to do, exclusively. Resets currentWave to 0
 &nbsp;   * @param amount
+&nbsp;   * @author Felix Seanor
 &nbsp;   */
 &nbsp;  public void SetWaveAmount(int amount){
-<b class="nc">&nbsp;    Waves = amount;</b>
-<b class="nc">&nbsp;    currentWave = 0;</b>
+<b class="fc">&nbsp;    Waves = amount;</b>
+<b class="fc">&nbsp;    currentWave = 0;</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Generates a customer array which can be used to get random customer sprites from the customer
+&nbsp;   * class
+&nbsp;   */
+&nbsp;  public void generateCustomerArray() {
+&nbsp;    String filename;
+&nbsp;    TextureAtlas customerAtlas;
+&nbsp;
+&nbsp;    //The file path takes it to data for each animation
+&nbsp;    //The TextureAtlas creates a texture atlas where the you pass through the string of the number and it returns the image.
+&nbsp;    //Taking all pictures in the diretory of the file
+<b class="fc">&nbsp;    for (int i = 1; i &lt; 9; i++) {</b>
+<b class="fc">&nbsp;      filename = &quot;Customers/Customer&quot; + i + &quot;/customer&quot; + i + &quot;.txt&quot;;</b>
+<b class="fc">&nbsp;      customerAtlas = new TextureAtlas(filename);</b>
+<b class="fc">&nbsp;      CustomerAtlas.add(customerAtlas);</b>
+&nbsp;    }
+&nbsp;  }
+&nbsp;  /**
+&nbsp;   * Updates all customers in groups to update their animation.
+&nbsp;   * @param customers
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public void UpdateCustomerMovements(List&lt;CustomerGroups&gt; customers){
 <b class="nc">&nbsp;    for (int i = 0; i &lt; customers.size(); i++) {</b>
 <b class="nc">&nbsp;      customers.get(i).updateSpriteFromInput();</b>
 &nbsp;    }
 &nbsp;  }
 &nbsp;
-&nbsp;
+&nbsp;  public CustomerGroups getCurrentWaitingCustomerGroup()
+<b class="fc">&nbsp;  {return currentWaiting;}</b>
+&nbsp;  /**
+&nbsp;   *  Modifiesr the reputation, if reputation + DR &lt;= 0 END GAME.
+&nbsp;   * @param DR delta reputation
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public void ModifyReputation(int DR){
 &nbsp;
-<b class="nc">&nbsp;    Reputation += DR;</b>
-<b class="nc">&nbsp;    Reputation = Math.min(Reputation,MaxReputation);</b>
+<b class="fc">&nbsp;    Reputation += DR;</b>
+<b class="fc">&nbsp;    Reputation = Math.min(Reputation,MaxReputation);</b>
 &nbsp;
-<b class="nc">&nbsp;    if(Reputation&lt;=0)</b>
-<b class="nc">&nbsp;      EndGame();</b>
+<b class="fc">&nbsp;    if(Reputation&lt;=0)</b>
+<b class="fc">&nbsp;      EndGame();</b>
 &nbsp;  }
 &nbsp;
-&nbsp;
+&nbsp;  /**
+&nbsp;   * Do check and modify money.
+&nbsp;   * @param DM Delta Money
+&nbsp;   * @return decrease in money is allowed.
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public boolean ChangeMoney(float DM){
-<b class="nc">&nbsp;    if(DM&gt;=0)</b>
+<b class="fc">&nbsp;    if(DM&gt;=0)</b>
 &nbsp;    {
-<b class="nc">&nbsp;      Money += DM;</b>
-<b class="nc">&nbsp;      Money = Math.min(MaxMoney,Money);</b>
-<b class="nc">&nbsp;      return true;</b>
+<b class="fc">&nbsp;      Money += DM;</b>
+<b class="fc">&nbsp;      Money = Math.min(MaxMoney,Money);</b>
+<b class="fc">&nbsp;      return true;</b>
 &nbsp;    }
 &nbsp;
 <b class="nc">&nbsp;    if(Money-DM&gt;=0){</b>
@@ -214,20 +271,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Gets the next avalible Table.
+&nbsp;   * @return next table. NULL if no free
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public Table GetTable(){
-<b class="nc">&nbsp;    for (Table option:tables</b>
+<b class="fc">&nbsp;    for (Table option:tables</b>
 &nbsp;    ) {
-<b class="nc">&nbsp;        if(option.isFree())</b>
-<b class="nc">&nbsp;          return option;</b>
+<b class="fc">&nbsp;        if(option.isFree())</b>
+<b class="fc">&nbsp;          return option;</b>
 <b class="nc">&nbsp;    }</b>
 &nbsp;
 <b class="nc">&nbsp;    return null;</b>
 &nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Change frustration of the currently waiting customer group
+&nbsp;   * @param dt delta time
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  private void FrustrationCheck(float dt){
 <b class="nc">&nbsp;    if(currentWaiting == null)</b>
 &nbsp;      return;
 <b class="nc">&nbsp;    currentWaiting.CheckFrustration(dt,FrustrationCallBack);</b>
 &nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * See if a currently seated customer should leave to make space for a new customer to enter.
+&nbsp;   * @param dt
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public void SeeIfCustomersShouldLeave(float dt){
 <b class="nc">&nbsp;    if(SittingCustomers.size()&gt;0)</b>
 <b class="nc">&nbsp;      NextToLeave -= dt;</b>
@@ -239,6 +313,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Removes the first currently seated customer and makes them walk outside and despawn.
+&nbsp;   */
 &nbsp;  void RemoveCurrentlySeatedCustomers(){
 <b class="nc">&nbsp;      CustomerGroups groups = SittingCustomers.get(0);</b>
 <b class="nc">&nbsp;      groups.table.relinquish();</b>
@@ -251,6 +328,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Trys to remove customers when they reach the exit.
+&nbsp;   */
 &nbsp;  void TryDeleteCustomers(){
 <b class="nc">&nbsp;    List&lt;Integer&gt; removals = new LinkedList&lt;&gt;();</b>
 <b class="nc">&nbsp;    int r =0;</b>
@@ -278,37 +358,51 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    }</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Creates a new customer group of a random size, and gives them a list of foods to order.
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  void CreateNewCustomer(){
-<b class="nc">&nbsp;    Table table = GetTable();</b>
-<b class="nc">&nbsp;    int rnd = rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;</b>
-<b class="nc">&nbsp;    currentWaiting = new CustomerGroups(rnd,currentCustomer, DoorTarget, CustomerFrustrationStart, menu.CreateNewOrder(rnd, Randomisation.Normalised));</b>
-<b class="nc">&nbsp;    currentCustomer += rnd;</b>
+<b class="fc">&nbsp;    Table table = GetTable();</b>
+<b class="fc">&nbsp;    int rnd = rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;</b>
+<b class="fc">&nbsp;    currentWaiting = new CustomerGroups(rnd,currentCustomer, DoorTarget, CustomerFrustrationStart, menu.CreateNewOrder(rnd, Randomisation.Normalised),CustomerAtlas);</b>
+<b class="fc">&nbsp;    currentCustomer += rnd;</b>
 &nbsp;
-<b class="nc">&nbsp;    currentWaiting.table= table;</b>
-<b class="nc">&nbsp;    table.DesignateSeating(rnd,rand);</b>
+<b class="fc">&nbsp;    currentWaiting.table= table;</b>
+<b class="fc">&nbsp;    table.DesignateSeating(rnd,rand);</b>
 &nbsp;
-<b class="nc">&nbsp;    SetWaitingForOrderTarget();</b>
+<b class="fc">&nbsp;    SetWaitingForOrderTarget();</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Makes the currently waiting customers to queue up dynamically.
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  void SetWaitingForOrderTarget(){
-<b class="nc">&nbsp;    for (int i = 0; i &lt; currentWaiting.MembersInLine.size(); i++) {</b>
-<b class="nc">&nbsp;        SetCustomerTarget(currentWaiting.MembersInLine.get(i),new Vector2(0,40*i).add(OrderAreaTarget));</b>
+<b class="fc">&nbsp;    for (int i = 0; i &lt; currentWaiting.MembersInLine.size(); i++) {</b>
+<b class="fc">&nbsp;        SetCustomerTarget(currentWaiting.MembersInLine.get(i),new Vector2(0,40*i).add(OrderAreaTarget));</b>
 &nbsp;    }
 &nbsp;  }
 &nbsp;
-&nbsp;  void CanAcceptNewCustomer(){
-<b class="nc">&nbsp;    if(DoSatisfactionCheck())</b>
+&nbsp;  /**
+&nbsp;   * Checks if a new customer can be accepted if so, add a new one in. End the game if the set number of waves has elapsed.
+&nbsp;   * Set Waves to -1 for &quot;endless&quot;
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;
+&nbsp;  public void CanAcceptNewCustomer(){
+<b class="fc">&nbsp;    if(DoSatisfactionCheck())</b>
 &nbsp;    {
 <b class="nc">&nbsp;      SittingCustomers.add(currentWaiting);</b>
 <b class="nc">&nbsp;      currentWaiting = null;</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    if(currentWaiting == null &amp;&amp; SittingCustomers.size() &lt; tables.size())</b>
+<b class="fc">&nbsp;    if(currentWaiting == null &amp;&amp; SittingCustomers.size() &lt; tables.size())</b>
 &nbsp;    {
-<b class="nc">&nbsp;      if(Waves != currentWave++) //if not the max number of waves increment</b>
-<b class="nc">&nbsp;      CreateNewCustomer();</b>
+<b class="fc">&nbsp;      if(Waves != currentWave++) //if not the max number of waves increment</b>
+<b class="fc">&nbsp;      CreateNewCustomer();</b>
 &nbsp;      else
-<b class="nc">&nbsp;        EndGame();</b>
+<b class="fc">&nbsp;        EndGame();</b>
 &nbsp;
 &nbsp;
 &nbsp;    }
@@ -317,6 +411,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * If the current customer is too frustrated then make all customers in that group leave
+&nbsp;   * decrement Frustration
+&nbsp;   * @param group group to leave
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public void FrustrationLeave(CustomerGroups group){
 <b class="nc">&nbsp;    SetCustomerGroupTarget(group,DoorTarget);</b>
 <b class="nc">&nbsp;    group.table.relinquish();</b>
@@ -325,6 +425,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    ModifyReputation(-1);</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Sets the pathfinding target of an entire group, making them walk to the location.
+&nbsp;   * @param group
+&nbsp;   * @param target
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public void SetCustomerGroupTarget(CustomerGroups group, Vector2 target){
 <b class="nc">&nbsp;    for (Customer customer: group.Members</b>
 &nbsp;    ) {
@@ -332,13 +438,22 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    }</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Sets an individual customers pathfinding target. Begins pathfinding
+&nbsp;   * @param customer
+&nbsp;   * @param target
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;
 &nbsp;  public void SetCustomerTarget(Customer customer, Vector2 target){
-<b class="nc">&nbsp;    customer.GivePath(pathfinding.FindPath((int) customer.gameObject.position.x,</b>
+<b class="fc">&nbsp;    customer.GivePath(pathfinding.FindPath((int) customer.gameObject.position.x,</b>
 &nbsp;        (int) customer.gameObject.position.y, (int) target.x, (int) target.y,DistanceTest.Manhatten));
 &nbsp;
 &nbsp;  }
 &nbsp;
-&nbsp;
+&nbsp;  /**
+&nbsp;   * Test remove customers.
+&nbsp;   */
 &nbsp;  void RemoveCustomerTest(){
 <b class="nc">&nbsp;    if(Gdx.input.isKeyJustPressed(</b>
 &nbsp;        Keys.S )&amp;&amp; currentWaiting != null){
@@ -351,32 +466,53 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * End the game sequence. Call upper end game sequence.
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  private void EndGame(){
 &nbsp;    //calculate win or loss
 &nbsp;
 &nbsp;    //Calculate points
-<b class="nc">&nbsp;    EndOfGameValues values = new EndOfGameValues();</b>
-<b class="nc">&nbsp;    values.score = Money;</b>
-<b class="nc">&nbsp;    values.Won  = Reputation&gt;0;</b>
-<b class="nc">&nbsp;    CallEndGame.accept(values);</b>
+<b class="fc">&nbsp;    EndOfGameValues values = new EndOfGameValues();</b>
+<b class="fc">&nbsp;    values.score = Money;</b>
+<b class="fc">&nbsp;    values.Won  = Reputation&gt;0;</b>
+<b class="fc">&nbsp;    CallEndGame.accept(values);</b>
 &nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Interface with the customer from the chefs via customer counters.
+&nbsp;   * Checks to see if the given food is an ordered food
+&nbsp;   * Makes customer sit down if so
+&nbsp;   * @param item
+&nbsp;   * @return True if accepted, otherwise false
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  public boolean tryGiveFood(Item item){
-<b class="nc">&nbsp;    boolean success = currentWaiting.TryRemoveCustomer(item);</b>
+<b class="fc">&nbsp;    int success = currentWaiting.SeeIfDishIsCorrect(item);</b>
 &nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
-<b class="nc">&nbsp;    if(success) {</b>
-<b class="nc">&nbsp;      SetCustomerTarget(currentWaiting.MembersSeatedOrWalking.get(currentWaiting.MembersSeatedOrWalking.size()-1),currentWaiting.table.GetNextSeat());</b>
-<b class="nc">&nbsp;      SetWaitingForOrderTarget();</b>
-<b class="nc">&nbsp;      ChangeMoney(MoneyPerCustomer);</b>
+<b class="fc">&nbsp;    if(success != -1) {</b>
+<b class="fc">&nbsp;      currentWaiting.MembersSeatedOrWalking.add(currentWaiting.MembersInLine.remove(success));</b>
+<b class="fc">&nbsp;      currentWaiting.updateFrustrationOnSucessfulService();</b>
+<b class="fc">&nbsp;      SetCustomerTarget(currentWaiting.MembersSeatedOrWalking.get(currentWaiting.MembersSeatedOrWalking.size()-1),currentWaiting.table.GetNextSeat());</b>
+<b class="fc">&nbsp;      SetWaitingForOrderTarget();</b>
+<b class="fc">&nbsp;      ChangeMoney(MoneyPerCustomer);</b>
 &nbsp;    }
-<b class="nc">&nbsp;    return success;</b>
+<b class="fc">&nbsp;    return success !=-1;</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Checks to see if the current customer group can be expelled from the currenly waiting slot
+&nbsp;   * @return True if so, otherwise false
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
 &nbsp;  boolean DoSatisfactionCheck(){
-<b class="nc">&nbsp;    return currentWaiting != null &amp;&amp; currentWaiting.MembersInLine.size()==0 ;</b>
+<b class="fc">&nbsp;    return currentWaiting != null &amp;&amp; currentWaiting.MembersInLine.size()==0 ;</b>
 &nbsp;  }
 &nbsp;
 &nbsp;
@@ -405,7 +541,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-30 21:18</div>
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
 </div>
 </body>
 </html>

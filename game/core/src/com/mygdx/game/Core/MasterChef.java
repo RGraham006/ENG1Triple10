@@ -45,6 +45,7 @@ public class MasterChef extends Scriptable {
 
   /**
    * Generates a chef array which can be used to get random chef sprites from the chef class.
+   *
    * @author Felix Seanor
    */
   public void generateChefArray() {
@@ -69,6 +70,7 @@ public class MasterChef extends Scriptable {
 
   /**
    * Creates a Chef controller class, handling inputs
+   *
    * @param count
    * @param world
    * @param camera
@@ -104,6 +106,7 @@ public class MasterChef extends Scriptable {
 
   /**
    * The chef tries to put down  an item onto a nearby surface
+   *
    * @author Felix Seanor
    * @author Jack Vickers
    * @author Jack Hinton
@@ -159,6 +162,7 @@ public class MasterChef extends Scriptable {
 
   /**
    * The chef attempts to interact with a nearby surface
+   *
    * @author Jack Hinton
    * @author Jack Vickers
    */
@@ -179,28 +183,22 @@ public class MasterChef extends Scriptable {
   void selectChef() {
     for (int i = 0; i < chefs.length; i++) {
       if (Gdx.input.isKeyPressed(Input.Keys.NUM_1
-          + i)) // increments to next number for each chef 1,2,3 ect (dont go above 9)
-      {
+          + i)) // increments to next number for each chef 1,2,3 ect (dont go above 9) {
         SelectChef(i);
-
-        for (Chef c : chefs
-        ) {
-          c.stop();
-        }
-        // Runs chefs logic updates
-
+      for (Chef c : chefs
+      ) {
+        c.stop();
       }
     }
   }
 
   /**
    * Update method for this class
-   * @param dt
    *
+   * @param dt
    * @author Felix Seanor
    * @author Jack Hinton
    * @author Jack Vickers
-
    */
   @Override
   public void Update(float dt) {

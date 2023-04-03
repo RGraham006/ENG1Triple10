@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">MasterChef</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    41.7%
   </span>
   <span class="absValue">
-    (0/12)
+    (5/12)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    50%
   </span>
   <span class="absValue">
-    (0/63)
+    (31/62)
   </span>
 </td>
 </tr>
@@ -96,8 +96,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;public class MasterChef extends Scriptable {
 &nbsp;
-<b class="nc">&nbsp;  public float maxRange = 25;</b>
-<b class="nc">&nbsp;  public int currentControlledChef = 0;</b>
+<b class="fc">&nbsp;  public float maxRange = 25;</b>
+<b class="fc">&nbsp;  public int currentControlledChef = 0;</b>
 &nbsp;  private static ArrayList&lt;TextureAtlas&gt; chefAtlasArray;
 &nbsp;
 &nbsp;  private Camera camera;
@@ -111,7 +111,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  }
 &nbsp;
 &nbsp;  public Chef getChef(int i) {
-<b class="nc">&nbsp;    return chefs[i];</b>
+<b class="fc">&nbsp;    return chefs[i];</b>
 &nbsp;  }
 &nbsp;
 &nbsp;  public Chef getCurrentChef() {
@@ -121,14 +121,16 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  /**
 &nbsp;   * Generates a chef array which can be used to get random chef sprites from the chef class.
+&nbsp;   *
+&nbsp;   * @author Felix Seanor
 &nbsp;   */
 &nbsp;  public void generateChefArray() {
 &nbsp;    String filename;
 &nbsp;    TextureAtlas chefAtlas;
-<b class="nc">&nbsp;    for (int i = 1; i &lt; 4; i++) {</b>
-<b class="nc">&nbsp;      filename = &quot;Chefs/Chef&quot; + i + &quot;/chef&quot; + i + &quot;.txt&quot;;</b>
-<b class="nc">&nbsp;      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));</b>
-<b class="nc">&nbsp;      chefAtlasArray.add(chefAtlas);</b>
+<b class="fc">&nbsp;    for (int i = 1; i &lt; 4; i++) {</b>
+<b class="fc">&nbsp;      filename = &quot;Chefs/Chef&quot; + i + &quot;/chef&quot; + i + &quot;.txt&quot;;</b>
+<b class="fc">&nbsp;      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));</b>
+<b class="fc">&nbsp;      chefAtlasArray.add(chefAtlas);</b>
 &nbsp;    }
 &nbsp;  }
 &nbsp;
@@ -136,29 +138,38 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;   * Returns the chef array that&#39;s been created
 &nbsp;   *
 &nbsp;   * @return ArrayList&lt;TextureAtlas&gt; chefAtlasArray;
+&nbsp;   * @author Felix Seanor
 &nbsp;   */
 &nbsp;  public static ArrayList&lt;TextureAtlas&gt; getChefAtlasArray() {
 <b class="nc">&nbsp;    return chefAtlasArray;</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Creates a Chef controller class, handling inputs
+&nbsp;   *
+&nbsp;   * @param count
+&nbsp;   * @param world
+&nbsp;   * @param camera
+&nbsp;   * @param pathfinding pathfinding module
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+<b class="fc">&nbsp;  public MasterChef(int count, World world, Camera camera, Pathfinding pathfinding) {</b>
 &nbsp;
-<b class="nc">&nbsp;  public MasterChef(int count, World world, Camera camera, Pathfinding pathfinding) {</b>
+<b class="fc">&nbsp;    chefAtlasArray = new ArrayList&lt;TextureAtlas&gt;();</b>
+<b class="fc">&nbsp;    this.pathfind = pathfinding;</b>
+<b class="fc">&nbsp;    generateChefArray();</b>
+<b class="fc">&nbsp;    chefs = new Chef[count];</b>
 &nbsp;
-<b class="nc">&nbsp;    chefAtlasArray = new ArrayList&lt;TextureAtlas&gt;();</b>
-<b class="nc">&nbsp;    this.pathfind = pathfinding;</b>
-<b class="nc">&nbsp;    generateChefArray();</b>
-<b class="nc">&nbsp;    chefs = new Chef[count];</b>
+<b class="fc">&nbsp;    this.camera = camera;</b>
 &nbsp;
-<b class="nc">&nbsp;    this.camera = camera;</b>
-&nbsp;
-<b class="nc">&nbsp;    for (int i = 0; i &lt; chefs.length; i++) {</b>
-<b class="nc">&nbsp;      GameObject chefsGameObject = new GameObject(</b>
+<b class="fc">&nbsp;    for (int i = 0; i &lt; chefs.length; i++) {</b>
+<b class="fc">&nbsp;      GameObject chefsGameObject = new GameObject(</b>
 &nbsp;          new BlackSprite());//passing in null since chef will define it later
-<b class="nc">&nbsp;      chefs[i] = new Chef(world, i, chefAtlasArray.get(i));</b>
-<b class="nc">&nbsp;      chefsGameObject.attachScript(chefs[i]);</b>
-<b class="nc">&nbsp;      chefsGameObject.image.setSize(18, 40);</b>
+<b class="fc">&nbsp;      chefs[i] = new Chef(world, i, chefAtlasArray.get(i));</b>
+<b class="fc">&nbsp;      chefsGameObject.attachScript(chefs[i]);</b>
+<b class="fc">&nbsp;      chefsGameObject.image.setSize(18, 40);</b>
 &nbsp;
-<b class="nc">&nbsp;      chefs[i].updateSpriteFromInput(&quot;idlesouth&quot;);</b>
+<b class="fc">&nbsp;      chefs[i].updateSpriteFromInput(&quot;idlesouth&quot;);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;  }
@@ -169,53 +180,68 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  }
 &nbsp;
-&nbsp;
+&nbsp;  /**
+&nbsp;   * The chef tries to put down  an item onto a nearby surface
+&nbsp;   *
+&nbsp;   * @author Felix Seanor
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @author Jack Hinton
+&nbsp;   */
 &nbsp;  public void GiveItem() {
 &nbsp;
-<b class="nc">&nbsp;    if (!chefs[currentControlledChef].CanFetchItem()) {</b>
+<b class="fc">&nbsp;    if (!chefs[currentControlledChef].CanFetchItem()) {</b>
 &nbsp;      return;
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    Scriptable script = Interaction.FindClosetInteractable(</b>
+<b class="fc">&nbsp;    Scriptable script = Interaction.FindClosetInteractable(</b>
 &nbsp;        chefs[currentControlledChef].gameObject.position, InteractionType.Give, maxRange);
 &nbsp;
-<b class="nc">&nbsp;    if (script == null) {</b>
+<b class="fc">&nbsp;    if (script == null) {</b>
 &nbsp;      return;
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    Optional&lt;Item&gt; itemToGive = chefs[currentControlledChef].FetchItem();</b>
+<b class="fc">&nbsp;    Optional&lt;Item&gt; itemToGive = chefs[currentControlledChef].FetchItem();</b>
 &nbsp;
-<b class="nc">&nbsp;    if (!itemToGive.isPresent()) {</b>
+<b class="fc">&nbsp;    if (!itemToGive.isPresent()) {</b>
 &nbsp;      return;
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    ((Interactable) script).GiveItem(itemToGive.get());</b>
+<b class="fc">&nbsp;    ((Interactable) script).GiveItem(itemToGive.get());</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * The chef tries to pick up an item from a nearby surface.
+&nbsp;   */
 &nbsp;  public void FetchItem() {
 &nbsp;
-<b class="nc">&nbsp;    if (!chefs[currentControlledChef].CanGiveItem()) {</b>
+<b class="fc">&nbsp;    if (!chefs[currentControlledChef].CanGiveItem()) {</b>
 &nbsp;      return;
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    Scriptable script = Interaction.FindClosetInteractable(</b>
+<b class="fc">&nbsp;    Scriptable script = Interaction.FindClosetInteractable(</b>
 &nbsp;        chefs[currentControlledChef].gameObject.position, InteractionType.Fetch, maxRange);
 &nbsp;
-<b class="nc">&nbsp;    if (script == null) {</b>
+<b class="fc">&nbsp;    if (script == null) {</b>
 &nbsp;      return;
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    Item itemToGive = ((Interactable) script).RetrieveItem();</b>
+<b class="fc">&nbsp;    Item itemToGive = ((Interactable) script).RetrieveItem();</b>
 &nbsp;
-<b class="nc">&nbsp;    if (itemToGive == null) {</b>
+<b class="fc">&nbsp;    if (itemToGive == null) {</b>
 &nbsp;      return;
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    chefs[currentControlledChef].GiveItem(itemToGive);</b>
+<b class="fc">&nbsp;    chefs[currentControlledChef].GiveItem(itemToGive);</b>
 &nbsp;
 &nbsp;
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * The chef attempts to interact with a nearby surface
+&nbsp;   *
+&nbsp;   * @author Jack Hinton
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
 &nbsp;  public void Interact() {
 <b class="nc">&nbsp;    Scriptable script = Interaction.FindClosetInteractable(</b>
 &nbsp;        chefs[currentControlledChef].gameObject.position, InteractionType.Interact, maxRange);
@@ -227,23 +253,29 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    ((Interactable) script).Interact();</b>
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Select a chef from the number keys
+&nbsp;   */
 &nbsp;  void selectChef() {
 <b class="nc">&nbsp;    for (int i = 0; i &lt; chefs.length; i++) {</b>
 <b class="nc">&nbsp;      if (Gdx.input.isKeyPressed(Input.Keys.NUM_1</b>
-&nbsp;          + i)) // increments to next number for each chef 1,2,3 ect (dont go above 9)
-&nbsp;      {
+&nbsp;          + i)) // increments to next number for each chef 1,2,3 ect (dont go above 9) {
 <b class="nc">&nbsp;        SelectChef(i);</b>
-&nbsp;
-<b class="nc">&nbsp;        for (Chef c : chefs</b>
-&nbsp;        ) {
-<b class="nc">&nbsp;          c.stop();</b>
-&nbsp;        }
-&nbsp;        // Runs chefs logic updates
-&nbsp;
+<b class="nc">&nbsp;      for (Chef c : chefs</b>
+&nbsp;      ) {
+<b class="nc">&nbsp;        c.stop();</b>
 &nbsp;      }
 &nbsp;    }
 &nbsp;  }
 &nbsp;
+&nbsp;  /**
+&nbsp;   * Update method for this class
+&nbsp;   *
+&nbsp;   * @param dt
+&nbsp;   * @author Felix Seanor
+&nbsp;   * @author Jack Hinton
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
 &nbsp;  @Override
 &nbsp;  public void Update(float dt) {
 <b class="nc">&nbsp;    selectChef();</b>
@@ -272,7 +304,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;      List&lt;Vector2&gt; path = pathfind.FindPath((int) getCurrentChef().gameObject.position.x,</b>
 <b class="nc">&nbsp;          (int) getCurrentChef().gameObject.position.y, (int) touchpos.x, (int) touchpos.y,</b>
 &nbsp;          DistanceTest.Euclidean);
-<b class="nc">&nbsp;      System.out.println(path);</b>
+&nbsp;//      System.out.println(path);
 <b class="nc">&nbsp;      getCurrentChef().GivePath(path);</b>
 &nbsp;    }
 &nbsp;
@@ -306,7 +338,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-30 21:18</div>
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
 </div>
 </body>
 </html>

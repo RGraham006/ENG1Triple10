@@ -1,10 +1,15 @@
 package piazzapanictests.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Core.GameObject;
+import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
+import com.mygdx.game.Stations.AssemblyStation;
 import com.mygdx.game.Stations.FoodCrate;
 
 import java.util.Stack;
@@ -20,78 +25,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(GdxTestRunner.class)
 public class ChefTests extends MasterTestClass {
-
-//  /**
-//   * Tests that the chef can move up.
-//   * @author Jack Vickers
-//   */
-//  @SuppressWarnings("checkstyle:VariableDeclarationUsageDistance")
-//  @Test
-//  public void testChefMoveUp() {
-//    instantiateWorldAndChefs();
-//    float currentY = chef[0].getY();
-//    float currentX = chef[0].getX();
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("north");
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("north");
-//    assertTrue("The y position of the chef should be greater ", chef[0].getY() > currentY);
-//    assertEquals("The x position of the chef should be the same ", chef[0].getX(), currentX, 0.0);
-//  }
-//
-//  /**
-//   * Tests that the chef can move down.
-//   * @author Jack Vickers
-//   */
-//  @SuppressWarnings("checkstyle:VariableDeclarationUsageDistance")
-//  @Test
-//  public void testChefMoveDown() {
-//    instantiateWorldAndChefs();
-//    float currentY = chef[0].getY();
-//    float currentX = chef[0].getX();
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("south");
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("south");
-//    assertTrue("The y position of the chef should be less ",chef[0].getY() < currentY);
-//    assertEquals("The x position of the chef should be the same ", chef[0].getX(), currentX, 0.0);
-//  }
-//
-//  /**
-//   * Tests that the chef can move left.
-//   * @author Jack Vickers
-//   */
-//  @SuppressWarnings("checkstyle:VariableDeclarationUsageDistance")
-//  @Test
-//  public void testChefMoveLeft() {
-//    instantiateWorldAndChefs();
-//    float currentX = chef[0].getX();
-//    float currentY = chef[0].getY();
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("west");
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("west");
-//    assertTrue("The x position of the chef should be less ",chef[0].getX() < currentX);
-//    assertEquals("The y position of the chef should be the same ", chef[0].getY(), currentY, 0.0);
-//  }
-//
-//  /**
-//   * Tests that the chef can move right.
-//   * @author Jack Vickers
-//   */
-//  @SuppressWarnings("checkstyle:VariableDeclarationUsageDistance")
-//  @Test
-//  public void testChefMoveRight() {
-//    instantiateWorldAndChefs();
-//    float currentX = chef[0].getX();
-//    float currentY = chef[0].getY();
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("east");
-//    world.step(1 / 60f, 6, 2);
-//    chef[0].updateSpriteFromInput("east");
-//    assertTrue("The x position of the chef should be greater ",chef[0].getX() > currentX);
-//    assertEquals("The y position of the chef should be the same ", chef[0].getY(), currentY, 0.0);
-//  }
 
   /**
    * Tests that the chef can drop an item.
@@ -311,8 +244,81 @@ public class ChefTests extends MasterTestClass {
     int chefInventoryCountBefore = chef[0].getInventoryCount();
     chef[0].FetchItem();
     int chefInventoryCountAfter = chef[0].getInventoryCount();
-    assertEquals("The chef's inventory is still empty after attempting to pick up an item from an empty tile",
-            chefInventoryCountBefore, chefInventoryCountAfter);
+    assertEquals(
+        "The chef's inventory is still empty after attempting to pick up an item from an empty tile",
+        chefInventoryCountBefore, chefInventoryCountAfter);
+  }
+
+  /**
+   * Tests that the chef being controlled can pick up an item from the assembly station.
+   */
+  @Test
+  public void testPickupItemFromAssemblyStation() {
+    if (GameObjectManager.objManager == null) {
+      // creates game object manager which makes sure that the game object manager
+      // is not null when it is needed
+      new GameObjectManager();
+    }
+    instantiateMasterChef();
+    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same
+
+    // The chef's position is set to close to the assembly station (which has position (0,0))
+    // This is done so that the Fetch item function gets the assembly
+    // station as the closest interactable object.
+    masterChef.getChef(0).gameObject.position = new Vector2(1, 0);
+
+    assertEquals("The assembly station should have no ingredients on it",
+        0, assemblyStation.getIngredients().size());
+
+    assemblyStation.GiveItem(new Item(ItemEnum.Mince));
+
+    assertEquals("The assembly station should have mince on it", new Item(ItemEnum.Mince),
+        assemblyStation.getIngredients().get(0));
+
+    assertEquals("The chef should have no ingredients on their inventory",
+        0, masterChef.getChef(0).getInventory().size());
+
+    masterChef.FetchItem(); // The chef should pick up the mince from the assembly station
+
+    assertEquals("The chef should have mince at the top of inventory", new Item(ItemEnum.Mince),
+        masterChef.getChef(0).getInventory().peek());
+
+    assertEquals("The assembly station should have no ingredients on it",
+        0, assemblyStation.getIngredients().size());
+    GameObjectManager.objManager.DestroyGameObject(assemble);
+  }
+
+  /**
+   * Tests that the chef being controlled can place an item on the assembly station.
+   */
+  @Test
+  public void testPlaceItemOnAssemblyStation() {
+    if (GameObjectManager.objManager == null) {
+      // creates game object manager which makes sure that the game object manager
+      // is not null when it is needed
+      new GameObjectManager();
+    }
+    instantiateMasterChef();
+    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same
+
+    // The chef's position is set to close to the assembly station (which has position (0,0))
+    // This is done so that the Fetch item function gets the assembly
+    // station as the closest interactable object.
+    masterChef.getChef(0).gameObject.position = new Vector2(1, 0);
+    Item item = new Item(ItemEnum.Mince);
+    masterChef.getChef(0).GiveItem(item);
+    assertEquals("The chef should have mince at the top of inventory", item,
+        masterChef.getChef(0).getInventory().peek());
+
+    // Gives the chef's held item to the closest interactable object (assembly station)
+    masterChef.GiveItem();
+
+    assertEquals("The assembly station should have mince on it", item,
+        assemblyStation.getIngredients().get(0));
+
+    assertEquals("The chef should no longer have mince in their inventory",
+        0, masterChef.getChef(0).getInventory().size());
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
 }

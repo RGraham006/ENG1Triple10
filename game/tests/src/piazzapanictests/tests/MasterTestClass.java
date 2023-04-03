@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -18,6 +19,9 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.mygdx.game.Core.BlackSprite;
 import com.mygdx.game.Core.GameObject;
 
+import com.mygdx.game.Core.GameObjectManager;
+import com.mygdx.game.Core.MasterChef;
+import com.mygdx.game.Core.Pathfinding;
 import com.mygdx.game.RecipeAndComb.RecipeDict;
 import com.mygdx.game.Stations.AssemblyStation;
 import com.mygdx.game.Stations.ChopStation;
@@ -31,12 +35,23 @@ class MasterTestClass {
   // Array of chefs
   private static ArrayList<TextureAtlas> chefAtlasArray = new ArrayList<TextureAtlas>();
   Chef[] chef;
+  MasterChef masterChef;
   World world;
   ChopStation chopStation;
   AssemblyStation assemblyStation;
+  GameObject assemble;
+  /**
+   * Instantiates the world.
+   *
+   * @author Jack Vickers
+   * @date 03/04/2023
+   */
+  void instantiateWorld() {
+    world = new World(new Vector2(0, 0), true);
+  }
 
   /**
-   * Instantiates the world and chefs so that these can be used in the tests.
+   * Instantiates the world and two chefs so that these can be used in the tests.
    *
    * @author Jack Vickers
    */
@@ -53,12 +68,29 @@ class MasterTestClass {
       chefsGameObject.image.setSize(18, 40); // set size of sprite
       chef[i].updateSpriteFromInput("idlesouth");
     }
-
   }
 
   /**
-   * Generates a chef array which can be used to get random chef sprites from the chef class.
-   * Needed to instantiate the chefs.
+   * Instantiates the masterchef class. This class generates multiple chefs.
+   * This will be used to test interactions between a chef and interactable game object.
+   */
+  void instantiateMasterChef() {
+    world = new World(new Vector2(0, 0), true);
+    OrthographicCamera camera = new OrthographicCamera(); // create camera. Needed to instantiate MasterChef
+    camera.setToOrtho(false, 1024, 576); // set camera to orthographic mode using values
+    // taken from GameScreen class
+    camera.update();
+    // Sets up the pathfinding using values taken from GameScreen class
+    Pathfinding pathfinding = new Pathfinding(32 / 4, 32 * 32, 18 * 32);
+    // Instantiates the MasterChef class
+    masterChef = new MasterChef(2, world, camera, pathfinding);
+    GameObjectManager.objManager.AppendLooseScript(masterChef);
+  }
+
+
+  /**
+   * Generates a chef array which can be used to get random chef sprites from the chef class. Needed
+   * to instantiate the chefs.
    *
    * @author Jack Vickers
    */
@@ -73,8 +105,7 @@ class MasterTestClass {
   }
 
   /**
-   * Returns the chef atlas array.
-   * Needed to instantiate the chefs.
+   * Returns the chef atlas array. Needed to instantiate the chefs.
    *
    * @return chefAtlasArray
    * @author Jack Vickers
@@ -90,7 +121,7 @@ class MasterTestClass {
    * @author Jack Vickers
    */
   void instantiateWorldAndChoppingStation() {
-    world = new World(new Vector2(0, 0), true); // creates world
+    world = new World(new Vector2(0, 0), true);
     TiledMap map;
     map = new TmxMapLoader().load("PiazzaPanicMap.tmx"); // loads map
     MapLayer chopping = map.getLayers().get(5); // gets chopping layer
@@ -113,21 +144,23 @@ class MasterTestClass {
    *
    * @author Jack Vickers
    */
-  public void instantiateWorldAndAssemblyStation() {
-    world = new World(new Vector2(0, 0), true); // creates world
+  AssemblyStation instantiateWorldAndAssemblyStation() {
+    world = new World(new Vector2(0, 0), true);
     TiledMap map;
     map = new TmxMapLoader().load("PiazzaPanicMap.tmx"); // loads map
     MapLayer counter = map.getLayers().get(3); // gets counter layer (layer 3 of the map)
     MapObject object = counter.getObjects().getByType(RectangleMapObject.class)
         .get(0); // gets counter object
     Rectangle rect = ((RectangleMapObject) object).getRectangle(); // gets chopping rectangle
-    GameObject Assemble = new GameObject(null);
-    Assemble.setPosition(rect.getX(), rect.getY());
-    Assemble.setWidthAndHeight(rect.getWidth(), rect.getHeight());
+    assemble = new GameObject(null);
+    assemble.setPosition(0, 0);
+    assemble.setWidthAndHeight(rect.getWidth(), rect.getHeight());
     assemblyStation = new AssemblyStation();
-    Assemble.attachScript(assemblyStation);
+    assemble.attachScript(assemblyStation);
     new RecipeDict(); // creates recipe dictionary
     RecipeDict.recipes.implementRecipes(); // implements recipes
+    return assemblyStation;
   }
+
 
 }

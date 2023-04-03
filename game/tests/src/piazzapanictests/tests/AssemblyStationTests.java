@@ -49,11 +49,13 @@ public class AssemblyStationTests extends MasterTestClass {
       // creates game object manager which makes sure that the game object manager is not null when it is needed
       new GameObjectManager();
     }
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same
+
     Item item = new Item(ItemEnum.Buns);
     assemblyStation.GiveItem(item); // gives a bun to the assembly station
     assertEquals(assemblyStation.getIngredients().get(0),
         item); // checks that the bun is in the inventory
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -65,7 +67,7 @@ public class AssemblyStationTests extends MasterTestClass {
       // creates game object manager which makes sure that the game object manager is not null when it is needed
       new GameObjectManager();
     }
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same
 
     Item item = new Item(ItemEnum.Buns);
     assemblyStation.GiveItem(item); // gives a bun to the assembly station
@@ -84,6 +86,7 @@ public class AssemblyStationTests extends MasterTestClass {
 
     assertNull("There should be no game objects on the station",
         assemblyStation.getHeldItem());
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -96,7 +99,7 @@ public class AssemblyStationTests extends MasterTestClass {
       // creates game object manager which makes sure that the game object manager is not null when it is needed
       new GameObjectManager();
     }
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same
 
     assertNull("There should be no game objects on the station to start with",
         assemblyStation.getHeldItem());
@@ -113,7 +116,7 @@ public class AssemblyStationTests extends MasterTestClass {
 
     assertNull("There should be no game objects on the station",
         assemblyStation.getHeldItem());
-
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -131,7 +134,7 @@ public class AssemblyStationTests extends MasterTestClass {
     }
     new CombinationDict();
     CombinationDict.combinations.implementItems(); // creates combination dictionary
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation();
 
     Item item1 = new Item(ItemEnum.CutLettuce);
     Item item2 = new Item(ItemEnum.CutTomato);
@@ -161,6 +164,7 @@ public class AssemblyStationTests extends MasterTestClass {
 
     assertNull("There should be no game objects on the station",
         assemblyStation.getHeldItem());
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -175,26 +179,26 @@ public class AssemblyStationTests extends MasterTestClass {
       // creates game object manager which makes sure that the game object
       // manager is not null when it is needed
       new GameObjectManager();
-      instantiateWorldAndAssemblyStation(); // creates world and assembly station
-
-      Item item = new Item(ItemEnum.TomatoOnionLettuceSalad);
-      assemblyStation.GiveItem(item);
-      assemblyStation.GiveItem(item);
-      assemblyStation.GiveItem(item);
-      assemblyStation.GiveItem(item);
-      assertEquals("There should be 4 items on the station",
-          assemblyStation.getHeldItems().size(), 4);
-      for (int i = 0; i < 4; i++) { // retrieves all items from the assembly station
-        assemblyStation.RetrieveItem();
-      }
-      assertEquals("There should be no ingredients on the station",
-          assemblyStation.getIngredients().size(), 0);
-      assertEquals("There should be no gameOjects on the station",
-          assemblyStation.getHeldItems().size(), 0);
-      assertNull("There should be no game objects on the station",
-          assemblyStation.getHeldItem());
-
     }
+    instantiateWorldAndAssemblyStation();
+
+    Item item = new Item(ItemEnum.TomatoOnionLettuceSalad);
+    assemblyStation.GiveItem(item);
+    assemblyStation.GiveItem(item);
+    assemblyStation.GiveItem(item);
+    assemblyStation.GiveItem(item);
+    assertEquals("There should be 4 items on the station",
+        assemblyStation.getHeldItems().size(), 4);
+    for (int i = 0; i < 4; i++) { // retrieves all items from the assembly station
+      assemblyStation.RetrieveItem();
+    }
+    assertEquals("There should be no ingredients on the station",
+        assemblyStation.getIngredients().size(), 0);
+    assertEquals("There should be no gameOjects on the station",
+        assemblyStation.getHeldItems().size(), 0);
+    assertNull("There should be no game objects on the station",
+        assemblyStation.getHeldItem());
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -208,7 +212,8 @@ public class AssemblyStationTests extends MasterTestClass {
       // creates game object manager which makes sure that the game object manager is not null when it is needed
       new GameObjectManager();
     }
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation();
+
     Item item = new Item(ItemEnum.Buns);
     for (int i = 0; i < 4; i++) {
       assemblyStation.GiveItem(item); // gives 4 buns to the assembly station
@@ -219,6 +224,7 @@ public class AssemblyStationTests extends MasterTestClass {
     assertEquals("There should be no more than 4 items allowed on an assembly station",
         assemblyStation.getIngredients().size(),
         4); // checks that the assembly station still has 4 buns
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -235,7 +241,7 @@ public class AssemblyStationTests extends MasterTestClass {
     }
     new CombinationDict();
     CombinationDict.combinations.implementItems(); // creates combination dictionary
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation();
 
     Item item1 = new Item(ItemEnum.CutLettuce);
     Item item2 = new Item(ItemEnum.CookedPatty);
@@ -247,6 +253,7 @@ public class AssemblyStationTests extends MasterTestClass {
         assemblyStation.getIngredients().get(0), item1);
     assertEquals("The items should still be separate on the assembly station",
         assemblyStation.getIngredients().get(1), item2);
+    GameObjectManager.objManager.DestroyGameObject(assemble);
   }
 
   /**
@@ -266,7 +273,7 @@ public class AssemblyStationTests extends MasterTestClass {
     }
     new CombinationDict();
     CombinationDict.combinations.implementItems(); // creates combination dictionary
-    instantiateWorldAndAssemblyStation(); // creates world and assembly station
+    instantiateWorldAndAssemblyStation();
 
     for (String combination : CombinationDict.combinations.CombinationMap.keySet()) {
       indexOfSpace = combination.indexOf(
@@ -296,6 +303,7 @@ public class AssemblyStationTests extends MasterTestClass {
 
       assertNull("There should be no game objects on the station",
           assemblyStation.getHeldItem());
+      GameObjectManager.objManager.DestroyGameObject(assemble);
     }
   }
 

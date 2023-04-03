@@ -108,7 +108,7 @@ public class AssemblyStation extends Station {
    * @return ArrayList ingredients
    */
   public ArrayList<Item> getIngredients() {
-    return this.ingredients;
+    return ingredients;
   }
 
   /**

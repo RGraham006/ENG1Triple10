@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    35.7%
+    42.9%
   </span>
   <span class="absValue">
-    (10/28)
+    (12/28)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    35.6%
+    38.6%
   </span>
   <span class="absValue">
-    (64/180)
+    (68/176)
   </span>
 </td>
 </tr>
@@ -109,6 +109,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp; * @author Amy Cross
 &nbsp; * @author Labib Zabeneh
 &nbsp; * @author Riko Puusepp
+&nbsp; * @author Felix Seanor
 &nbsp; */
 &nbsp;public class Chef extends PathfindingAgent implements Person {
 &nbsp;
@@ -287,7 +288,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 <b class="fc">&nbsp;    Vector2 dir = GetMoveDir().nor();</b>
 &nbsp;
-<b class="fc">&nbsp;    System.out.println(dir);</b>
+&nbsp;//    System.out.println(dir);
 <b class="fc">&nbsp;    if (dir.dot(dir) &lt;= 0) {</b>
 <b class="fc">&nbsp;      newOrientation = &quot;idle&quot; + spriteOrientation.replace(&quot;idle&quot;, &quot;&quot;);</b>
 &nbsp;    } else {
@@ -310,7 +311,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;      }
 &nbsp;    }
 &nbsp;
-<b class="fc">&nbsp;    System.out.println(newOrientation + &quot; : &quot; + spriteOrientation + &quot; : &quot; + lastOrientation);</b>
+&nbsp;//    System.out.println(newOrientation + &quot; : &quot; + spriteOrientation + &quot; : &quot; + lastOrientation);
 &nbsp;
 <b class="fc">&nbsp;    if (newOrientation.contains(&quot;idle&quot;)) {</b>
 <b class="fc">&nbsp;      spriteState = newOrientation;</b>
@@ -529,11 +530,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;  }
 &nbsp;
 &nbsp;  public boolean CanFetchItem() {
-<b class="nc">&nbsp;    if (heldItems.size() == 0) {</b>
-<b class="nc">&nbsp;      return false;</b>
+<b class="fc">&nbsp;    if (heldItems.size() == 0) {</b>
+<b class="fc">&nbsp;      return false;</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    return true;</b>
+<b class="fc">&nbsp;    return true;</b>
 &nbsp;
 &nbsp;  }
 &nbsp;
@@ -544,11 +545,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;  public Optional&lt;Item&gt; FetchItem() {
 &nbsp;
-<b class="nc">&nbsp;    if (!CanFetchItem()) {</b>
-<b class="nc">&nbsp;      return Optional.empty();</b>
+<b class="fc">&nbsp;    if (!CanFetchItem()) {</b>
+<b class="fc">&nbsp;      return Optional.empty();</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    return Optional.ofNullable(heldItems.pop());</b>
+<b class="fc">&nbsp;    return Optional.ofNullable(heldItems.pop());</b>
 &nbsp;  }
 &nbsp;
 &nbsp;  public Boolean GiveItem(Item item) {
@@ -579,7 +580,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;    System.out.println(&quot;draw&quot;);</b>
 <b class="nc">&nbsp;    timerSprite.setPosition(gameObject.position.x, gameObject.position.y + getHeight());</b>
 <b class="nc">&nbsp;    if (currentTimerFrame &lt;= 7) {</b>
-<b class="nc">&nbsp;      System.out.println(animationTime);</b>
+&nbsp;//      System.out.println(animationTime);
 <b class="nc">&nbsp;      if (animationTime &lt;= 0) {</b>
 <b class="nc">&nbsp;        currentTimerFrame++;</b>
 <b class="nc">&nbsp;        animationTime = frameTime;</b>
@@ -588,7 +589,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;      }
 <b class="nc">&nbsp;      timerSprite.draw(batch);</b>
 <b class="nc">&nbsp;      animationTime -= Gdx.graphics.getDeltaTime();</b>
-<b class="nc">&nbsp;      System.out.println(animationTime);</b>
+&nbsp;//      System.out.println(animationTime);
 &nbsp;    } else {
 <b class="nc">&nbsp;      unfreeze();</b>
 &nbsp;    }
@@ -617,7 +618,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-30 21:18</div>
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
 </div>
 </body>
 </html>

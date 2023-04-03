@@ -43,26 +43,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">CustomerGroups</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    62.5%
   </span>
   <span class="absValue">
-    (0/6)
+    (5/8)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    70.6%
   </span>
   <span class="absValue">
-    (0/33)
+    (24/34)
   </span>
 </td>
 </tr>
@@ -76,79 +76,128 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Core.Customers;
 &nbsp;
+&nbsp;import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 &nbsp;import com.mygdx.game.Core.BlackSprite;
 &nbsp;import com.mygdx.game.Core.GameObject;
 &nbsp;import com.mygdx.game.Customer;
 &nbsp;import com.mygdx.game.Items.Item;
 &nbsp;import com.mygdx.game.Items.ItemEnum;
+&nbsp;import java.util.ArrayList;
 &nbsp;import java.util.LinkedList;
 &nbsp;import java.util.List;
 &nbsp;import com.badlogic.gdx.math.Vector2;
 &nbsp;import java.util.function.Consumer;
 &nbsp;
 &nbsp;public class CustomerGroups {
-<b class="nc">&nbsp;  public List&lt;Customer&gt; Members = new LinkedList&lt;&gt;();</b>
-<b class="nc">&nbsp;  public List&lt;Customer&gt; MembersInLine = new LinkedList&lt;&gt;();</b>
-<b class="nc">&nbsp;  public List&lt;Customer&gt; MembersSeatedOrWalking = new LinkedList&lt;&gt;();</b>
-<b class="nc">&nbsp;  public List&lt;ItemEnum&gt; Orders = new LinkedList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;  public List&lt;Customer&gt; Members = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;  public List&lt;Customer&gt; MembersInLine = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;  public List&lt;Customer&gt; MembersSeatedOrWalking = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;  public List&lt;ItemEnum&gt; Orders = new LinkedList&lt;&gt;();</b>
 &nbsp;
 &nbsp;  public Table table;
 &nbsp;  public float Frustration;
 &nbsp;
 &nbsp;  private float RecoveryValue;
-<b class="nc">&nbsp;  static float FrustrationRecovery = .1f;</b>
+<b class="fc">&nbsp;  static float FrustrationRecovery = .1f;</b>
 &nbsp;
-<b class="nc">&nbsp;  public CustomerGroups(int MemberCount, int CustomerStart, Vector2 Spawn, int frustration, List&lt;ItemEnum&gt; OrderMenu){</b>
-<b class="nc">&nbsp;    Orders = OrderMenu;</b>
-<b class="nc">&nbsp;    Frustration = frustration;</b>
-<b class="nc">&nbsp;    RecoveryValue =  FrustrationRecovery * Frustration;</b>
-<b class="nc">&nbsp;    for (int i = 0; i &lt; MemberCount; i++) {</b>
-<b class="nc">&nbsp;      if(OrderMenu.size()&lt;MemberCount)</b>
-<b class="nc">&nbsp;         i = i;</b>
-<b class="nc">&nbsp;      Customer custLogic = new Customer(CustomerStart + i,OrderMenu.get(i));</b>
-<b class="nc">&nbsp;      GameObject customer = new GameObject(new BlackSprite());</b>
-<b class="nc">&nbsp;      customer.position.set(Spawn);</b>
-<b class="nc">&nbsp;      customer.attachScript(custLogic);</b>
-<b class="nc">&nbsp;      customer.isVisible = true;</b>
+&nbsp;  /**
+&nbsp;   * Creates a customer group with given parameters
+&nbsp;   *
+&nbsp;   * @param MemberCount  number of customers in group
+&nbsp;   * @param CustomerStart
+&nbsp;   * @param Spawn
+&nbsp;   * @param frustration
+&nbsp;   * @param OrderMenu     food each member should order
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;  public CustomerGroups(int MemberCount, int CustomerStart, Vector2 Spawn, int frustration,
+<b class="fc">&nbsp;      List&lt;ItemEnum&gt; OrderMenu, ArrayList&lt;TextureAtlas&gt; customerAtlas) {</b>
+<b class="fc">&nbsp;    Orders = OrderMenu;</b>
+<b class="fc">&nbsp;    Frustration = frustration;</b>
+<b class="fc">&nbsp;    RecoveryValue = FrustrationRecovery * Frustration;</b>
+<b class="fc">&nbsp;    for (int i = 0; i &lt; MemberCount; i++) {</b>
+<b class="fc">&nbsp;      if (OrderMenu.size() &lt; MemberCount) {</b>
+<b class="nc">&nbsp;        i = i;</b>
+&nbsp;      }
 &nbsp;
-<b class="nc">&nbsp;      Members.add(custLogic);</b>
-<b class="nc">&nbsp;      MembersInLine.add(custLogic);</b>
+<b class="fc">&nbsp;      Customer custLogic = new Customer(CustomerStart + i, OrderMenu.get(i),</b>
+<b class="fc">&nbsp;          Customer.getCustomerAtlas(customerAtlas));</b>
+<b class="fc">&nbsp;      GameObject customer = new GameObject(new BlackSprite());</b>
+<b class="fc">&nbsp;      customer.position.set(Spawn);</b>
+<b class="fc">&nbsp;      customer.attachScript(custLogic);</b>
+<b class="fc">&nbsp;      customer.isVisible = true;</b>
+&nbsp;
+<b class="fc">&nbsp;      Members.add(custLogic);</b>
+<b class="fc">&nbsp;      MembersInLine.add(custLogic);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;  }
 &nbsp;
-&nbsp;
-&nbsp;  public Customer RemoveFirstCustomer(){
-<b class="nc">&nbsp;    MembersSeatedOrWalking.add( MembersInLine.remove(0));</b>
-<b class="nc">&nbsp;    return MembersSeatedOrWalking.get(MembersSeatedOrWalking.size()-1);</b>
+&nbsp;  /**
+&nbsp;   * Removes the first customer from a member in line. CAN RETURN NULL
+&nbsp;   *
+&nbsp;   * @return Customer removed
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;  public Customer RemoveFirstCustomer() {
+<b class="nc">&nbsp;    MembersSeatedOrWalking.add(MembersInLine.remove(0));</b>
+<b class="nc">&nbsp;    return MembersSeatedOrWalking.get(MembersSeatedOrWalking.size() - 1);</b>
 &nbsp;  }
-&nbsp;  public boolean TryRemoveCustomer(Item item){
-<b class="nc">&nbsp;    for (int i = 0; i &lt; MembersInLine.size(); i++) {</b>
-<b class="nc">&nbsp;        if(MembersInLine.get(i).dish == item.name)</b>
-&nbsp;        {
-<b class="nc">&nbsp;          MembersSeatedOrWalking.add(MembersInLine.remove(i));</b>
-<b class="nc">&nbsp;          Frustration += RecoveryValue;</b>
-<b class="nc">&nbsp;          return true;</b>
-&nbsp;        }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Try and remove a customer given an item
+&nbsp;   *
+&nbsp;   * @param item
+&nbsp;   * @return if removal successful
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;
+&nbsp;  public int SeeIfDishIsCorrect(ItemEnum item) {
+<b class="fc">&nbsp;    for (int i = 0; i &lt; MembersInLine.size(); i++) {</b>
+<b class="fc">&nbsp;      if (MembersInLine.get(i).dish == item) {</b>
+<b class="fc">&nbsp;        return i;</b>
+&nbsp;      }
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    return false;</b>
+<b class="nc">&nbsp;    return -1;</b>
 &nbsp;
 &nbsp;  }
-&nbsp;  public void updateSpriteFromInput(){
+&nbsp;
+&nbsp;  public int SeeIfDishIsCorrect(Item item) {
+<b class="fc">&nbsp;    return SeeIfDishIsCorrect(item.name);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void updateFrustrationOnSucessfulService() {
+<b class="fc">&nbsp;    Frustration += RecoveryValue;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Updates animations of all customers
+&nbsp;   *
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;  public void updateSpriteFromInput() {
 <b class="nc">&nbsp;    for (Customer customer : Members) {</b>
-<b class="nc">&nbsp;     customer.updateSpriteFromInput(customer.getMove());</b>
+<b class="nc">&nbsp;      customer.updateSpriteFromInput(customer.getMove());</b>
 <b class="nc">&nbsp;    }</b>
 &nbsp;
 &nbsp;
 &nbsp;  }
 &nbsp;
-&nbsp;  public void CheckFrustration(float dt, Consumer&lt;CustomerGroups&gt; CauseLeave){
-<b class="nc">&nbsp;        Frustration -= dt;</b>
-<b class="nc">&nbsp;        if(Frustration&lt;=0)</b>
-<b class="nc">&nbsp;          CauseLeave.accept(this);</b>
+&nbsp;  /**
+&nbsp;   * Changes frustration If too frustrated then leave
+&nbsp;   *
+&nbsp;   * @param dt
+&nbsp;   * @param CauseLeave Function causing this customer to leave
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;  public void CheckFrustration(float dt, Consumer&lt;CustomerGroups&gt; CauseLeave) {
+<b class="nc">&nbsp;    Frustration -= dt;</b>
+<b class="nc">&nbsp;    if (Frustration &lt;= 0) {</b>
+<b class="nc">&nbsp;      CauseLeave.accept(this);</b>
+&nbsp;    }
 &nbsp;  }
-&nbsp;
 &nbsp;
 &nbsp;
 &nbsp;}
@@ -175,7 +224,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-03-30 21:18</div>
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
 </div>
 </body>
 </html>
