@@ -414,18 +414,20 @@ public class CustomerController extends Scriptable
    * @author Felix Seanor
    */
   public boolean tryGiveFood(Item item){
-    boolean success = currentWaiting.TryRemoveCustomer(item);
+    int success = currentWaiting.SeeIfDishIsCorrect(item);
 
 
 
 
 
-    if(success) {
+    if(success != -1) {
+      currentWaiting.MembersSeatedOrWalking.add(currentWaiting.MembersInLine.remove(success));
+      currentWaiting.updateFrustrationOnSucessfulService();
       SetCustomerTarget(currentWaiting.MembersSeatedOrWalking.get(currentWaiting.MembersSeatedOrWalking.size()-1),currentWaiting.table.GetNextSeat());
       SetWaitingForOrderTarget();
       ChangeMoney(MoneyPerCustomer);
     }
-    return success;
+    return success !=-1;
   }
 
   /**
