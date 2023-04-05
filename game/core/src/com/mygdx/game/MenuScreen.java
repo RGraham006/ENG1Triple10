@@ -36,8 +36,6 @@ public class MenuScreen implements Screen {
   GameScreen VictoryScreen;
   TextureAtlas mainMenuAtlas;
   final MyGdxGame root;
-  boolean scenarioClicked = false;
-  TextField textField;
 
   private final TextureRegion playbtn;
   private final TextureRegion playbtnDown;
@@ -66,7 +64,8 @@ public class MenuScreen implements Screen {
     }
 
     this.root = root;
-    gameScreen = new GameScreen(root);
+    gameScreen = new GameScreen(root, -1);
+//    scenarioConfigScreen = new ScenarioModeConfigScreen(root);
 
     mainMenuAtlas = new TextureAtlas(Gdx.files.internal("mainMenu.atlas"));
     playbtn = new TextureRegion(mainMenuAtlas.findRegion("playButton"));
@@ -124,18 +123,13 @@ public class MenuScreen implements Screen {
     };
     playbtn.addListener(playbtnMouseListener);
 
-    // Creates a new skin using the given JSON file
-    // This will be used to create the TextField
-    Skin skin = new Skin(Gdx.files.internal("clean-crispy-ui.json"));
+
     scenariobtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        textField = new TextField("", skin); // Creates a new TextField with the given text and skin
-        textField.setMessageText("Enter the maximum number of customers for the scenario mode");
-        textField.setAlignment(Align.center); // Aligns the text to the center of the TextField
-        textField.setPosition(200, 200); // Sets the position of the TextField
-        stage.addActor(textField); // Adds the TextField to the stage
-        scenarioClicked = true; // Sets the clicked flag for this button to true
+        ScenarioModeConfigScreen scenarioConfigScreen = new ScenarioModeConfigScreen(root);
+        root.setScreen(scenarioConfigScreen);
+        dispose();
       }
     });
 
@@ -166,11 +160,6 @@ public class MenuScreen implements Screen {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     stage.act(Gdx.graphics.getDeltaTime());
     stage.draw();
-    if (scenarioClicked) {
-      if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-        System.out.println(textField.getText()); // Prints the text from the TextField
-      }
-    }
   }
 
   /**

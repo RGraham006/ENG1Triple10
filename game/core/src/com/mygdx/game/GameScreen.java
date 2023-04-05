@@ -114,7 +114,7 @@ public class GameScreen implements Screen {
    *
    * @param game base Object which is used to draw on
    */
-  public GameScreen(MyGdxGame game) {
+  public GameScreen(MyGdxGame game, int numCustomers) {
     this.game = game;
     camera = new OrthographicCamera();
     recipeScreen.showRecipeInstruction();
@@ -151,8 +151,8 @@ public class GameScreen implements Screen {
     CCParams.MaxMoney = 1000;
     CCParams.Reputation = 3;
     CCParams.MoneyStart = 20;
-    customerController = new CustomerController(new Vector2(200,100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
-    customerController.SetWaveAmount(1);//Demonstration on how to do waves, -1 for endless
+    customerController = new CustomerController(new Vector2(200, 100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
+    customerController.SetWaveAmount(1); // Demonstration on how to do waves, -1 for endless
 
     GameObjectManager.objManager.AppendLooseScript(customerController);
 
