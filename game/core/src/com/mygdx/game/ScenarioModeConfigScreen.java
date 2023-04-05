@@ -49,6 +49,7 @@ public class ScenarioModeConfigScreen implements Screen {
    */
 
   public ScenarioModeConfigScreen(MyGdxGame game) {
+    float scale = 1.0f;
     this.game = game;
 
     // Load the scenario mode config screen assets
@@ -58,37 +59,42 @@ public class ScenarioModeConfigScreen implements Screen {
 
     // Create the stage and add the background image
     stage = new Stage();
-    image.setSize(1280, 720);
+//    stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+    if (stage.getViewport().getScreenWidth() > 720) {
+      scale = 2.00f;
+    }
+    image.setSize(stage.getWidth(), stage.getHeight());
     image.setPosition(0, 0);
     stage.addActor(image);
     Gdx.input.setInputProcessor(stage); // Make the stage consume events
     table = new Table(); // Create a table that fills the screen. Everything will go inside this table.
-    table.setFillParent(true);
     stage.addActor(table);
+    table.setFillParent(true);
 
     // Creates a skin for the text field using the clean-crispy-ui.json file
     Skin skin = new Skin(Gdx.files.internal("clean-crispy-ui.json"));
 
     // Creates the title and instructions for the scenario mode config screen
-    Label title = new Label("Scenario Mode Options", new LabelStyle(new BitmapFont(), Color.BLACK));
-    title.setFontScale(1.50f);
-    table.add(title).padBottom(30).padTop(30); // Adds the title to the table
+    Label title = new Label("Scenario Mode Options", new LabelStyle(new BitmapFont(), Color.WHITE));
+    title.setFontScale(1.50f*scale);
+    table.add(title).padBottom(30*scale).padTop(50*scale); // Adds the title to the table
     table.row(); // Adds a new row to the table
     Label instructions = new Label(
         "Enter the maximum number of customers for the scenario mode (default is 5):",
-        new LabelStyle(new BitmapFont(), Color.BLACK));
-    instructions.setFontScale(1.10f);
+        new LabelStyle(new BitmapFont(), Color.WHITE));
+    instructions.setFontScale(1.10f*scale);
     instructions.setAlignment(Align.left);
-    table.add(instructions).padBottom(20);
+    table.add(instructions).padBottom(20*scale);
     table.row();
 
     // Sets the background using a section of the background image used on the main menu screen
     table.setBackground(new TextureRegionDrawable(scenarioConfigAtlas.findRegion("menuPP")));
     textField = new TextField("", skin);
+    textField.getStyle().font.getData().setScale(1.50f*scale);
     textField.setMessageText("5");
     textField.setAlignment(Align.center);
     stage.addActor(textField); // Adds the text field to the stage
-    table.add(textField).width(250); // Adds the text field to the table
+    table.add(textField).width(250*scale).height(50*scale); // Adds the text field to the table
     table.row();
 
     playbtn = new TextureRegion(scenarioConfigAtlas.findRegion("playButton"));
@@ -101,7 +107,7 @@ public class ScenarioModeConfigScreen implements Screen {
     playbtn.setStyle(playbtnStyle);
     playbtnStyle.up = drawablePlaybtnUp;
     playbtnStyle.down = drawablePlaybtnDown;
-    table.add(playbtn).width(250).height(50).padTop(75);
+    table.add(playbtn).width(250*scale).height(50*scale).padTop(75*scale);
     table.row();
 
     playbtn.addListener(new ClickListener() {
