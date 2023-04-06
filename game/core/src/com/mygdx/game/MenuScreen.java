@@ -64,8 +64,6 @@ public class MenuScreen implements Screen {
     }
 
     this.root = root;
-    gameScreen = new GameScreen(root, -1);
-//    scenarioConfigScreen = new ScenarioModeConfigScreen(root);
 
     mainMenuAtlas = new TextureAtlas(Gdx.files.internal("mainMenu.atlas"));
     playbtn = new TextureRegion(mainMenuAtlas.findRegion("playButton"));
@@ -117,6 +115,7 @@ public class MenuScreen implements Screen {
     ChangeListener playbtnMouseListener = new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
+        gameScreen = new GameScreen(root, -1);
         root.setScreen(gameScreen);
         dispose();
       }
