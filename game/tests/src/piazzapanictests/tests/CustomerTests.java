@@ -39,6 +39,10 @@ public class CustomerTests {
   params.MoneyStart=10;
   params.Reputation=3;
   params.MaxMoney=100;
+  params.NoCustomers=5;
+  params.MaxCustomersPerWave=4;
+  params.MinCustomersPerWave=2;
+
   cust = new CustomerController(new Vector2(0,0), new Vector2(32,0),pathfinding, (EndOfGameValues a)->EndGame(a), params,new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
 
 
@@ -69,7 +73,6 @@ public class CustomerTests {
   public void TestCustomerGroups(){
     InstantiateCustomerScripts();
 
-    cust.SetWaveAmount(5);
 
     cust.CanAcceptNewCustomer();
 
