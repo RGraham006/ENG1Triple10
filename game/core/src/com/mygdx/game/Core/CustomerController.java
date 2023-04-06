@@ -118,7 +118,7 @@ public class CustomerController extends Scriptable
     }
     float averageCustomersPerWave = (groupSize.x + groupSize.y)/2;
 
-    int waves = (int) (NoCustomers/averageCustomersPerWave);
+    int waves = (int)Math.ceil(NoCustomers/averageCustomersPerWave);
 
     SetWaveAmount(waves);
 

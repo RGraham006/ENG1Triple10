@@ -141,7 +141,7 @@ public class GameScreen implements Screen {
     CCParams.MoneyStart = 20;
     CCParams.MaxCustomersPerWave = 4;
     CCParams.MinCustomersPerWave = 1;
-    CCParams.NoCustomers = 10;
+    CCParams.NoCustomers = 5;
     customerController = new CustomerController(new Vector2(200,100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
     // customerController.SetWaveAmount(1);//Demonstration on how to do waves, -1 for endless
 
