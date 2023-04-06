@@ -46,16 +46,19 @@ public class CustomerController extends Scriptable
   int currentWave = 0;
   private float EatingTime = 7;
 
-  Random rand = new Random();
+  Random rand = new Random(System.currentTimeMillis());
 
   private Vector2 groupSize = new Vector2(2,4);
   float NextToLeave = EatingTime;
 
+  int MaxCustomers;
+  int CustomersRemaining;
 
   Consumer<CustomerGroups> FrustrationCallBack;
 
   Vector2 DoorTarget;
   Vector2 OrderAreaTarget;
+
 
   private ArrayList<TextureAtlas> CustomerAtlas = new ArrayList<>();
   private int CustomerFrustrationStart = 80;
@@ -81,6 +84,12 @@ public class CustomerController extends Scriptable
     Reputation = params.Reputation;
     MaxReputation = params.Reputation;
 
+    groupSize.y = Math.min(params.MaxCustomersPerWave,groupSize.y);
+    groupSize.x = Math.max(params.MinCustomersPerWave, groupSize.x);
+
+    CalculateWavesFromNoCustomers(params.NoCustomers);
+
+
     generateCustomerArray();
 
     for (Vector2 pos: TablePositions
@@ -96,6 +105,25 @@ public class CustomerController extends Scriptable
     menu = new OrderMenu(10,7,3);
   }
 
+  public void CalculateWavesFromNoCustomers(int NoCustomers){
+
+    MaxCustomers = NoCustomers;
+    CustomersRemaining = NoCustomers;
+
+    if(NoCustomers==-1)
+    {
+
+      SetWaveAmount(-1);
+      return;
+    }
+    float averageCustomersPerWave = (groupSize.x + groupSize.y)/2;
+
+    int waves = (int) (NoCustomers/averageCustomersPerWave);
+
+    SetWaveAmount(waves);
+
+
+  }
   /***
    * Set the maximum number of waves to do, exclusively. Resets currentWave to 0
    * @param amount
@@ -282,18 +310,45 @@ public class CustomerController extends Scriptable
     }
   }
 
+  int WavesLeft(){
+    return  Waves-currentWave;
+  }
+
   /**
    * Creates a new customer group of a random size, and gives them a list of foods to order.
    * @author Felix Seanor
    */
+
+
+  public int calculateCustomerAmount(){
+
+    if(WavesLeft() == 0)
+      return CustomersRemaining;
+
+    int rnd = rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;
+
+    int minimumCustomerDraw = WavesLeft() * (int)groupSize.x;
+    int MaxDraw = (CustomersRemaining - rnd)  - WavesLeft() * (int)groupSize.y;
+
+    minimumCustomerDraw = CustomersRemaining - minimumCustomerDraw;
+
+
+    return Math.min(minimumCustomerDraw,rnd) + Math.max(0,MaxDraw);
+
+  }
   void CreateNewCustomer(){
     Table table = GetTable();
-    int rnd = rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;
-    currentWaiting = new CustomerGroups(rnd,currentCustomer, DoorTarget, CustomerFrustrationStart, menu.CreateNewOrder(rnd, Randomisation.Normalised),CustomerAtlas);
-    currentCustomer += rnd;
+
+
+      int customerAmount = calculateCustomerAmount();
+    CustomersRemaining -= customerAmount;
+
+
+    currentWaiting = new CustomerGroups(customerAmount,currentCustomer, DoorTarget, CustomerFrustrationStart, menu.CreateNewOrder(customerAmount, Randomisation.Normalised),CustomerAtlas);
+    currentCustomer += customerAmount;
 
     currentWaiting.table= table;
-    table.DesignateSeating(rnd,rand);
+    table.DesignateSeating(customerAmount,rand);
 
     SetWaitingForOrderTarget();
   }
