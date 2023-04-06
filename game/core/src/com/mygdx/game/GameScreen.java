@@ -1,18 +1,11 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.Core.*;
-import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
 import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,13 +18,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -45,7 +34,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.RecipeAndComb.CombinationDict;
 import com.mygdx.game.RecipeAndComb.RecipeDict;
@@ -114,7 +102,7 @@ public class GameScreen implements Screen {
    *
    * @param game base Object which is used to draw on
    */
-  public GameScreen(MyGdxGame game, int numCustomers) {
+  public GameScreen(MyGdxGame game) {
     this.game = game;
     camera = new OrthographicCamera();
     recipeScreen.showRecipeInstruction();
@@ -151,8 +139,11 @@ public class GameScreen implements Screen {
     CCParams.MaxMoney = 1000;
     CCParams.Reputation = 3;
     CCParams.MoneyStart = 20;
-    customerController = new CustomerController(new Vector2(200, 100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
-    customerController.SetWaveAmount(1); // Demonstration on how to do waves, -1 for endless
+    CCParams.MaxCustomersPerWave = 4;
+    CCParams.MinCustomersPerWave = 1;
+    CCParams.NoCustomers = 10;
+    customerController = new CustomerController(new Vector2(200,100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
+    // customerController.SetWaveAmount(1);//Demonstration on how to do waves, -1 for endless
 
     GameObjectManager.objManager.AppendLooseScript(customerController);
 
