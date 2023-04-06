@@ -322,6 +322,8 @@ public class CustomerController extends Scriptable
 
   public int calculateCustomerAmount(){
 
+    if(Waves == -1)
+      return rand.nextInt((int)groupSize.y-(int)groupSize.x)+ (int)groupSize.x ;
     if(WavesLeft() == 0)
       return CustomersRemaining;
 
