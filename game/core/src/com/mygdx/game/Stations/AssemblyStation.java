@@ -196,12 +196,14 @@ public class AssemblyStation extends Station {
 
   @Override
   public void updatePictures() {
+
+
     if (ingredients.isEmpty()) {
       for (int x = 0; x < heldItems.size(); x++) {
         heldItems.get(x).Destroy();
       }
       heldItems = new ArrayList<>();
-      return;
+
     }
 
     if (assembled) {
@@ -213,10 +215,12 @@ public class AssemblyStation extends Station {
       return;
     }
 
+    if (ingredients.isEmpty())
+      return;
 
 
-    int index = ingredients.size();
-    heldItem = new GameObject(new BlackTexture(Item.GetItemPath(ingredients.get(index - 1).name)));
+
+      int index = ingredients.size();
 
 
 

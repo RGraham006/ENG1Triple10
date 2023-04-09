@@ -22,6 +22,7 @@ import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.MasterChef;
 import com.mygdx.game.Core.Pathfinding;
+import com.mygdx.game.Core.TextureDictionary;
 import com.mygdx.game.RecipeAndComb.RecipeDict;
 import com.mygdx.game.Stations.AssemblyStation;
 import com.mygdx.game.Stations.ChopStation;
@@ -40,6 +41,8 @@ class MasterTestClass {
   ChopStation chopStation;
   AssemblyStation assemblyStation;
   GameObject assemble;
+
+  TextureDictionary textureDictionary = new TextureDictionary();
   /**
    * Instantiates the world.
    *
