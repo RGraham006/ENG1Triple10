@@ -1,0 +1,427 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ChefTests</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">piazzapanictests.tests</a>
+</div>
+
+<h1>Coverage Summary for Class: ChefTests (piazzapanictests.tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChefTests</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.3%
+  </span>
+  <span class="absValue">
+    (113/115)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package piazzapanictests.tests;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;import static org.junit.Assert.assertNull;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;
+&nbsp;import com.badlogic.gdx.math.Vector2;
+&nbsp;import com.mygdx.game.Core.GameObject;
+&nbsp;import com.mygdx.game.Core.GameObjectManager;
+&nbsp;import com.mygdx.game.Items.Item;
+&nbsp;import com.mygdx.game.Items.ItemEnum;
+&nbsp;import com.mygdx.game.Stations.AssemblyStation;
+&nbsp;import com.mygdx.game.Stations.FoodCrate;
+&nbsp;
+&nbsp;import java.util.Stack;
+&nbsp;import org.junit.Test;
+&nbsp;import org.junit.runner.RunWith;
+&nbsp;
+&nbsp;/**
+&nbsp; * Tests to do with the Chefs.
+&nbsp; *
+&nbsp; * @author Jack Vickers
+&nbsp; * @author Hubert Solecki
+&nbsp; * @author Azzam Amirul Bahri
+&nbsp; */
+&nbsp;@RunWith(GdxTestRunner.class)
+<b class="fc">&nbsp;public class ChefTests extends MasterTestClass {</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can drop an item.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testDropItem() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(new Item(ItemEnum.Mince)); // Give the chef an item</b>
+<b class="fc">&nbsp;    int inventorySize = chef[0].getInventoryCount(); // Get the size of the inventory</b>
+<b class="fc">&nbsp;    chef[0].DropItem(); // Drop the item</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have 1 less item in their inventory after dropping it&quot;,</b>
+<b class="fc">&nbsp;        inventorySize - 1, chef[0].getInventoryCount());</b>
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can&#39;t drop an item if they don&#39;t have one.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testDropEmptyHand() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    chef[0].DropItem(); // Attempt to drop an item</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should still have 0 items in their hand&quot;,</b>
+<b class="fc">&nbsp;        0, chef[0].getInventoryCount());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up an item.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupItem() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new Item(ItemEnum.Mince);</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive);</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have mince at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Mince),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can&#39;t pick up an item if their inventory is full.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupFullInventory() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item item1 = new Item(ItemEnum.Mince);</b>
+<b class="fc">&nbsp;    Item item2 = new Item(ItemEnum.Lettuce);</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(item1);</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(item1);</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(item1);</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(item2);</b>
+<b class="fc">&nbsp;    Stack&lt;Item&gt; Items = new Stack&lt;Item&gt;();</b>
+<b class="fc">&nbsp;    Items.push(item1);</b>
+<b class="fc">&nbsp;    Items.push(item1);</b>
+<b class="fc">&nbsp;    Items.push(item1);</b>
+<b class="fc">&nbsp;    assertTrue(&quot;The chef inventory should contain the first 3 items given to it and not the 4th&quot;,</b>
+<b class="fc">&nbsp;        chef[0].getInventory().equals(Items));</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up minced meat from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickUpPantryMince() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Mince).RetrieveItem(); // Creates a mince food crate and gets the mince from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the mince to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have mince at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Mince),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up lettuce from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryLettuce() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Lettuce).RetrieveItem(); // Creates a lettuce food crate and gets the lettuce from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the lettuce to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have lettuce at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Lettuce),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up bread from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryBread() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Buns).RetrieveItem(); // Creates a buns food crate and gets the buns from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the buns to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have bread at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Buns),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up a tomato from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryTomato() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Tomato).RetrieveItem(); // Creates a tomato food crate and gets the tomato from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the tomato to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have tomato at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Tomato),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up cheese from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryCheese() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Cheese).RetrieveItem(); // Creates a cheese food crate and gets the cheese from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the cheese to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have cheese at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Cheese),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up an onion from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryOnion() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Onion).RetrieveItem(); // Creates an onion food crate and gets the onion from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the onion to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have onion at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Onion),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up a potato from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryPotato() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Potato).RetrieveItem(); // Creates a potato food crate and gets the potato from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the potato to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have potato at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Potato),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef can pick up dough from the pantry.
+&nbsp;   *
+&nbsp;   * @author Jack Vickers
+&nbsp;   * @date 26/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupPantryDough() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    Item itemToGive = new FoodCrate(</b>
+<b class="fc">&nbsp;        ItemEnum.Dough).RetrieveItem(); // Creates a dough food crate and gets the dough from it</b>
+<b class="fc">&nbsp;    chef[0].GiveItem(itemToGive); // Gives the dough to the chef</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have dough at the top of their inventory stack&quot;,</b>
+&nbsp;        new Item(ItemEnum.Dough),
+<b class="fc">&nbsp;        chef[0].getInventory().peek());</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef cannot pick up from an empty tile with no items present.
+&nbsp;   *
+&nbsp;   * @author Hubert Solecki
+&nbsp;   * @date 31/03/2023
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupEmptyTile() {
+<b class="fc">&nbsp;    instantiateWorldAndChefs();</b>
+<b class="fc">&nbsp;    int chefInventoryCountBefore = chef[0].getInventoryCount();</b>
+<b class="fc">&nbsp;    chef[0].FetchItem();</b>
+<b class="fc">&nbsp;    int chefInventoryCountAfter = chef[0].getInventoryCount();</b>
+<b class="fc">&nbsp;    assertEquals(</b>
+&nbsp;        &quot;The chef&#39;s inventory is still empty after attempting to pick up an item from an empty tile&quot;,
+&nbsp;        chefInventoryCountBefore, chefInventoryCountAfter);
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef being controlled can pick up an item from the assembly station.
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPickupItemFromAssemblyStation() {
+<b class="fc">&nbsp;    if (GameObjectManager.objManager == null) {</b>
+&nbsp;      // creates game object manager which makes sure that the game object manager
+&nbsp;      // is not null when it is needed
+<b class="nc">&nbsp;      new GameObjectManager();</b>
+&nbsp;    }
+<b class="fc">&nbsp;    instantiateMasterChef();</b>
+<b class="fc">&nbsp;    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same</b>
+&nbsp;
+&nbsp;    // The chef&#39;s position is set to close to the assembly station (which has position (0,0))
+&nbsp;    // This is done so that the Fetch item function gets the assembly
+&nbsp;    // station as the closest interactable object.
+<b class="fc">&nbsp;    masterChef.getChef(0).gameObject.position = new Vector2(1, 0);</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The assembly station should have no ingredients on it&quot;,</b>
+<b class="fc">&nbsp;        0, assemblyStation.getIngredients().size());</b>
+&nbsp;
+<b class="fc">&nbsp;    assemblyStation.GiveItem(new Item(ItemEnum.Mince));</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The assembly station should have mince on it&quot;, new Item(ItemEnum.Mince),</b>
+<b class="fc">&nbsp;        assemblyStation.getIngredients().get(0));</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have no ingredients on their inventory&quot;,</b>
+<b class="fc">&nbsp;        0, masterChef.getChef(0).getInventory().size());</b>
+&nbsp;
+<b class="fc">&nbsp;    masterChef.FetchItem(); // The chef should pick up the mince from the assembly station</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have mince at the top of inventory&quot;, new Item(ItemEnum.Mince),</b>
+<b class="fc">&nbsp;        masterChef.getChef(0).getInventory().peek());</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The assembly station should have no ingredients on it&quot;,</b>
+<b class="fc">&nbsp;        0, assemblyStation.getIngredients().size());</b>
+<b class="fc">&nbsp;    GameObjectManager.objManager.DestroyGameObject(assemble);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Tests that the chef being controlled can place an item on the assembly station.
+&nbsp;   */
+&nbsp;  @Test
+&nbsp;  public void testPlaceItemOnAssemblyStation() {
+<b class="fc">&nbsp;    if (GameObjectManager.objManager == null) {</b>
+&nbsp;      // creates game object manager which makes sure that the game object manager
+&nbsp;      // is not null when it is needed
+<b class="nc">&nbsp;      new GameObjectManager();</b>
+&nbsp;    }
+<b class="fc">&nbsp;    instantiateMasterChef();</b>
+<b class="fc">&nbsp;    instantiateWorldAndAssemblyStation(); // world will get overwritten by this but will be the same</b>
+&nbsp;
+&nbsp;    // The chef&#39;s position is set to close to the assembly station (which has position (0,0))
+&nbsp;    // This is done so that the Fetch item function gets the assembly
+&nbsp;    // station as the closest interactable object.
+<b class="fc">&nbsp;    masterChef.getChef(0).gameObject.position = new Vector2(1, 0);</b>
+<b class="fc">&nbsp;    Item item = new Item(ItemEnum.Mince);</b>
+<b class="fc">&nbsp;    masterChef.getChef(0).GiveItem(item);</b>
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should have mince at the top of inventory&quot;, item,</b>
+<b class="fc">&nbsp;        masterChef.getChef(0).getInventory().peek());</b>
+&nbsp;
+&nbsp;    // Gives the chef&#39;s held item to the closest interactable object (assembly station)
+<b class="fc">&nbsp;    masterChef.GiveItem();</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The assembly station should have mince on it&quot;, item,</b>
+<b class="fc">&nbsp;        assemblyStation.getIngredients().get(0));</b>
+&nbsp;
+<b class="fc">&nbsp;    assertEquals(&quot;The chef should no longer have mince in their inventory&quot;,</b>
+<b class="fc">&nbsp;        0, masterChef.getChef(0).getInventory().size());</b>
+<b class="fc">&nbsp;    GameObjectManager.objManager.DestroyGameObject(assemble);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PathfindingAgent</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: PathfindingAgent (com.mygdx.game.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PathfindingAgent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (3/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    19.4%
+  </span>
+  <span class="absValue">
+    (7/36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Core;
+&nbsp;
+&nbsp;import com.badlogic.gdx.math.Vector2;
+&nbsp;import com.badlogic.gdx.physics.box2d.Body;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class PathfindingAgent extends Scriptable {
+&nbsp;
+&nbsp;  List&lt;Vector2&gt; path;
+<b class="fc">&nbsp;  float speed = 100;</b>
+&nbsp;
+&nbsp;  Vector2 prev;
+&nbsp;  public Body b2body;
+&nbsp;
+&nbsp;  public void GivePath(List&lt;Vector2&gt; newPath) {
+<b class="fc">&nbsp;    prev = new Vector2(gameObject.position);</b>
+<b class="fc">&nbsp;    path = newPath;</b>
+&nbsp;  }
+&nbsp;
+<b class="fc">&nbsp;  protected PathfindingAgent() {</b>
+<b class="fc">&nbsp;    path = new LinkedList&lt;&gt;();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Gets the nearest position on line from a 3D position
+&nbsp;   *
+&nbsp;   * @param linePnt - point the line passes through
+&nbsp;   * @param lineDir - unit vector in direction of line, either direction works
+&nbsp;   * @param pnt     - the point to find nearest on line for
+&nbsp;   * @return
+&nbsp;   * @author Felix Seanor
+&nbsp;   */
+&nbsp;  public static RayPoint NearestPointOnLine(Vector2 linePnt, Vector2 lineDir, Vector2 pnt) {
+&nbsp;
+<b class="nc">&nbsp;    lineDir = lineDir.nor();//this needs to be a unit vector</b>
+&nbsp;
+<b class="nc">&nbsp;    Vector2 v = new Vector2(0, 0);</b>
+<b class="nc">&nbsp;    v.add(pnt).sub(linePnt);</b>
+<b class="nc">&nbsp;    float d = v.dot(lineDir);</b>
+<b class="nc">&nbsp;    RayPoint rayPoint = new RayPoint();</b>
+<b class="nc">&nbsp;    rayPoint.pos = new Vector2(0, 0);</b>
+<b class="nc">&nbsp;    rayPoint.pos.set(linePnt).mulAdd(lineDir, d);</b>
+<b class="nc">&nbsp;    rayPoint.t = d;</b>
+<b class="nc">&nbsp;    return rayPoint;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Get the current movement direction
+&nbsp;   * @return Movement direction
+&nbsp;   *
+&nbsp;   * @author Felix Seanor
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  protected Vector2 GetMoveDir() {
+<b class="fc">&nbsp;    if (path == null || path.size() == 0) {</b>
+<b class="fc">&nbsp;      return new Vector2(0, 0);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Vector2 rayDir = new Vector2(path.get(0));</b>
+<b class="nc">&nbsp;    rayDir.sub(prev);</b>
+&nbsp;
+<b class="nc">&nbsp;    return rayDir;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Moves the chef to the next location
+&nbsp;   * @param dt
+&nbsp;   * @author Felix Seanor
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  void move(float dt) {
+&nbsp;
+<b class="nc">&nbsp;    if (path == null || path.size() == 0) {</b>
+&nbsp;      return;
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Vector2 rayDir = GetMoveDir();</b>
+&nbsp;
+<b class="nc">&nbsp;    Vector2 SimulatedPosition = new Vector2(gameObject.position);</b>
+<b class="nc">&nbsp;    Vector2 NextPos = new Vector2(path.get(0));</b>
+<b class="nc">&nbsp;    RayPoint point = NearestPointOnLine(NextPos, rayDir, SimulatedPosition);</b>
+<b class="nc">&nbsp;    float distT = (float) Math.sqrt(rayDir.dot(rayDir));</b>
+&nbsp;
+&nbsp;    //System.out.println(distT + &quot; : &quot; + point.t + point.pos);
+<b class="nc">&nbsp;    if (Math.floor(point.t * 100) / 100.0 &gt;= Math.floor(distT * 100) / 100.0</b>
+<b class="nc">&nbsp;        || NextPos.epsilonEquals(gameObject.position)) {</b>
+<b class="nc">&nbsp;      prev = new Vector2(path.get(0));</b>
+<b class="nc">&nbsp;      path.remove(0);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    if (path == null || path.size() == 0) {</b>
+&nbsp;      return;
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    Vector2 Move = new Vector2(path.get(0));</b>
+&nbsp;
+<b class="nc">&nbsp;    Move.sub(gameObject.position);</b>
+&nbsp;
+<b class="nc">&nbsp;    if (Move.dot(Move) &gt; speed * dt * speed * dt) {</b>
+<b class="nc">&nbsp;      Move = Move.nor().scl(dt * speed);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    gameObject.position.add(Move);</b>
+&nbsp;    // b2body.setTransform(gameObject.position.x,gameObject.position.y,b2body.getAngle());
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void Update(float dt) {
+<b class="nc">&nbsp;    move(dt);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > VictoryScreen</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game</a>
+</div>
+
+<h1>Coverage Summary for Class: VictoryScreen (com.mygdx.game)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VictoryScreen</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/51)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">VictoryScreen$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/54)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game;
+&nbsp;
+&nbsp;import com.badlogic.gdx.Gdx;
+&nbsp;import com.badlogic.gdx.Screen;
+&nbsp;import com.badlogic.gdx.graphics.Color;
+&nbsp;import com.badlogic.gdx.graphics.GL20;
+&nbsp;import com.badlogic.gdx.graphics.Texture;
+&nbsp;import com.badlogic.gdx.graphics.g2d.BitmapFont;
+&nbsp;import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+&nbsp;import com.badlogic.gdx.graphics.g2d.TextureRegion;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.Actor;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.Stage;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.ui.Button;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.ui.Image;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.ui.Label;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.ui.Table;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+&nbsp;import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+&nbsp;import com.mygdx.game.Core.BlackTexture;
+&nbsp;import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
+&nbsp;
+&nbsp;/**
+&nbsp; * This class creates and displays the victory screen
+&nbsp; *
+&nbsp; * @author Robin Graham
+&nbsp; */
+&nbsp;public class VictoryScreen implements Screen {
+&nbsp;
+&nbsp;  final MyGdxGame root;
+&nbsp;  GameScreen gameScreen;
+&nbsp;
+&nbsp;  Texture victoryScreen;
+&nbsp;  Stage stage;
+&nbsp;  int timer;
+&nbsp;  private final BitmapFont timerFont;
+&nbsp;  private final Label timerLabel;
+&nbsp;  private final Label VictoryOrLoss;
+&nbsp;  private final Table table;
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Assigns all the necessary variables needed for the victory screen and other objects such as the
+&nbsp;   * image used
+&nbsp;   *
+&nbsp;   * @param root the base object to interact with
+&nbsp;   * @param time the integer time value set for timer
+&nbsp;   */
+<b class="nc">&nbsp;  public VictoryScreen(final MyGdxGame root, GameScreen gscreen, int time, EndOfGameValues values) {</b>
+<b class="nc">&nbsp;    this.root = root;</b>
+&nbsp;
+&nbsp;
+&nbsp;    //this might cause issues if so, change back to new GameScreen
+<b class="nc">&nbsp;    gameScreen = gscreen;</b>
+<b class="nc">&nbsp;    victoryScreen = new Texture(Gdx.files.internal(&quot;endScreenBG.png&quot;));</b>
+<b class="nc">&nbsp;    Image image = new Image(victoryScreen);</b>
+<b class="nc">&nbsp;    stage = new Stage();</b>
+<b class="nc">&nbsp;    image.setSize(stage.getWidth(), stage.getHeight());</b>
+<b class="nc">&nbsp;    image.setPosition(0, 0);</b>
+<b class="nc">&nbsp;    stage.addActor(image);</b>
+<b class="nc">&nbsp;    this.timer = time;</b>
+<b class="nc">&nbsp;    Gdx.input.setInputProcessor(stage);</b>
+<b class="nc">&nbsp;    timerFont = new BitmapFont();</b>
+<b class="nc">&nbsp;    timerLabel = new Label(&quot;TIME: &quot; + timer,</b>
+&nbsp;        new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+<b class="nc">&nbsp;    String VL = (values.Won)? &quot;won!&quot; : &quot;lost.&quot;;</b>
+<b class="nc">&nbsp;    VictoryOrLoss = new Label(&quot;You &quot; + VL,</b>
+&nbsp;        new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    BlackTexture uptex = new BlackTexture(&quot;ExitUp.png&quot;);</b>
+<b class="nc">&nbsp;    BlackTexture downtex = new BlackTexture(&quot;ExitDown.png&quot;);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    table = new Table();</b>
+<b class="nc">&nbsp;    table.setFillParent(true);</b>
+<b class="nc">&nbsp;    stage.addActor(table);</b>
+&nbsp;
+<b class="nc">&nbsp;    Drawable drawableScenariobtnUp = new TextureRegionDrawable(uptex.textureRegion);</b>
+<b class="nc">&nbsp;    Drawable drawableScenariobtnDown = new TextureRegionDrawable(downtex.textureRegion);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    Button scenariobtn = new Button();</b>
+<b class="nc">&nbsp;    Button.ButtonStyle scenariobtnStyle = new Button.ButtonStyle();</b>
+<b class="nc">&nbsp;    scenariobtn.setStyle(scenariobtnStyle);</b>
+<b class="nc">&nbsp;    scenariobtnStyle.up = drawableScenariobtnUp;</b>
+<b class="nc">&nbsp;    scenariobtnStyle.down = drawableScenariobtnDown;</b>
+&nbsp;
+<b class="nc">&nbsp;    table.add(scenariobtn).width(250).height(50).pad(200,25,25,25);</b>
+<b class="nc">&nbsp;    table.row();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    ChangeListener playbtnMouseListener = new ChangeListener() {</b>
+&nbsp;      @Override
+&nbsp;      public void changed(ChangeEvent event, Actor actor) {
+<b class="nc">&nbsp;        root.setScreen(new MenuScreen(root));</b>
+<b class="nc">&nbsp;        dispose();</b>
+&nbsp;      }
+&nbsp;    };
+&nbsp;
+<b class="nc">&nbsp;    scenariobtn.addListener(playbtnMouseListener);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   *
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void show() {
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Displays the timer onto the screen with the set time defined
+&nbsp;   */
+&nbsp;  public void displayTimer() {
+<b class="nc">&nbsp;    CharSequence str = &quot;Final Time: &quot; + timer;</b>
+<b class="nc">&nbsp;    timerFont.draw(root.batch, str, 400, 300);</b>
+<b class="nc">&nbsp;    timerFont.getData().setScale(3f, 3f);</b>
+<b class="nc">&nbsp;    timerLabel.setText(str);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  public void displayVictoryStatus() {
+<b class="nc">&nbsp;    timerFont.draw(root.batch, VictoryOrLoss.getText(), 400, 400);</b>
+<b class="nc">&nbsp;    timerFont.getData().setScale(3f, 3f);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Renders the stage and assets
+&nbsp;   *
+&nbsp;   * @param delta used for working with time
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void render(float delta) {
+<b class="nc">&nbsp;    Gdx.gl.glClearColor(0, 0, 0, 1);</b>
+<b class="nc">&nbsp;    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</b>
+<b class="nc">&nbsp;    stage.act(Gdx.graphics.getDeltaTime());</b>
+<b class="nc">&nbsp;    stage.draw();</b>
+<b class="nc">&nbsp;    root.batch.begin();</b>
+<b class="nc">&nbsp;    displayTimer();</b>
+<b class="nc">&nbsp;    displayVictoryStatus();</b>
+<b class="nc">&nbsp;    root.batch.end();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Resize the window
+&nbsp;   *
+&nbsp;   * @param width  of the window
+&nbsp;   * @param height of the window
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void resize(int width, int height) {
+<b class="nc">&nbsp;    stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   *
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void pause() {
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   *
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void resume() {
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   *
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void hide() {
+&nbsp;
+<b class="nc">&nbsp;  }</b>
+&nbsp;
+&nbsp;  /**
+&nbsp;   *
+&nbsp;   */
+&nbsp;  @Override
+&nbsp;  public void dispose() {
+<b class="nc">&nbsp;    stage.dispose();</b>
+&nbsp;  }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
+</div>
+</body>
+</html>

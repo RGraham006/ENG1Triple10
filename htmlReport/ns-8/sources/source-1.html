@@ -1,0 +1,339 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AssemblyStation</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game.Stations</a>
+</div>
+
+<h1>Coverage Summary for Class: AssemblyStation (com.mygdx.game.Stations)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssemblyStation</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.4%
+  </span>
+  <span class="absValue">
+    (14/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.7%
+  </span>
+  <span class="absValue">
+    (89/92)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Stations;
+&nbsp;
+&nbsp;import com.mygdx.game.Core.BlackTexture;
+&nbsp;import com.mygdx.game.Core.GameObject;
+&nbsp;import com.mygdx.game.Items.Item;
+&nbsp;import com.mygdx.game.Items.ItemEnum;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collections;
+&nbsp;
+&nbsp;/**
+&nbsp; * Assembly station for assembling our ingredients into a final dish
+&nbsp; *
+&nbsp; * @author Robin Graham
+&nbsp; * @author Jack Hinton
+&nbsp; */
+&nbsp;public class AssemblyStation extends Station {
+&nbsp;
+&nbsp;  private ArrayList&lt;Item&gt; ingredients;
+&nbsp;  private ArrayList&lt;ItemEnum&gt; tempIngredients;
+<b class="fc">&nbsp;  public ArrayList&lt;GameObject&gt; heldItems = new ArrayList&lt;&gt;();</b>
+&nbsp;  private ItemEnum temp;
+&nbsp;  private boolean assembled;
+&nbsp;  private Item dish;
+&nbsp;  private Item tempDish;
+<b class="fc">&nbsp;  public int ingredientSize = 12;</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;  public AssemblyStation() {</b>
+<b class="fc">&nbsp;    if (ingredients == null) {</b>
+<b class="fc">&nbsp;      ingredients = new ArrayList&lt;Item&gt;();</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    tempIngredients = new ArrayList&lt;ItemEnum&gt;();</b>
+<b class="fc">&nbsp;    assembled = false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean GiveItem(Item item) {
+<b class="fc">&nbsp;    if (CanGive()) {</b>
+<b class="fc">&nbsp;      if (assembled) {</b>
+&nbsp;//        ingredients.add(getDish());
+<b class="fc">&nbsp;        ingredients.add(item);</b>
+<b class="fc">&nbsp;        assembled = false;</b>
+<b class="fc">&nbsp;        updatePictures();</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;      }
+<b class="fc">&nbsp;      ingredients.add(item);</b>
+<b class="fc">&nbsp;      updatePictures();</b>
+<b class="fc">&nbsp;      return true;</b>
+&nbsp;    }
+<b class="fc">&nbsp;    return false;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Item RetrieveItem() {
+<b class="fc">&nbsp;    if (assembled) {</b>
+<b class="fc">&nbsp;      tempDish = ingredients.get(ingredients.size() - 1);</b>
+<b class="fc">&nbsp;      assembled = false;</b>
+<b class="fc">&nbsp;      heldItem.Destroy();</b>
+<b class="fc">&nbsp;      heldItem = null;</b>
+<b class="fc">&nbsp;      heldItems.remove(heldItems.size() - 1);</b>
+<b class="fc">&nbsp;      ingredients.remove(ingredients.size() - 1);</b>
+<b class="fc">&nbsp;      return tempDish;</b>
+&nbsp;    }
+<b class="fc">&nbsp;    if (ingredients.isEmpty()) {</b>
+<b class="fc">&nbsp;      return null;</b>
+&nbsp;    }
+<b class="fc">&nbsp;    int index = ingredients.size() - 1;</b>
+<b class="fc">&nbsp;    if (heldItem != null) {</b>
+<b class="fc">&nbsp;      heldItem.Destroy();</b>
+&nbsp;    }
+<b class="fc">&nbsp;    heldItem = null;</b>
+<b class="fc">&nbsp;    heldItems.get(index).Destroy();</b>
+<b class="fc">&nbsp;    heldItems.remove(index);</b>
+<b class="fc">&nbsp;    return ingredients.remove(index);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean CanRetrieve() {
+<b class="fc">&nbsp;    return true;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean CanGive() {
+<b class="fc">&nbsp;    return ingredients.size() &lt; 4;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean CanInteract() {
+<b class="nc">&nbsp;    return !(ingredients.size() &lt; 2);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public boolean Interact() {
+<b class="nc">&nbsp;    return combine();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Returns the list of ingredients in our arraylist form
+&nbsp;   *
+&nbsp;   * @return ArrayList ingredients
+&nbsp;   */
+&nbsp;  public ArrayList&lt;Item&gt; getIngredients() {
+<b class="fc">&nbsp;    return ingredients;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Returns the gameobjects which are on the assembly station.
+&nbsp;   *
+&nbsp;   * @return ArrayList of gameobjects
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  public ArrayList&lt;GameObject&gt; getHeldItems() {
+<b class="fc">&nbsp;    return this.heldItems;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Returns the gameobject.
+&nbsp;   *
+&nbsp;   * @return GameObject heldItem.
+&nbsp;   * @author Jack Vickers
+&nbsp;   */
+&nbsp;  public GameObject getHeldItem() {
+<b class="fc">&nbsp;    return this.heldItem;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * removes all ingredients from the arraylist which means a successfull dish or simply ingredients
+&nbsp;   * taken away
+&nbsp;   */
+&nbsp;  public void clearIngredients() {
+<b class="fc">&nbsp;    ingredients = new ArrayList&lt;Item&gt;();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  private void clearTempIngredients() {
+<b class="fc">&nbsp;    tempIngredients = new ArrayList&lt;ItemEnum&gt;();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Assembles the dish into the final one when we have all the correct ingredients
+&nbsp;   */
+&nbsp;  public boolean combine() {
+<b class="fc">&nbsp;    for (Item ingredient : ingredients) {</b>
+<b class="fc">&nbsp;      tempIngredients.add(ingredient.name);</b>
+<b class="fc">&nbsp;    }</b>
+<b class="fc">&nbsp;    Collections.sort(tempIngredients);</b>
+<b class="fc">&nbsp;    for (int x = 0; x &lt; tempIngredients.size() - 1; x++) {</b>
+<b class="fc">&nbsp;      temp = combinations.CombinationMap.get(</b>
+<b class="fc">&nbsp;          tempIngredients.get(x).name() + &quot; &quot; + tempIngredients.get(x + 1).name());</b>
+<b class="fc">&nbsp;      if (temp == null) {</b>
+<b class="fc">&nbsp;        clearTempIngredients();</b>
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;      }
+<b class="fc">&nbsp;      tempIngredients.set(x + 1, temp);</b>
+<b class="fc">&nbsp;      Collections.sort(tempIngredients);</b>
+&nbsp;    }
+<b class="fc">&nbsp;    setDish(tempIngredients.get(tempIngredients.size() - 1));</b>
+<b class="fc">&nbsp;    clearIngredients();</b>
+<b class="fc">&nbsp;    clearTempIngredients();</b>
+<b class="fc">&nbsp;    assembled = true;</b>
+<b class="fc">&nbsp;    updatePictures();</b>
+<b class="fc">&nbsp;    ingredients.add(getDish());</b>
+<b class="fc">&nbsp;    return assembled;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Gets the current dish
+&nbsp;   */
+&nbsp;  public Item getDish() {
+&nbsp;//    assembled = false;
+<b class="fc">&nbsp;    Item tempDish = dish;</b>
+<b class="fc">&nbsp;    dish = null;</b>
+<b class="fc">&nbsp;    return tempDish;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Creates a new item and stores in dish using enum passed in the parameter
+&nbsp;   *
+&nbsp;   * @param item the enum passed in
+&nbsp;   */
+&nbsp;  public void setDish(ItemEnum item) {
+<b class="fc">&nbsp;    this.dish = new Item(item);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void updatePictures() {
+<b class="fc">&nbsp;    if (ingredients.isEmpty()) {</b>
+<b class="fc">&nbsp;      for (int x = 0; x &lt; heldItems.size(); x++) {</b>
+<b class="fc">&nbsp;        heldItems.get(x).Destroy();</b>
+&nbsp;      }
+<b class="fc">&nbsp;      heldItems = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    if (assembled) {</b>
+<b class="fc">&nbsp;      heldItem = new GameObject(new BlackTexture(Item.GetItemPath(dish.name)));</b>
+<b class="fc">&nbsp;      heldItem.image.setSize(imageSize, imageSize);</b>
+<b class="fc">&nbsp;      heldItem.setPosition(gameObject.position.x + (gameObject.getWidth() / 2) - 9,</b>
+<b class="fc">&nbsp;          gameObject.position.y + gameObject.getHeight() - imageSize - 2);</b>
+<b class="fc">&nbsp;      heldItems.add(heldItem);</b>
+&nbsp;      return;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    int index = ingredients.size();</b>
+<b class="fc">&nbsp;    heldItem = new GameObject(new BlackTexture(Item.GetItemPath(ingredients.get(index - 1).name)));</b>
+<b class="fc">&nbsp;    heldItem.image.setSize(ingredientSize, ingredientSize);</b>
+<b class="fc">&nbsp;    if (index == 1) {</b>
+<b class="fc">&nbsp;      heldItem.setPosition(gameObject.position.x + 2,</b>
+<b class="fc">&nbsp;          gameObject.position.y + gameObject.getHeight() - ingredientSize - 2);</b>
+<b class="fc">&nbsp;    } else if (index == 2) {</b>
+<b class="fc">&nbsp;      heldItem.setPosition(gameObject.position.x + gameObject.getWidth() - ingredientSize - 2,</b>
+<b class="fc">&nbsp;          gameObject.position.y + gameObject.getHeight() - ingredientSize - 2);</b>
+<b class="fc">&nbsp;    } else if (index == 3) {</b>
+<b class="fc">&nbsp;      heldItem.setPosition(gameObject.position.x + 2,</b>
+<b class="fc">&nbsp;          gameObject.position.y + gameObject.getHeight() - (2 * ingredientSize) - 4);</b>
+&nbsp;    } else {
+<b class="fc">&nbsp;      heldItem.setPosition(gameObject.position.x + gameObject.getWidth() - ingredientSize - 2,</b>
+<b class="fc">&nbsp;          gameObject.position.y + gameObject.getHeight() - (2 * ingredientSize) - 4);</b>
+&nbsp;    }
+<b class="fc">&nbsp;    heldItems.add(heldItem);</b>
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void Update(float dt) {
+<b class="nc">&nbsp;  }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > BlackTexture</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.mygdx.game.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: BlackTexture (com.mygdx.game.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BlackTexture</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    36.4%
+  </span>
+  <span class="absValue">
+    (4/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    59.1%
+  </span>
+  <span class="absValue">
+    (13/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.mygdx.game.Core;
+&nbsp;
+&nbsp;import com.badlogic.gdx.graphics.Texture;
+&nbsp;import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+&nbsp;import com.badlogic.gdx.graphics.g2d.TextureRegion;
+&nbsp;
+&nbsp;public class BlackTexture extends Renderable {
+&nbsp;
+&nbsp;  public Texture texture;
+&nbsp;  public TextureRegion textureRegion;
+&nbsp;  public int ImageWidth, ImageHeight;
+&nbsp;  public int width, height;
+&nbsp;
+<b class="fc">&nbsp;  public BlackTexture(String tex) {</b>
+&nbsp;
+<b class="fc">&nbsp;    changeTextureFromPath(tex);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void changeTexture(Texture tex){
+<b class="nc">&nbsp;    texture = tex;</b>
+<b class="nc">&nbsp;    textureRegion.setTexture(texture);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  public void changeTextureFromPath(String path){
+<b class="fc">&nbsp;    texture = new Texture(path);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    ImageWidth = texture.getWidth();</b>
+<b class="fc">&nbsp;    ImageHeight = texture.getHeight();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    width = ImageWidth;</b>
+<b class="fc">&nbsp;    height = ImageHeight;</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    if(textureRegion == null)</b>
+<b class="fc">&nbsp;      textureRegion = new TextureRegion(texture,width,height);</b>
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;  public void setImageSize(int _w,int  _h) {
+<b class="nc">&nbsp;    ImageWidth = _w;</b>
+<b class="nc">&nbsp;    ImageHeight = _h;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setSize(int  _w, int  _h) {
+<b class="fc">&nbsp;    width = _w;</b>
+<b class="fc">&nbsp;    height = _h;</b>
+&nbsp;
+&nbsp;
+&nbsp;  }
+&nbsp;
+&nbsp;  /**
+&nbsp;   * Sets wraps
+&nbsp;   *
+&nbsp;   * @param U
+&nbsp;   * @param V
+&nbsp;   */
+&nbsp;  public void setWrap(Texture.TextureWrap U, Texture.TextureWrap V) {
+&nbsp;
+<b class="nc">&nbsp;    texture.setWrap(U, V);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public void setWrap(Texture.TextureWrap UV) {
+<b class="nc">&nbsp;    setWrap(UV, UV);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void Render(SpriteBatch batch, float x, float y) {
+<b class="nc">&nbsp;    batch.draw(textureRegion, x, y, width, height);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void Destroy() {
+<b class="fc">&nbsp;    texture = null;</b>
+<b class="fc">&nbsp;    textureRegion = null;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  public int GetWidth()
+&nbsp;  {
+<b class="nc">&nbsp;    return width;</b>
+&nbsp;  }
+&nbsp;  public int GetHeight(){
+<b class="nc">&nbsp;    return  height;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-03 22:23</div>
+</div>
+</body>
+</html>

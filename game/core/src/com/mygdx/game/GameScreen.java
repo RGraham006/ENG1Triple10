@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
    *
    * @param game base Object which is used to draw on
    */
-  public GameScreen(MyGdxGame game) {
+  public GameScreen(MyGdxGame game, int numCustomers) {
     this.game = game;
     camera = new OrthographicCamera();
     recipeScreen.showRecipeInstruction();
@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
     CCParams.MoneyStart = 20;
     CCParams.MaxCustomersPerWave = 4;
     CCParams.MinCustomersPerWave = 1;
-    CCParams.NoCustomers = 5;
+    CCParams.NoCustomers = numCustomers;
     customerController = new CustomerController(new Vector2(200,100), new Vector2(360,180), pathfinding, (EndOfGameValues vals) -> EndGame(vals),CCParams, new Vector2(190,390),new Vector2(190,290),new Vector2(290,290));
     // customerController.SetWaveAmount(1);//Demonstration on how to do waves, -1 for endless
 
@@ -359,18 +359,19 @@ public class GameScreen implements Screen {
   public void EndGame(EndOfGameValues values){
 
     VictoryScreen screen = new VictoryScreen(game,this,timer,values);
-
     game.setScreen(screen);
 
   }
 
 
   /**
-   * Plays the game music
+   * Plays the game music when the screen is shown.
    */
   @Override
   public void show() {
-    gameMusic.play();
+    if (!gameMusic.isPlaying()) {
+      gameMusic.play(); // only play the music if it's not already playing
+    }
   }
 
   /**

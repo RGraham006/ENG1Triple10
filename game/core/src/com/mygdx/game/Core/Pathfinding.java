@@ -170,7 +170,7 @@ public class Pathfinding {
 
     PriorityQueue<PathfindingCell> frontier = new PriorityQueue<>();
 
-    System.out.println("First: " + getIndex(x, y));
+//    System.out.println("First: " + getIndex(x, y));
     frontier.add(
         new PathfindingCell(x, y, getIndex(x, y), DistanceTesting(x, y, goalX, goalY, distanceTest),
             0));
@@ -324,9 +324,9 @@ public class Pathfinding {
     while (cell.parent != null) {
       cell = cell.parent;
       if (cell.parent != null || !Found) {
-        System.out.println(
-            cell + " : " + getIndex(cell.x, cell.y) + Cells[getIndex(cell.x, cell.y)] + " : "
-                + LegalMove(cell.x, cell.y, getIndex(cell.x, cell.y)));
+//        System.out.println(
+//            cell + " : " + getIndex(cell.x, cell.y) + Cells[getIndex(cell.x, cell.y)] + " : "
+//                + LegalMove(cell.x, cell.y, getIndex(cell.x, cell.y)));
         path.add(new Vector2(cell.x * gridSize, cell.y * gridSize));
 
       }

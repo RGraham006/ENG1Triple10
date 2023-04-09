@@ -50,6 +50,7 @@ World world;
 
   /**
    * Generates a chef array which can be used to get random chef sprites from the chef class.
+   *
    * @author Felix Seanor
    */
   public void generateChefArray() {
@@ -57,7 +58,7 @@ World world;
     TextureAtlas chefAtlas;
     for (int i = 1; i < 4; i++) {
       filename = "Chefs/Chef" + i + "/chef" + i + ".txt";
-      chefAtlas = new TextureAtlas(filename);
+      chefAtlas = new TextureAtlas(Gdx.files.internal(filename));
       chefAtlasArray.add(chefAtlas);
     }
   }
@@ -74,6 +75,7 @@ World world;
 
   /**
    * Creates a Chef controller class, handling inputs
+   *
    * @param count
    * @param world
    * @param camera
@@ -117,6 +119,7 @@ World world;
 
   /**
    * The chef tries to put down  an item onto a nearby surface
+   *
    * @author Felix Seanor
    * @author Jack Vickers
    * @author Jack Hinton
@@ -172,6 +175,7 @@ World world;
 
   /**
    * The chef attempts to interact with a nearby surface
+   *
    * @author Jack Hinton
    * @author Jack Vickers
    */
@@ -192,28 +196,22 @@ World world;
   void selectChef() {
     for (int i = 0; i < chefs.size(); i++) {
       if (Gdx.input.isKeyPressed(Input.Keys.NUM_1
-          + i)) // increments to next number for each chef 1,2,3 ect (dont go above 9)
-      {
+          + i)) // increments to next number for each chef 1,2,3 ect (dont go above 9) {
         SelectChef(i);
-
-        for (Chef c : chefs
-        ) {
-          c.stop();
-        }
-        // Runs chefs logic updates
-
+      for (Chef c : chefs
+      ) {
+        c.stop();
       }
     }
   }
 
   /**
    * Update method for this class
-   * @param dt
    *
+   * @param dt
    * @author Felix Seanor
    * @author Jack Hinton
    * @author Jack Vickers
-
    */
   @Override
   public void Update(float dt) {
@@ -243,7 +241,7 @@ World world;
       List<Vector2> path = pathfind.FindPath((int) getCurrentChef().gameObject.position.x,
           (int) getCurrentChef().gameObject.position.y, (int) touchpos.x, (int) touchpos.y,
           DistanceTest.Euclidean);
-      System.out.println(path);
+//      System.out.println(path);
       getCurrentChef().GivePath(path);
     }
 

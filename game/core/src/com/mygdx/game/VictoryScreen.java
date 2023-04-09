@@ -95,6 +95,7 @@ public class VictoryScreen implements Screen {
     ChangeListener playbtnMouseListener = new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
+        gameScreen.gameMusic.stop();
         root.setScreen(new MenuScreen(root));
         dispose();
       }
