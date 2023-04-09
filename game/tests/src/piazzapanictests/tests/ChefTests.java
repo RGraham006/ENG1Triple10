@@ -12,6 +12,7 @@ import com.mygdx.game.Core.GameObject;
 import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.MasterChef;
+import com.mygdx.game.Core.TextureDictionary;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import com.mygdx.game.Stations.FoodCrate;
@@ -41,6 +42,7 @@ public class ChefTests {
    */
   private void instantiateWorldAndChefs() {
     world = new World(new Vector2(0, 0), true);
+    TextureDictionary dico = new TextureDictionary();
     generateChefArray();
     chef = new Chef[2];
     int chefControl = 0;

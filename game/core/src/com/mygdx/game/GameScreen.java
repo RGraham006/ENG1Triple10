@@ -1,7 +1,11 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.maps.MapLayer;
 import com.mygdx.game.Core.*;
+import com.mygdx.game.Core.GameState.GameState;
+import com.mygdx.game.Core.GameState.ItemState;
+import com.mygdx.game.Core.GameState.SaveState;
 import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
 import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
 import com.mygdx.game.Items.Item;
@@ -64,7 +68,7 @@ public class GameScreen implements Screen {
   static World world;
   private final Box2DDebugRenderer b2dr;
 
-  private CustomerController customerController;
+  public CustomerController customerController;
 
 
 
@@ -72,8 +76,7 @@ public class GameScreen implements Screen {
   // map
   private final TiledMapRenderer mapRenderer;
 
-  MasterChef masterChef;
-  Texture spaceTexture, ctrlTexture, shiftTexture, rTexture, mTexture;
+  public MasterChef masterChef;
 
   List<GameObject> Stations = new LinkedList();
   List<GameObject> customerCounters = new LinkedList();
@@ -112,8 +115,6 @@ public class GameScreen implements Screen {
 
     gameMusic = Gdx.audio.newMusic(Gdx.files.internal("gameMusic.mp3"));
     gameMusic.setLooping(true);
-
-    // tomatoTexture = new Texture("tomato_2.png");
 
 
     recipeScreen.createInstructionPage("Empty");
@@ -415,6 +416,11 @@ public class GameScreen implements Screen {
     mapRenderer.setView(camera);
     mapRenderer.render();
 
+    if(Gdx.input.isKeyJustPressed(Keys.B))
+      SaveGame();
+
+    if(Gdx.input.isKeyJustPressed(Keys.V))
+      LoadGame();
 //    for (int i = 0; i < customers.length; i++) {
   //    customers[i].updateSpriteFromInput(customers[i].getMove());
    // }
@@ -549,6 +555,75 @@ public class GameScreen implements Screen {
       }
 
     });
+  }
+
+
+  public void SaveGame(){
+    SaveState Saving = new SaveState();
+    Saving.SaveState(this, "SavedData.ser");
+
+  }
+
+  public void LoadGame(){
+    SaveState Saving = new SaveState();
+
+    GameState state = Saving.LoadState("SavedData.ser");
+
+    LoadState(state);
+    masterChef.LoadState(state);
+    customerController.LoadState(state);
+
+
+
+  }
+
+  /**
+   * Loads the state of a previous state of the world, all LoadGame to a full sweep
+   * @param state
+   */
+  public void LoadState(GameState state){
+
+    int i = 0;
+    timer = state.Timer;
+    seconds= state.seconds;
+    for (GameObject station: Stations)
+    {
+      Scriptable scriptable = station.GetScript(0);
+      if(scriptable instanceof Station)
+        ((Station)scriptable).LoadState(state.FoodOnCounters.get(i++));
+
+
+
+    }
+
+    for (GameObject station: customerCounters)
+      ((Station)station.GetScript(0)).LoadState(state.FoodOnCounters.get(i++));
+
+    for (GameObject station: assemblyStations)
+      ((Station)station.GetScript(0)).LoadState(state.FoodOnCounters.get(i++));
+  }
+  public void SaveState(GameState state){
+    List<List<ItemState>> itemsOnCounters = new LinkedList<>();
+
+    state.Timer =timer;
+    state.seconds = seconds;
+    for (GameObject station: Stations)
+    {
+      Scriptable scriptable = station.GetScript(0);
+      if(scriptable instanceof Station)
+      itemsOnCounters.add(((Station)scriptable).SaveState());
+
+    }
+
+    for (GameObject station: customerCounters)
+      itemsOnCounters.add(((Station)station.GetScript(0)).SaveState());
+
+    for (GameObject station: assemblyStations)
+      itemsOnCounters.add( ((Station)station.GetScript(0)).SaveState());
+
+    state.FoodOnCounters = itemsOnCounters;
+
+
   }
 
   @Override

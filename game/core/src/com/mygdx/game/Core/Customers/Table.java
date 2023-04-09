@@ -9,14 +9,17 @@ public class Table
 
   Vector2 position;
 
+  public int ID;
+
    List<Vector2> seats = new LinkedList<>();
 
    int currentlySeated = 0;
   int offset = 0;
   int Radius;
-  public Table(Vector2 pos, int Radius){
+  public Table(Vector2 pos, int _ID, int Radius){
     position = pos;
     this.Radius = Radius;
+    ID = _ID;
   }
 
   public void DesignateSeating(int count, Random rand){

@@ -2,10 +2,13 @@ package com.mygdx.game.Stations;
 
 import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
+import com.mygdx.game.Core.GameState.ItemState;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Assembly station for assembling our ingredients into a final dish
@@ -163,6 +166,7 @@ public class AssemblyStation extends Station {
         heldItems.get(x).Destroy();
       }
       heldItems = new ArrayList<>();
+      return;
     }
 
     if(assembled){
@@ -172,7 +176,13 @@ public class AssemblyStation extends Station {
       return;
     }
 
+
+
     int index = ingredients.size();
+
+
+
+
     heldItem = new GameObject(new BlackTexture(Item.GetItemPath(ingredients.get(index-1).name)));
     heldItem.image.setSize(ingredientSize, ingredientSize);
     if(index == 1)
@@ -190,5 +200,33 @@ public class AssemblyStation extends Station {
 
   @Override
   public void Update(float dt) {
+  }
+  @Override
+  public void LoadState(List<ItemState> state){
+
+    ingredients.clear();
+    updatePictures();
+
+    for (int i = 0; i < state.size(); i++) {
+      if(state.get(i) == null)
+        continue;
+
+      ingredients.add(new Item(state.get(i)));
+      updatePictures();
+
+    }
+
+  }
+
+  @Override
+  public List<ItemState> SaveState(){
+    LinkedList<ItemState> states = new LinkedList<>();
+
+    for (Item item: ingredients
+    ) {
+      states.add(new ItemState(item));
+    }
+
+    return states ;
   }
 }

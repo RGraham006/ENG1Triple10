@@ -3,10 +3,12 @@ package com.mygdx.game.Core.Customers;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.Core.BlackSprite;
 import com.mygdx.game.Core.GameObject;
+import com.mygdx.game.Core.GameState.CustomerGroupState;
 import com.mygdx.game.Customer;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.Items.ItemEnum;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import com.badlogic.gdx.math.Vector2;
@@ -43,7 +45,27 @@ public class CustomerGroups {
 
       Customer custLogic = new Customer(CustomerStart + i,OrderMenu.get(i), Customer.getCustomerAtlas(customerAtlas));
       GameObject customer = new GameObject(new BlackSprite());
+    //  customer.position.set( new Vector2(0,30*i).sub(Spawn));
       customer.position.set(Spawn);
+      customer.attachScript(custLogic);
+      customer.isVisible = true;
+
+      Members.add(custLogic);
+      MembersInLine.add(custLogic);
+    }
+
+  }
+
+  public CustomerGroups(CustomerGroupState state, ArrayList<TextureAtlas> customerAtlas){
+    Orders = Arrays.asList(state.orders);
+    Frustration = state.frustration;
+    RecoveryValue =  FrustrationRecovery * Frustration;
+    for (int i = 0; i < state.customerPositions.length; i++) {
+
+
+      Customer custLogic = new Customer(state.CustomerStartID + i,state.orders[i], Customer.getCustomerAtlas(customerAtlas));
+      GameObject customer = new GameObject(new BlackSprite());
+      customer.position.set(state.customerPositions[i]);
       customer.attachScript(custLogic);
       customer.isVisible = true;
 
@@ -114,6 +136,38 @@ public class CustomerGroups {
           CauseLeave.accept(this);
   }
 
+public CustomerGroupState SaveState(boolean leaving){
+    CustomerGroupState state = new CustomerGroupState();
+    state.customerPositions = new Vector2[Members.size()];
+    state.customersInGroupOrdering = new int[MembersInLine.size()];
+    state.orders = new ItemEnum[Members.size()];
+    state.Table = table.ID;
+    state.frustration = Frustration;
+    state.CustomerStartID = Members.get(0).customerNumber;
 
+  for (int i = 0; i < Members.size(); i++) {
+    state.customerPositions[i] = Members.get(i).gameObject.position;
+    state.orders[i] = Members.get(i).dish;
+
+  }
+
+  for (int i = 0; i < MembersInLine.size(); i++) {
+    state.customersInGroupOrdering[i] = i;
+  }
+
+  state.leaving = leaving;
+
+  return state;
+  
+  
+}
+
+public void destroy()
+{
+  for (Customer cust: Members
+  ) {
+    cust.Destroy();
+  }
+}
 
 }

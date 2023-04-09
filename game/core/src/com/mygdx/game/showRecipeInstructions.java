@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
 
+import com.mygdx.game.Core.TextureDictionary;
 import java.util.HashMap;
 
 public class showRecipeInstructions {
@@ -24,7 +25,8 @@ public class showRecipeInstructions {
     }
 
     public void changeInstructionPage(String dish){
-        imageObject.getBlackTexture().changeTexture(new Texture(recipeMap.get(dish)));
+        Texture tex = TextureDictionary.textures.Get(recipeMap.get(dish));
+        imageObject.getBlackTexture().changeTexture(tex);
     }
 
     public void makeVisible(){

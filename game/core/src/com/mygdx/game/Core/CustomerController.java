@@ -7,6 +7,8 @@ import com.mygdx.game.Core.Customers.CustomerGroups;
 import com.mygdx.game.Core.Customers.OrderMenu;
 import com.mygdx.game.Core.Customers.Randomisation;
 import com.mygdx.game.Core.Customers.Table;
+import com.mygdx.game.Core.GameState.CustomerGroupState;
+import com.mygdx.game.Core.GameState.GameState;
 import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
 import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
 import com.mygdx.game.Customer;
@@ -90,11 +92,13 @@ public class CustomerController extends Scriptable
     CalculateWavesFromNoCustomers(params.NoCustomers);
 
 
+    Reputation = Math.min(Reputation,Waves);
     generateCustomerArray();
 
+    int ID = 0;
     for (Vector2 pos: TablePositions
     ) {
-      tables.add(new Table(pos,30));
+      tables.add(new Table(pos,ID++,30));
     }
 
     pathfinding = path;
@@ -104,6 +108,8 @@ public class CustomerController extends Scriptable
 
     menu = new OrderMenu(10,7,3);
   }
+
+
 
   public void CalculateWavesFromNoCustomers(int NoCustomers){
 
@@ -496,6 +502,122 @@ public class CustomerController extends Scriptable
     return currentWaiting != null && currentWaiting.MembersInLine.size()==0 ;
   }
 
+  public void deleteAllCustomers(){
+    if(currentWaiting != null) {
+      currentWaiting.destroy();
 
+    }
+    for (CustomerGroups group:SittingCustomers)
+      group.destroy();
+
+
+    for (CustomerGroups group:WalkingBackCustomers)
+      group.destroy();
+
+    SittingCustomers.clear();
+    WalkingBackCustomers.clear();
+  }
+  public void LoadState(GameState state){
+    //Wave State
+    currentWave = state.Wave;
+    Waves = state.MaxWave;
+    groupSize = state.GroupSize;
+    //Reputation
+    Reputation = state.Reputation;
+    MaxReputation = state.MaxReputation;
+    CustomerFrustrationStart = state.MaxFrustration ;
+    //Money
+    MaxMoney = state.MaxMoney;
+    Money = state.Money;
+
+    deleteAllCustomers();
+
+    if(state.CustomerGroupsData[0] != null){
+      currentWaiting = new CustomerGroups(state.CustomerGroupsData[0],CustomerAtlas);
+
+      Table table = tables.get(state.CustomerGroupsData[0].Table);
+      table.DesignateSeating(state.CustomerGroupsData[0].customerPositions.length, rand);
+      currentWaiting.table = table;
+
+      for (Customer cust: currentWaiting.MembersSeatedOrWalking
+      ) {
+        SetCustomerTarget(cust,currentWaiting.table.GetNextSeat());
+      }
+
+      SetWaitingForOrderTarget();
+
+    }
+
+    int i = 0;
+    for (CustomerGroupState groupState: state.CustomerGroupsData
+    ) {
+      if (i == 0)
+      {
+        i++;
+      continue;
+    }
+      CustomerGroups customerGroups =new CustomerGroups(groupState,CustomerAtlas);
+      Table table = tables.get(state.CustomerGroupsData[i].Table);
+      table.DesignateSeating(state.CustomerGroupsData[i].customerPositions.length, rand);
+      currentWaiting.table = table;
+
+
+      if(groupState.leaving)
+      {
+        SetCustomerGroupTarget(customerGroups,DoorTarget);
+        WalkingBackCustomers.add(customerGroups);
+
+      } else {
+        SittingCustomers.add(customerGroups);
+;
+      }
+      i++;
+
+    }
+
+
+  }
+  public void SaveState(GameState state){
+
+
+    //Wave State
+    state.Wave = currentWave;
+    state.MaxWave = Waves;
+    state.GroupSize = groupSize;
+    //Reputation
+    state.Reputation = Reputation;
+    state.MaxReputation = MaxReputation;
+    state.MaxFrustration  = CustomerFrustrationStart;
+    //Money
+    state.MaxMoney = MaxMoney;
+    state.Money = Money;
+
+    //Customers
+
+
+    List<CustomerGroupState> savedGroups = new LinkedList<>();
+
+    if(currentWaiting == null) {
+      savedGroups.add(null);
+    }
+    else {
+      savedGroups.add(currentWaiting.SaveState(false));
+
+    }
+    for (CustomerGroups group:SittingCustomers)
+      savedGroups.add(group.SaveState(false));
+
+
+    for (CustomerGroups group:WalkingBackCustomers)
+      savedGroups.add(group.SaveState(true));
+
+
+
+    state.CustomerGroupsData = savedGroups.toArray(new CustomerGroupState[0]);
+
+
+
+
+  }
 
 }

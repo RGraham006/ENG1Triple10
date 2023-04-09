@@ -1,6 +1,7 @@
 package com.mygdx.game.Items;
 
 import com.mygdx.game.Core.BlackTexture;
+import com.mygdx.game.Core.GameState.ItemState;
 
 public class Item {
 
@@ -26,6 +27,16 @@ public class Item {
     tex = new BlackTexture(GetItemPath(item));
 
     tex.setSize(width, height);
+  }
+
+  public Item(ItemState itemState){
+
+    name = itemState.item;
+    step = itemState.step;
+    progress =itemState.progress;
+    tex = new BlackTexture(GetItemPath(name));
+    tex.setSize(width, height);
+
   }
 
 

@@ -11,6 +11,7 @@ import com.mygdx.game.Core.CustomerController;
 import com.mygdx.game.Core.Customers.CustomerGroups;
 import com.mygdx.game.Core.GameObjectManager;
 import com.mygdx.game.Core.Pathfinding;
+import com.mygdx.game.Core.TextureDictionary;
 import com.mygdx.game.Core.ValueStructures.CustomerControllerParams;
 import com.mygdx.game.Core.ValueStructures.EndOfGameValues;
 import com.mygdx.game.GameScreen;
@@ -31,6 +32,7 @@ public class CustomerTests {
   void InstantiateCustomerScripts(){
 
     GameObjectManager.objManager = null;
+    TextureDictionary dico = new TextureDictionary();
 
     pathfinding = new Pathfinding(GameScreen.TILE_WIDTH/4,GameScreen.viewportWidth,GameScreen.viewportWidth);
 

@@ -41,7 +41,7 @@ public class Chef extends PathfindingAgent implements Person {
 
   Stack<Item> heldItems = new Stack<>();
   List<GameObject> HeldItemGameObjects = new LinkedList<>();
-  int CarryCapacity = 3;
+  public static int CarryCapacity = 3;
 
   private String spriteOrientation, spriteState;
   private int currentSpriteAnimation;
@@ -94,8 +94,7 @@ public class Chef extends PathfindingAgent implements Person {
     gameObject.getSprite().setSprite(chefAtlas.createSprite("south1"));
     currentSpriteAnimation = 1;
     spriteOrientation = "south";
-    gameObject.position.x = 750 + 32 * id;
-    gameObject.position.y = 300;
+
     isFrozen = false;
     //sprite.setPosition(posX, posY); unnessary now
     //MyGdxGame.buildObject(world, posX, posY, sprite.getWidth(), sprite.getHeight(), "Dynamic");

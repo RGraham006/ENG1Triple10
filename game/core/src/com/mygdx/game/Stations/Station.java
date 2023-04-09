@@ -2,12 +2,15 @@ package com.mygdx.game.Stations;
 
 import com.mygdx.game.Core.BlackTexture;
 import com.mygdx.game.Core.GameObject;
+import com.mygdx.game.Core.GameState.ItemState;
 import com.mygdx.game.Core.Interactions.Interactable;
 import com.mygdx.game.Core.Scriptable;
 import com.mygdx.game.Items.Item;
 import com.mygdx.game.RecipeAndComb.CombinationDict;
 import com.mygdx.game.RecipeAndComb.Recipe;
 import com.mygdx.game.RecipeAndComb.RecipeDict;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -88,6 +91,19 @@ public abstract class Station extends Scriptable implements Interactable {
     updatePictures();
   }
 
+  public void LoadState(List<ItemState> state){
+    if(state.get(0) == null || state.get(0).item == null)
+      return;
+
+    item = new Item(state.get(0));
+  }
+  public List<ItemState> SaveState(){
+
+    LinkedList<ItemState> states = new LinkedList<>();
+
+    states.add(new ItemState(item));
+    return states ;
+  }
 
 
 }

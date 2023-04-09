@@ -46,6 +46,10 @@ public class GameObject {
     script.Start();
   }
 
+  public Scriptable GetScript(int i){
+   return Scripts.get(i);
+  }
+
   public Integer getUID() {
     return UID;
   }

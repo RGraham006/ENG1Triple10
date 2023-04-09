@@ -61,9 +61,9 @@ public class OrderMenu
     int catagoryID = rand.nextInt(totalStock-1);
     for (OrderType catagory:OrderCatagories
     ) {
-      totalStock -=  catagory.stock;
+      catagoryID -=  catagory.stock;
 
-      if(totalStock<=0)
+      if(catagoryID<=0)
       {
        orders.add(catagory.GetOrder(rand));
        break;
